@@ -3,7 +3,7 @@
     <div class="flex lg:flex-1">
       <button routerLink="/home" class="-m-1.5 p-1.5" aria-label="Wallet Company">
         <span class="sr-only">Wallet Company</span>
-        <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
+        <img class="h-8 w-auto" src="/icon-wallet.png" alt="">
       </button>
     </div>
     <div class="flex lg:hidden">
@@ -24,18 +24,21 @@
       <button routerLink="/signup" class="ml-6 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
 
       <!-- Profile Button with Dropdown Menu -->
+      <!-- Menú desplegable del perfil en modo PC -->
       <div class="relative">
         <button (click)="toggleProfileMenu()" class="flex items-center text-gray-900">
-          <img src="https://via.placeholder.com/32" alt="User Avatar" class="h-8 w-8 rounded-full border border-gray-300">
+          <img src="/default-profile-photo.svg" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
           <span class="sr-only">Profile</span>
         </button>
         <div *ngIf="profileMenuOpen" class="absolute right-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-          <div class="p-4">
-            <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-            <button (click)="logout()" class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Log out</button>
+          <div class="p-4 space-y-2">
+            <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">Profile</a>
+            <button (click)="logout()" class="block w-full px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-md">Log out</button>
           </div>
         </div>
       </div>
+
+
     </div>
   </nav>
 
@@ -46,7 +49,7 @@
       <div class="flex items-center justify-between">
         <a routerLink="/home" class="-m-1.5 p-1.5">
           <span class="sr-only">Wallet Company</span>
-          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
+          <img class="h-8 w-auto" src="/icon-wallet.png" alt="Wallet Company">
         </a>
         <button (click)="toggleMenu()" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
           <span class="sr-only">Close menu</span>
@@ -57,16 +60,17 @@
       </div>
 
       <!-- Profile Icon and Dropdown in Mobile Menu -->
-      <div class="mt-6">
-        <button (click)="toggleProfileMenu()" class="flex items-center text-gray-900">
-          <img src="https://via.placeholder.com/32" alt="User Avatar" class="h-8 w-8 rounded-full border border-gray-300">
+      <div class="mt-6 text-center">
+        <button (click)="toggleProfileMenu()" class="flex items-center justify-center mx-auto text-gray-900">
+          <img src="/default-profile-photo.svg" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
           <span class="sr-only">Profile</span>
         </button>
-        <div *ngIf="profileMenuOpen" class="mt-4 space-y-2">
+        <div *ngIf="profileMenuOpen" class="mt-4 space-y-2 text-center">
           <a routerLink="/profile" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Profile</a>
-          <button (click)="logout()" class="block w-full text-left rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log out</button>
+          <button (click)="logout()" class="block w-full text-center rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white bg-red-500 hover:bg-red-600">Log out</button>
         </div>
       </div>
+
 
       <div class="mt-6 border-t border-gray-200 pt-4">
         <div class="-my-6 divide-y divide-gray-500/10">
