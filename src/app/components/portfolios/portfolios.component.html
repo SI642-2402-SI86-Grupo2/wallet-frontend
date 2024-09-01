@@ -1,1 +1,88 @@
-<p>portfolios works!</p>
+<div class="max-w-4xl mx-auto p-6 bg-gray-50 rounded-lg shadow-lg">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold">Portfolios</h2>
+    <button
+      class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      (click)="openModal()">
+      Add
+    </button>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full bg-white rounded-lg shadow-md overflow-hidden">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-sm">
+      <tr>
+        <th class="py-3 px-6 text-left">Name</th>
+        <th class="py-3 px-6 text-left">Description</th>
+        <th class="py-3 px-6 text-left">TCEA</th>
+        <th class="py-3 px-6 text-left">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let portfolio of portfolios; let i = index" class="border-b border-gray-200">
+        <td class="py-4 px-6">{{ portfolio.name }}</td>
+        <td class="py-4 px-6">{{ portfolio.description }}</td>
+        <td class="py-4 px-6">{{ portfolio.tcea }}</td>
+        <td class="py-4 px-6 flex space-x-2">
+          <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">Select</button>
+          <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editPortfolio(i)">Edit</button>
+          <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" (click)="deletePortfolio(i)">Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+  <div
+    *ngIf="isModalOpen"
+    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+    (click)="closeModal()">
+    <div
+      class="bg-white p-6 rounded-lg shadow-lg w-1/3"
+      (click)="$event.stopPropagation()">
+      <h3 class="text-xl font-bold mb-4">{{ isEditMode ? 'Edit Portfolio' : 'Add New Portfolio' }}</h3>
+      <form (ngSubmit)="addPortfolio()">
+        <div class="mb-4">
+          <label class="block text-gray-700">Name</label>
+          <input
+            type="text"
+            class="w-full p-2 border border-gray-300 rounded-lg"
+            [(ngModel)]="portfolio.name"
+            name="name"
+            placeholder="Portfolio Name" />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700">Description</label>
+          <textarea
+            class="w-full p-2 border border-gray-300 rounded-lg"
+            [(ngModel)]="portfolio.description"
+            name="description"
+            placeholder="Portfolio Description"></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700">TCEA</label>
+          <input
+            type="text"
+            class="w-full p-2 border border-gray-300 rounded-lg"
+            [(ngModel)]="portfolio.tcea"
+            name="tcea"
+            placeholder="TCEA" />
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button
+            type="button"
+            class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+            (click)="closeModal()">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+            {{ isEditMode ? 'Save' : 'Add' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -7,6 +7,7 @@ import {LoginComponent} from "./components/users/login/login.component";
 import {SignupComponent} from "./components/users/signup/signup.component";
 import {NotfoundComponent} from "./components/notfound/notfound.component";
 import {ProfileComponent} from "./components/profile/profile.component";
+import {DocumentComponent} from "./components/portfolios/document/document.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'profile', component: ProfileComponent},
+  { path: "portfolios:id/document", component: DocumentComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a 'home' por defecto
   { path: '**', component: NotfoundComponent } // Wildcard route for 404 page
 ];

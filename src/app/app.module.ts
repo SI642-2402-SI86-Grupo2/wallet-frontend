@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms'; // Importa FormsModule aquí
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +13,7 @@ import { LoginComponent } from './components/users/login/login.component';
 import { SignupComponent } from './components/users/signup/signup.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { DocumentComponent } from './components/portfolios/document/document.component';
 
 @NgModule({
   declarations: [
@@ -24,11 +26,13 @@ import { ProfileComponent } from './components/profile/profile.component';
     LoginComponent,
     SignupComponent,
     NotfoundComponent,
-    ProfileComponent
+    ProfileComponent,
+    DocumentComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
