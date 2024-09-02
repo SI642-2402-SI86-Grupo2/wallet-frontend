@@ -14,6 +14,7 @@ import { SignupComponent } from './components/users/signup/signup.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DocumentComponent } from './components/portfolios/document/document.component';
+import { provideHttpClient} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -33,8 +34,10 @@ import { DocumentComponent } from './components/portfolios/document/document.com
     BrowserModule,
     AppRoutingModule,
     FormsModule
+
   ],
-  providers: [],
+  providers: [    provideHttpClient() // Use the recommended alternative
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

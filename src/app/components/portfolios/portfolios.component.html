@@ -14,19 +14,21 @@
       <tr>
         <th class="py-3 px-6 text-left">Name</th>
         <th class="py-3 px-6 text-left">Description</th>
+        <th class="py-3 px-6 text-left">Discount Date</th>
         <th class="py-3 px-6 text-left">TCEA</th>
         <th class="py-3 px-6 text-left">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let portfolio of portfolios; let i = index" class="border-b border-gray-200">
-        <td class="py-4 px-6">{{ portfolio.name }}</td>
+        <td class="py-4 px-6">{{ portfolio.portfolio_name }}</td>
         <td class="py-4 px-6">{{ portfolio.description }}</td>
-        <td class="py-4 px-6">{{ portfolio.tcea }}</td>
+        <td class="py-4 px-6">{{ portfolio.discount_date | date:'shortDate' }}</td>
+        <td class="py-4 px-6">{{ portfolio.total_tcea }}</td>
         <td class="py-4 px-6 flex space-x-2">
           <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">Select</button>
-          <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editPortfolio(i)">Edit</button>
-          <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" (click)="deletePortfolio(i)">Delete</button>
+          <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editPortfolio(portfolio.id)">Edit</button>
+          <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" (click)="deletePortfolio(portfolio.id)">Delete</button>
         </td>
       </tr>
       </tbody>
@@ -42,13 +44,17 @@
       class="bg-white p-6 rounded-lg shadow-lg w-1/3"
       (click)="$event.stopPropagation()">
       <h3 class="text-xl font-bold mb-4">{{ isEditMode ? 'Edit Portfolio' : 'Add New Portfolio' }}</h3>
+
+      <!-- Display error message if validation fails -->
+      <div *ngIf="errorMessage" class="text-red-500 mb-4">{{ errorMessage }}</div>
+
       <form (ngSubmit)="addPortfolio()">
         <div class="mb-4">
           <label class="block text-gray-700">Name</label>
           <input
             type="text"
             class="w-full p-2 border border-gray-300 rounded-lg"
-            [(ngModel)]="portfolio.name"
+            [(ngModel)]="portfolio.portfolio_name"
             name="name"
             placeholder="Portfolio Name" />
         </div>
@@ -61,11 +67,19 @@
             placeholder="Portfolio Description"></textarea>
         </div>
         <div class="mb-4">
+          <label class="block text-gray-700">Discount Date</label>
+          <input
+            type="date"
+            class="w-full p-2 border border-gray-300 rounded-lg"
+            [(ngModel)]="portfolio.discount_date"
+            name="discount_date" />
+        </div>
+        <div class="mb-4">
           <label class="block text-gray-700">TCEA</label>
           <input
-            type="text"
+            type="number"
             class="w-full p-2 border border-gray-300 rounded-lg"
-            [(ngModel)]="portfolio.tcea"
+            [(ngModel)]="portfolio.total_tcea"
             name="tcea"
             placeholder="TCEA" />
         </div>

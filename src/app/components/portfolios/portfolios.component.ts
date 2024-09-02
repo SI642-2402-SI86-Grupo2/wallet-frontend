@@ -1,20 +1,48 @@
-import { Component } from '@angular/core';
-import { Portfolios } from '../../models/portfolios'; // Importa la clase Portfolio desde el archivo correspondiente
+import { Component, OnInit } from '@angular/core';
+import { Portfolios } from '../../models/portfolios';
+import { PortfoliosService } from '../../services/portfolios.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-portfolios',
   templateUrl: './portfolios.component.html',
   styleUrls: ['./portfolios.component.css']
 })
-export class PortfoliosComponent {
-  portfolios: Portfolios[] = [];  // Lista de portafolios
+export class PortfoliosComponent implements OnInit {
+  portfolios: Portfolios[] = [];
   isModalOpen = false;
-  isEditMode = false;  // Indica si se está editando un portafolio
-  portfolio: Portfolios = new Portfolios('', '', '');  // Instancia de la clase Portfolio
-  selectedPortfolioIndex = -1; // Índice del portafolio seleccionado para editar
+  isEditMode = false;
+  portfolio: Portfolios = new Portfolios(0, '', '', new Date(), 0, 0);
+  selectedPortfolioIndex = -1;
+  errorMessage = '';
+
+  constructor(
+    private portfoliosService: PortfoliosService,
+    private storageService: StorageService
+  ) {}
+
+  ngOnInit(): void {
+    this.storageService.setTestUserId();
+    this.loadPortfolios();
+  }
+
+  loadPortfolios(): void {
+    const userId = this.storageService.getUserId();
+    if (userId !== null) {
+      this.portfoliosService.getPortfoliosByUserId(userId).subscribe({
+        next: (data) => {
+          this.portfolios = data;
+        },
+        error: (error) => console.error('Error fetching portfolios:', error)
+      });
+    } else {
+      console.error('User ID not found in storage');
+    }
+  }
 
   openModal() {
     this.isModalOpen = true;
+    this.errorMessage = '';
   }
 
   closeModal() {
@@ -23,44 +51,74 @@ export class PortfoliosComponent {
   }
 
   addPortfolio() {
-    if (this.isEditMode) {
-      // Guardar los cambios en el portafolio editado
-      this.portfolios[this.selectedPortfolioIndex] = new Portfolios(
-        this.portfolio.name,
-        this.portfolio.description,
-        this.portfolio.tcea
-      );
-    } else {
-      // Añadir un nuevo portafolio a la lista
-      this.portfolios.push(
-        new Portfolios(
-          this.portfolio.name,
-          this.portfolio.description,
-          this.portfolio.tcea
-        )
-      );
+    if (!this.portfolio.portfolio_name || !this.portfolio.description || !this.portfolio.discount_date || !this.portfolio.total_tcea) {
+      this.errorMessage = 'Please fill in all required fields.';
+      return;
     }
-    this.closeModal();
+
+    const userId = this.storageService.getUserId();
+    if (userId !== null) {
+      this.portfolio.users_id = userId;
+      if (!this.portfolio.id) {
+        this.portfoliosService.getMaxId().subscribe({
+          next: (maxId) => {
+            this.portfolio.id = maxId + 1;
+            this.savePortfolio();
+          },
+          error: (error) => console.error('Error fetching max ID:', error)
+        });
+      } else {
+        this.savePortfolio();
+      }
+    } else {
+      console.error('User ID not found in storage');
+    }
   }
 
-  editPortfolio(index: number) {
-    this.portfolio = new Portfolios(
-      this.portfolios[index].name,
-      this.portfolios[index].description,
-      this.portfolios[index].tcea
-    );
-    this.selectedPortfolioIndex = index;
-    this.isEditMode = true;
-    this.openModal();
+  savePortfolio() {
+    if (this.isEditMode) {
+      this.portfoliosService.updatePortfolio(this.portfolio).subscribe({
+        next: (updatedPortfolio) => {
+          this.portfolios[this.selectedPortfolioIndex] = updatedPortfolio;
+          this.closeModal();
+        },
+        error: (error) => console.error('Error updating portfolio:', error)
+      });
+    } else {
+      this.portfoliosService.addPortfolio(this.portfolio).subscribe({
+        next: (newPortfolio) => {
+          this.portfolios.push(newPortfolio);
+          this.closeModal();
+        },
+        error: (error) => console.error('Error adding portfolio:', error)
+      });
+    }
   }
 
-  deletePortfolio(index: number) {
-    this.portfolios.splice(index, 1);
+  editPortfolio(portfolio_id: number) {
+    const index = this.portfolios.findIndex(p => p.id === portfolio_id);
+    if (index !== -1) {
+      this.portfolio = { ...this.portfolios[index] };
+      this.selectedPortfolioIndex = index;
+      this.isEditMode = true;
+      this.openModal();
+    } else {
+      console.error('Portfolio not found');
+    }
+  }
+
+  deletePortfolio(id: number) {
+    this.portfoliosService.deletePortfolio(id).subscribe({
+      next: () => {
+        this.portfolios = this.portfolios.filter(portfolio => portfolio.id !== id);
+      },
+      error: (error) => console.error('Error deleting portfolio:', error)
+    });
   }
 
   resetForm() {
-    this.portfolio = new Portfolios('', '', '');
+    this.portfolio = new Portfolios(0, '', '', new Date(), 0, 0);
     this.isEditMode = false;
-    this.selectedPortfolioIndex = -1;
+    this.errorMessage = '';
   }
 }
