@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Portfolios } from '../../models/portfolios';
 import { PortfoliosService } from '../../services/portfolios.service';
 import { StorageService } from '../../services/storage.service';
@@ -13,13 +14,13 @@ export class PortfoliosComponent implements OnInit {
   isModalOpen = false;
   isEditMode = false;
   portfolio: Portfolios = new Portfolios(0, '', '', new Date(), 0, 0);
-  selectedPortfolioIndex = -1;
   errorMessage = '';
 
   constructor(
     private portfoliosService: PortfoliosService,
-    private storageService: StorageService
-  ) {}
+    private storageService: StorageService,
+    private router: Router
+) {}
 
   ngOnInit(): void {
     this.storageService.setTestUserId();
@@ -79,7 +80,8 @@ export class PortfoliosComponent implements OnInit {
     if (this.isEditMode) {
       this.portfoliosService.updatePortfolio(this.portfolio).subscribe({
         next: (updatedPortfolio) => {
-          this.portfolios[this.selectedPortfolioIndex] = updatedPortfolio;
+          const index = this.portfolios.findIndex(d => d.id === updatedPortfolio.id);
+          this.portfolios[index] = updatedPortfolio;
           this.closeModal();
         },
         error: (error) => console.error('Error updating portfolio:', error)
@@ -99,7 +101,7 @@ export class PortfoliosComponent implements OnInit {
     const index = this.portfolios.findIndex(p => p.id === portfolio_id);
     if (index !== -1) {
       this.portfolio = { ...this.portfolios[index] };
-      this.selectedPortfolioIndex = index;
+
       this.isEditMode = true;
       this.openModal();
     } else {
@@ -121,4 +123,9 @@ export class PortfoliosComponent implements OnInit {
     this.isEditMode = false;
     this.errorMessage = '';
   }
+
+  selectPortfolio(portfolioId: number) {
+    this.router.navigate([`/portfolios/${portfolioId}/documents`]);
+  }
+
 }

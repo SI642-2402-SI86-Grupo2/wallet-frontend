@@ -1,1 +1,173 @@
-<p>document works!</p>
+<div class="max-w-[calc(100%-48px)] mx-auto p-6 m-6 bg-gray-50 rounded-lg shadow-lg">
+  <div class="flex justify-between items-center mb-6">
+    <button
+      class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+      (click)="goBack()">
+      Back
+    </button>
+    <h2 class="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold">
+      Documents
+    </h2>
+    <button
+      class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      (click)="openModal()">
+      Add
+    </button>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full bg-white rounded-lg shadow-md overflow-hidden">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-sm">
+      <tr>
+        <th class="py-3 px-6 text-left">Document Type</th>
+        <th class="py-3 px-6 text-left">Financial Institution</th>
+        <th class="py-3 px-6 text-left">Number</th>
+        <th class="py-3 px-6 text-left">Series</th>
+        <th class="py-3 px-6 text-left">Issuer Name</th>
+        <th class="py-3 px-6 text-left">Issuer RUC</th>
+        <th class="py-3 px-6 text-left">Currency</th>
+        <th class="py-3 px-6 text-left">Amount</th>
+        <th class="py-3 px-6 text-left">IGV</th>
+        <th class="py-3 px-6 text-left">Issue Date</th>
+        <th class="py-3 px-6 text-left">Due Date</th>
+        <th class="py-3 px-6 text-left">Discount Date</th>
+        <th class="py-3 px-6 text-left">Payment Terms</th>
+        <th class="py-3 px-6 text-left">Nominal Rate</th>
+        <th class="py-3 px-6 text-left">Effective Rate</th>
+        <th class="py-3 px-6 text-left">TCEA</th>
+        <th class="py-3 px-6 text-left">Commission</th>
+        <th class="py-3 px-6 text-left">Status</th>
+        <th class="py-3 px-6 text-left">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let document of documents; let i = index" class="border-b border-gray-200">
+        <td class="py-4 px-6">{{ document.document_type }}</td>
+        <td class="py-4 px-6">{{ document.financial_institutions_name }}</td>
+        <td class="py-4 px-6">{{ document.number }}</td>
+        <td class="py-4 px-6">{{ document.series }}</td>
+        <td class="py-4 px-6">{{ document.issuer_name }}</td>
+        <td class="py-4 px-6">{{ document.issuer_ruc }}</td>
+        <td class="py-4 px-6">{{ document.currecy }}</td>
+        <td class="py-4 px-6">{{ document.amount }}</td>
+        <td class="py-4 px-6">{{ document.igv }}</td>
+        <td class="py-4 px-6">{{ document.issue_date | date:'shortDate' }}</td>
+        <td class="py-4 px-6">{{ document.due_date | date:'shortDate' }}</td>
+        <td class="py-4 px-6">{{ document.discount_date | date:'shortDate' }}</td>
+        <td class="py-4 px-6">{{ document.payment_terms }}</td>
+        <td class="py-4 px-6">{{ document.nominal_rate }}</td>
+        <td class="py-4 px-6">{{ document.effective_rate }}</td>
+        <td class="py-4 px-6">{{ document.tcea }}</td>
+        <td class="py-4 px-6">{{ document.commission }}</td>
+        <td class="py-4 px-6 ">
+            <span [ngClass]="{'text-green-500': document.status === 'Completed', 'text-red-500': document.status === 'Error', 'text-yellow-500': document.status === 'In Progress'}">
+              <svg class="inline-block h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"></circle></svg>
+              {{ document.status }}
+            </span>
+        </td>
+        <td class="py-4 px-6 flex space-x-2">
+          <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">View</button>
+          <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editDocument(document.id)">Edit</button>
+          <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" (click)="deleteDocument(document.id)">Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+  <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" (click)="closeModal()">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3" (click)="$event.stopPropagation()">
+      <h3 class="text-xl font-bold mb-4">{{ isEditMode ? 'Edit Document' : 'Add New Document' }}</h3>
+
+      <!-- Display error message if validation fails -->
+      <div *ngIf="errorMessage" class="text-red-500 mb-4">{{ errorMessage }}</div>
+
+      <form (ngSubmit)="addDocument()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div class="col-span-1">
+            <label class="block text-gray-700">Document Type</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.document_type" name="document_type" placeholder="Document Type" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Financial Institution</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.financial_institutions_name" name="financial_institutions_name" placeholder="Financial Institution Name" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Number</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.number" name="number" placeholder="Number" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Series</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.series" name="series" placeholder="Series" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Issuer Name</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issuer_name" name="issuer_name" placeholder="Issuer Name" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Issuer RUC</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issuer_ruc" name="issuer_ruc" placeholder="Issuer RUC" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Currency</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.currecy" name="currecy" placeholder="Currency" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Amount</label>
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.amount" name="amount" placeholder="Amount" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">IGV</label>
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.igv" name="igv" placeholder="IGV" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Issue Date</label>
+            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issue_date" name="issue_date" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Due Date</label>
+            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.due_date" name="due_date" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Discount Date</label>
+            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.discount_date" name="discount_date" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Payment Terms</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.payment_terms" name="payment_terms" placeholder="Payment Terms" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Nominal Rate</label>
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.nominal_rate" name="nominal_rate" placeholder="Nominal Rate" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Effective Rate</label>
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.effective_rate" name="effective_rate" placeholder="Effective Rate" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">TCEA</label>
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.tcea" name="tcea" placeholder="TCEA" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Commission</label>
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.commission" name="commission" placeholder="Commission" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Status</label>
+            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.status" name="status">
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-4 flex justify-end">
+          <button type="button" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition mr-2" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">{{ isEditMode ? 'Update' : 'Add' }}</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

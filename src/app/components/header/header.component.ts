@@ -1,4 +1,5 @@
 import { Component, HostListener, ElementRef } from '@angular/core';
+import {  Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,29 +10,55 @@ export class HeaderComponent {
   menuOpen = false; // Para el menú móvil
   profileMenuOpen = false; // Para el menú de perfil
 
-  constructor(private eRef: ElementRef) {}
+  constructor(
+    private eRef: ElementRef,
+    private router: Router
+  ) {}
 
-  // Método para alternar el menú móvil
+
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
 
-  // Método para alternar el menú de perfil
+
   toggleProfileMenu() {
     this.profileMenuOpen = !this.profileMenuOpen;
   }
 
-  // Método para cerrar sesión
+
+
+
+  //routes
+  goHome(): void {
+    this.router.navigate(['/home']);
+  }
+  goProfile(): void {
+    this.router.navigate(['/profile']);
+  }
+  goPortfolios(): void {
+    this.router.navigate(['/portfolios']);
+  }
+  goReports(): void {
+    this.router.navigate(['/reports']);
+  }
+  goLogin(): void {
+    this.router.navigate(['/login']);
+  }
+  goSignup(): void {
+    this.router.navigate(['/signup']);
+  }
   logout() {
-    // Implementa la lógica para cerrar sesión aquí
     console.log('Logout');
   }
 
-  // Detectar clics fuera del menú de perfil y cerrar el menú si está abierto
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
     if (this.profileMenuOpen && !this.eRef.nativeElement.contains(event.target)) {
       this.profileMenuOpen = false;
     }
   }
+
+
+
+
 }

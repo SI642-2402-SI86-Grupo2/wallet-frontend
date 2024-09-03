@@ -1,7 +1,7 @@
 <header class="bg-white fixed-top-app-bar">
   <nav class="mx-auto flex max-w-8xl items-center justify-between p-4 lg:px-6" aria-label="Global">
     <div class="flex lg:flex-1">
-      <button routerLink="/home" class="-m-1.5 p-1.5" aria-label="Wallet Company">
+      <button (click)="goHome()" class="-m-1.5 p-1.5" aria-label="Wallet Company">
         <span class="sr-only">Wallet Company</span>
         <img class="h-8 w-auto" src="/icon-wallet.png" alt="">
       </button>
@@ -15,13 +15,13 @@
       </button>
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
-      <button routerLink="/home" class="text-sm font-semibold leading-6 text-gray-900">Home</button>
-      <button routerLink="/portfolios" class="text-sm font-semibold leading-6 text-gray-900">Portfolios</button>
-      <button routerLink="/reports" class="text-sm font-semibold leading-6 text-gray-900">Reports</button>
+      <button (click)="goHome()" class="text-sm font-semibold leading-6 text-gray-900">Home</button>
+      <button (click)="goPortfolios()" class="text-sm font-semibold leading-6 text-gray-900">Portfolios</button>
+      <button (click)="goReports()" class="text-sm font-semibold leading-6 text-gray-900">Reports</button>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-2">
-      <button routerLink="/login" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></button>
-      <button routerLink="/signup" class="ml-6 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
+      <button (click)="goLogin()" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></button>
+      <button (click)="goSignup()" class="ml-6 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
 
       <!-- Profile Button with Dropdown Menu -->
       <!-- Menú desplegable del perfil en modo PC -->
@@ -32,7 +32,7 @@
         </button>
         <div *ngIf="profileMenuOpen" class="absolute right-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
           <div class="p-4 space-y-2">
-            <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">Profile</a>
+            <a (click)="goProfile()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">Profile</a>
             <button (click)="logout()" class="block w-full px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-md">Log out</button>
           </div>
         </div>
@@ -47,7 +47,7 @@
     <div class="fixed inset-0 z-10 bg-black opacity-50" (click)="toggleMenu()"></div>
     <div class="fixed inset-y-0 right-0 z-20 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
       <div class="flex items-center justify-between">
-        <a routerLink="/home" class="-m-1.5 p-1.5">
+        <a (click)="goHome()"  class="-m-1.5 p-1.5">
           <span class="sr-only">Wallet Company</span>
           <img class="h-8 w-auto" src="/icon-wallet.png" alt="Wallet Company">
         </a>
@@ -66,7 +66,7 @@
           <span class="sr-only">Profile</span>
         </button>
         <div *ngIf="profileMenuOpen" class="mt-4 space-y-2 text-center">
-          <a routerLink="/profile" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Profile</a>
+          <a (click)="goProfile()"  class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Profile</a>
           <button (click)="logout()" class="block w-full text-center rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white bg-red-500 hover:bg-red-600">Log out</button>
         </div>
       </div>
@@ -75,13 +75,13 @@
       <div class="mt-6 border-t border-gray-200 pt-4">
         <div class="-my-6 divide-y divide-gray-500/10">
           <div class="space-y-2 py-6">
-            <a routerLink="/home" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Home</a>
-            <a routerLink="/portfolios" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Portfolios</a>
-            <a routerLink="/reports" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Reports</a>
+            <a (click)="goHome()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Home</a>
+            <a (click)="goPortfolios()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Portfolios</a>
+            <a (click)="goReports()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Reports</a>
           </div>
           <div class="py-6">
-            <button routerLink="/login" class="w-full inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2.5 text-base font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Log in <span aria-hidden="true">&rarr;</span></button>
-            <button routerLink="/signup" class="mt-4 w-full inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
+            <button (click)="goLogin()" class="w-full inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2.5 text-base font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Log in <span aria-hidden="true">&rarr;</span></button>
+            <button (click)="goSignup()" class="mt-4 w-full inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'profile', component: ProfileComponent},
-  // {path : 'portfolios/:id/document', component: DocumentComponent},
+   {path : 'portfolios/:id/documents', component: DocumentComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirigir a 'home' por defecto
   { path: '**', component: NotfoundComponent } // Wildcard route for 404 page
 ];

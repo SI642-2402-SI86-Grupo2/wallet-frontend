@@ -1,7 +1,6 @@
-import { Portfolios } from './portfolios';
 
 export class Documents {
-  documents_id: number;
+  id: number;
   document_type: string;
   financial_institutions_name: string;
   number: string;
@@ -20,10 +19,10 @@ export class Documents {
   tcea: number;
   commission: number;
   status: string;
-  portfolios_id: Portfolios;
+  portfolios_id: number;
 
   constructor(
-    documents_id: number,
+    id: number,
     document_type: string,
     financial_institutions_name: string,
     number: string,
@@ -42,9 +41,9 @@ export class Documents {
     tcea: number,
     commission: number,
     status: string,
-    portfolios_id: Portfolios
+    portfolios_id: number
   ) {
-    this.documents_id = documents_id;
+    this.id = id;
     this.document_type = document_type;
     this.financial_institutions_name = financial_institutions_name;
     this.number = number;
