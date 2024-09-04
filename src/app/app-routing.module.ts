@@ -8,6 +8,7 @@ import {SignupComponent} from "./components/users/signup/signup.component";
 import {NotfoundComponent} from "./components/notfound/notfound.component";
 import {ProfileComponent} from "./components/profile/profile.component";
 import {DocumentComponent} from "./components/portfolios/document/document.component";
+import {FooterComponent} from "./components/footer/footer.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },

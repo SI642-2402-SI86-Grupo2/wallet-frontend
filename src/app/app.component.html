@@ -1,2 +1,9 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
+<div class="app-container flex flex-col min-h-screen">
+  <app-header></app-header>
+
+  <main class="flex-grow mt-24 mb-24">
+    <router-outlet></router-outlet>
+  </main>
+
+  <app-footer></app-footer>
+</div>
