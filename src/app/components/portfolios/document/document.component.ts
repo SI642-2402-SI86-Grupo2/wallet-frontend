@@ -11,7 +11,9 @@ import { DocumentsService } from '../../../services/documents.service';
 export class DocumentComponent implements OnInit {
   documents: Documents[] = [];
   document: Documents = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', 0);
+  selectedDocument: Documents | null = null;
   isModalOpen = false;
+  isViewModalOpen = false;
   isEditMode = false;
   errorMessage = '';
   selectedPortfolioId: number | null = null;
@@ -51,6 +53,18 @@ export class DocumentComponent implements OnInit {
     this.isModalOpen = false;
     this.resetForm();
   }
+
+  openViewModal(document: Documents) {
+    this.selectedDocument = document;
+    this.isViewModalOpen = true;
+  }
+
+  closeViewModal() {
+    this.isViewModalOpen = false;
+    this.selectedDocument = null;
+  }
+
+
 
   addDocument() {
       if (!this.document.document_type || !this.document.financial_institutions_name || !this.document.number ||
@@ -114,6 +128,26 @@ export class DocumentComponent implements OnInit {
       console.error('Document not found');
     }
   }
+
+  toggleStatus(document: Documents): void {
+    document.status = document.status === 'In Progress' ? 'Completed' : 'In Progress';
+
+    this.documentsService.updateDocument(document).subscribe({
+      next: (updatedDocument) => {
+        // Optionally, update the local document with the updated data
+        document = updatedDocument;
+      },
+      error: (error) => {
+        console.error('Error updating document status:', error);
+        // Optionally, revert the status change on error
+        document.status = document.status === 'In Progress' ? 'Completed' : 'In Progress';
+      },
+      complete: () => {
+        console.log('Document status update completed.');
+      }
+    });
+  }
+
 
   deleteDocument(id: number) {
     this.documentsService.deleteDocument(id).subscribe({

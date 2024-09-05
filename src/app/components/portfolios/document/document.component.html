@@ -1,4 +1,4 @@
-<div class="max-w-[calc(100%-48px)] mx-auto p-6 m-6 bg-gray-50 rounded-lg shadow-lg">
+<div class="max-w-[calc(100%-48px)]  p-6 mx-6 bg-gray-50 rounded-lg shadow-lg">
   <div class="flex justify-between items-center mb-6">
     <button
       class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition"
@@ -17,56 +17,46 @@
 
   <div class="overflow-x-auto">
     <table class="w-full bg-white rounded-lg shadow-md overflow-hidden">
-      <thead class="bg-gray-100 text-gray-600 uppercase text-sm">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-sm hidden md:table-header-group">
       <tr>
         <th class="py-3 px-6 text-left">Document Type</th>
         <th class="py-3 px-6 text-left">Financial Institution</th>
-        <th class="py-3 px-6 text-left">Number</th>
-        <th class="py-3 px-6 text-left">Series</th>
-        <th class="py-3 px-6 text-left">Issuer Name</th>
-        <th class="py-3 px-6 text-left">Issuer RUC</th>
-        <th class="py-3 px-6 text-left">Currency</th>
-        <th class="py-3 px-6 text-left">Amount</th>
-        <th class="py-3 px-6 text-left">IGV</th>
-        <th class="py-3 px-6 text-left">Issue Date</th>
-        <th class="py-3 px-6 text-left">Due Date</th>
-        <th class="py-3 px-6 text-left">Discount Date</th>
-        <th class="py-3 px-6 text-left">Payment Terms</th>
-        <th class="py-3 px-6 text-left">Nominal Rate</th>
-        <th class="py-3 px-6 text-left">Effective Rate</th>
-        <th class="py-3 px-6 text-left">TCEA</th>
-        <th class="py-3 px-6 text-left">Commission</th>
+        <th class="hidden lg:table-cell py-3 px-6 text-left">Currency</th>
+        <th class="hidden xl:table-cell py-3 px-6 text-left">Amount</th>
+        <th class="hidden xl:table-cell py-3 px-6 text-left">Commission</th>
         <th class="py-3 px-6 text-left">Status</th>
         <th class="py-3 px-6 text-left">Actions</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let document of documents; let i = index" class="border-b border-gray-200">
-        <td class="py-4 px-6">{{ document.document_type }}</td>
-        <td class="py-4 px-6">{{ document.financial_institutions_name }}</td>
-        <td class="py-4 px-6">{{ document.number }}</td>
-        <td class="py-4 px-6">{{ document.series }}</td>
-        <td class="py-4 px-6">{{ document.issuer_name }}</td>
-        <td class="py-4 px-6">{{ document.issuer_ruc }}</td>
-        <td class="py-4 px-6">{{ document.currecy }}</td>
-        <td class="py-4 px-6">{{ document.amount }}</td>
-        <td class="py-4 px-6">{{ document.igv }}</td>
-        <td class="py-4 px-6">{{ document.issue_date | date:'shortDate' }}</td>
-        <td class="py-4 px-6">{{ document.due_date | date:'shortDate' }}</td>
-        <td class="py-4 px-6">{{ document.discount_date | date:'shortDate' }}</td>
-        <td class="py-4 px-6">{{ document.payment_terms }}</td>
-        <td class="py-4 px-6">{{ document.nominal_rate }}</td>
-        <td class="py-4 px-6">{{ document.effective_rate }}</td>
-        <td class="py-4 px-6">{{ document.tcea }}</td>
-        <td class="py-4 px-6">{{ document.commission }}</td>
-        <td class="py-4 px-6 ">
+      <tr *ngFor="let document of documents; let i = index" class="border-b border-gray-200 flex flex-col md:table-row">
+        <td class="py-4 px-6 text-center before:content-['Document_Type'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.document_type }}
+        </td>
+        <td class="py-4 px-6 text-center before:content-['Financial_Institution'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.financial_institutions_name }}
+        </td>
+        <td class="hidden lg:table-cell py-4 px-6 text-center before:content-['Currency'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.currecy }}
+        </td>
+        <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Amount'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.amount }}
+        </td>
+        <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Commission'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.commission }}
+        </td>
+        <td class="py-4 px-6 text-center before:content-['Status'] before:block before:font-bold before:text-lg md:before:content-none">
+          <button (click)="toggleStatus(document)" class="focus:outline-none border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">
             <span [ngClass]="{'text-green-500': document.status === 'Completed', 'text-red-500': document.status === 'Error', 'text-yellow-500': document.status === 'In Progress'}">
-              <svg class="inline-block h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"></circle></svg>
+              <svg class="inline-block h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <circle cx="10" cy="10" r="8"></circle>
+              </svg>
               {{ document.status }}
             </span>
+          </button>
         </td>
-        <td class="py-4 px-6 flex space-x-2">
-          <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">View</button>
+        <td class="py-4 px-6 flex flex-col space-y-2 text-center before:content-['Actions'] before:block before:font-bold before:text-lg md:flex-row md:space-x-2 md:space-y-0 md:before:content-none">
+          <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition" (click)="openViewModal(document)">View</button>
           <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editDocument(document.id)">Edit</button>
           <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" (click)="deleteDocument(document.id)">Delete</button>
         </td>
@@ -74,6 +64,8 @@
       </tbody>
     </table>
   </div>
+
+
 
   <!-- Modal -->
   <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" (click)="closeModal()">
@@ -170,4 +162,43 @@
 
     </div>
   </div>
+
+
+  <!-- View Document Modal -->
+  <div *ngIf="isViewModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" (click)="closeViewModal()">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3" (click)="$event.stopPropagation()">
+      <h3 class="text-xl font-bold mb-4">View Document</h3>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div><strong>Document Type:</strong> {{ selectedDocument?.document_type }}</div>
+        <div><strong>Financial Institution:</strong> {{ selectedDocument?.financial_institutions_name }}</div>
+        <div><strong>Number:</strong> {{ selectedDocument?.number }}</div>
+        <div><strong>Series:</strong> {{ selectedDocument?.series }}</div>
+        <div><strong>Issuer Name:</strong> {{ selectedDocument?.issuer_name }}</div>
+        <div><strong>Issuer RUC:</strong> {{ selectedDocument?.issuer_ruc }}</div>
+        <div><strong>Currency:</strong> {{ selectedDocument?.currecy }}</div>
+        <div><strong>Amount:</strong> {{ selectedDocument?.amount }}</div>
+        <div><strong>IGV:</strong> {{ selectedDocument?.igv }}</div>
+        <div><strong>Issue Date:</strong> {{ selectedDocument?.issue_date | date:'shortDate' }}</div>
+        <div><strong>Due Date:</strong> {{ selectedDocument?.due_date | date:'shortDate' }}</div>
+        <div><strong>Discount Date:</strong> {{ selectedDocument?.discount_date | date:'shortDate' }}</div>
+        <div><strong>Payment Terms:</strong> {{ selectedDocument?.payment_terms }}</div>
+        <div><strong>Nominal Rate:</strong> {{ selectedDocument?.nominal_rate }}</div>
+        <div><strong>Effective Rate:</strong> {{ selectedDocument?.effective_rate }}</div>
+        <div><strong>TCEA:</strong> {{ selectedDocument?.tcea }}</div>
+        <div><strong>Commission:</strong> {{ selectedDocument?.commission }}</div>
+        <div><strong>Status:</strong> {{ selectedDocument?.status }}</div>
+      </div>
+
+      <hr class="my-4">
+
+      <div class="text-right font-bold text-lg">Total: {{ selectedDocument?.amount | currency }}</div>
+
+      <div class="mt-4 flex justify-end">
+        <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition" (click)="closeViewModal()">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
+
+
