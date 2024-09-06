@@ -21,10 +21,10 @@
       </thead>
       <tbody>
       <tr *ngFor="let portfolio of portfolios; let i = index" class="border-b border-gray-200 flex flex-col md:table-row">
-        <td class="py-4 px-6 text-center before:content-['Document_Type'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.portfolio_name }}</td>
-        <td class="py-4 px-6 text-center before:content-['Document_Type'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.description }}</td>
-        <td class="hidden lg:table-cell py-4 px-6 text-center before:content-['Document_Type'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.discount_date | date:'shortDate' }}</td>
-        <td class="py-4 px-6 text-center before:content-['Document_Type'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.total_tcea }}</td>
+        <td class="py-4 px-6 text-center before:content-['Name'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.portfolio_name }}</td>
+        <td class="py-4 px-6 text-center before:content-['Description'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.description }}</td>
+        <td class="hidden lg:table-cell py-4 px-6 text-center before:content-['Discount Date'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.discount_date | date:'shortDate' }}</td>
+        <td class="py-4 px-6 text-center before:content-['TCEA'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.total_tcea }}</td>
         <td class="py-4 px-6 flex flex-col space-y-2 text-center before:content-['Actions'] before:block before:font-bold before:text-lg md:flex-row md:space-x-2 md:space-y-0 md:before:content-none">
           <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition" (click)="selectPortfolio(portfolio.id)">Select</button>
           <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editPortfolio(portfolio.id)">Edit</button>
@@ -36,14 +36,9 @@
   </div>
 
   <!-- Modal -->
-  <div
-    *ngIf="isModalOpen"
-    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-    (click)="closeModal()">
-    <div
-      class="bg-white p-6 rounded-lg shadow-lg w-1/3"
-      (click)="$event.stopPropagation()">
-      <h3 class="text-xl font-bold mb-4">{{ isEditMode ? 'Edit Portfolio' : 'Add New Portfolio' }}</h3>
+  <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" (click)="closeModal()">
+    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full sm:w-2/3 lg:w-1/3 mx-4 sm:mx-auto" (click)="$event.stopPropagation()">
+      <h3 class="text-lg sm:text-xl font-bold mb-4">{{ isEditMode ? 'Edit Portfolio' : 'Add New Portfolio' }}</h3>
 
       <!-- Display error message if validation fails -->
       <div *ngIf="errorMessage" class="text-red-500 mb-4">{{ errorMessage }}</div>
@@ -74,29 +69,29 @@
             [(ngModel)]="portfolio.discount_date"
             name="discount_date" />
         </div>
-        <div class="mb-4">
-          <label class="block text-gray-700">TCEA</label>
-          <input
-            type="number"
-            class="w-full p-2 border border-gray-300 rounded-lg"
-            [(ngModel)]="portfolio.total_tcea"
-            name="tcea"
-            placeholder="TCEA" />
-        </div>
-        <div class="flex justify-end space-x-4">
-          <button
-            type="button"
-            class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
-            (click)="closeModal()">
-            Cancel
-          </button>
-          <button
-            type="submit"
-            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-            {{ isEditMode ? 'Save' : 'Add' }}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+        <!-- <div class="mb-4">
+           <label class="block text-gray-700">TCEA</label>
+           <input
+             type="number"
+             class="w-full p-2 border border-gray-300 rounded-lg"
+             [(ngModel)]="portfolio.total_tcea"
+             name="tcea"
+             placeholder="TCEA" />
+         </div>-->
+         <div class="flex justify-end space-x-4">
+           <button
+             type="button"
+             class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+             (click)="closeModal()">
+             Cancel
+           </button>
+           <button
+             type="submit"
+             class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+             {{ isEditMode ? 'Save' : 'Add' }}
+           </button>
+         </div>
+       </form>
+     </div>
+   </div>
+ </div>

@@ -1,0 +1,11 @@
+/* Ocultar barra de scroll en Chrome, Safari y Edge */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Para otros navegadores */
+.modal-scroll {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}

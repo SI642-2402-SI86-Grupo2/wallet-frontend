@@ -21,9 +21,9 @@
       <tr>
         <th class="py-3 px-6 text-left">Document Type</th>
         <th class="py-3 px-6 text-left">Financial Institution</th>
-        <th class="hidden lg:table-cell py-3 px-6 text-left">Currency</th>
+        <th class="hidden xl:table-cell py-3 px-6 text-left">Currency</th>
         <th class="hidden xl:table-cell py-3 px-6 text-left">Amount</th>
-        <th class="hidden xl:table-cell py-3 px-6 text-left">Commission</th>
+        <th class="hidden lg:table-cell py-3 px-6 text-left">TCEA</th>
         <th class="py-3 px-6 text-left">Status</th>
         <th class="py-3 px-6 text-left">Actions</th>
       </tr>
@@ -36,14 +36,14 @@
         <td class="py-4 px-6 text-center before:content-['Financial_Institution'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.financial_institutions_name }}
         </td>
-        <td class="hidden lg:table-cell py-4 px-6 text-center before:content-['Currency'] before:block before:font-bold before:text-lg md:before:content-none">
+        <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Currency'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.currecy }}
         </td>
         <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Amount'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.amount }}
         </td>
-        <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Commission'] before:block before:font-bold before:text-lg md:before:content-none">
-          {{ document.commission }}
+        <td class="hidden lg:table-cell  py-4 px-6 text-center before:content-['Commission'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.tcea }}
         </td>
         <td class="py-4 px-6 text-center before:content-['Status'] before:block before:font-bold before:text-lg md:before:content-none">
           <button (click)="toggleStatus(document)" class="focus:outline-none border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">
@@ -68,8 +68,8 @@
 
 
   <!-- Modal -->
-  <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" (click)="closeModal()">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-1/3" (click)="$event.stopPropagation()">
+  <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4" (click)="closeModal()">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl h-[80vh] overflow-y-scroll modal-scroll" (click)="$event.stopPropagation()">
       <h3 class="text-xl font-bold mb-4">{{ isEditMode ? 'Edit Document' : 'Add New Document' }}</h3>
 
       <!-- Display error message if validation fails -->
@@ -79,11 +79,27 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div class="col-span-1">
             <label class="block text-gray-700">Document Type</label>
-            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.document_type" name="document_type" placeholder="Document Type" />
+            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.document_type" name="document_type">
+              <option value="Letter">Letter</option>
+              <option value="Invoice">Invoice</option>
+            </select>
           </div>
+          <!-- Factoring y confirming -->
           <div class="col-span-1">
             <label class="block text-gray-700">Financial Institution</label>
-            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.financial_institutions_name" name="financial_institutions_name" placeholder="Financial Institution Name" />
+            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.financial_institutions_name" name="financial_institutions_name">
+              <option value="Banco de Crédito del Perú">Banco de Crédito del Perú</option>
+              <option value="BBVA Perú">BBVA Perú</option>
+              <option value="Scotiabank Perú">Scotiabank Perú</option>
+              <option value="Interbank">Interbank</option>
+              <option value="BanBif">BanBif</option>
+              <option value="Banco Pichincha">Banco Pichincha</option>
+              <option value="Finaktiva">Finaktiva</option>
+              <option value="Quipu">Quipu</option>
+              <option value="Daviplata">Daviplata</option>
+              <option value="Nequi">Nequi</option>
+              <option value="Movii">Movii</option>
+            </select>
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Number</label>
@@ -103,7 +119,11 @@
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Currency</label>
-            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.currecy" name="currecy" placeholder="Currency" />
+            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.currecy" name="currecy">
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="PEN">PEN</option>
+            </select>
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Amount</label>
@@ -139,7 +159,7 @@
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">TCEA</label>
-            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.tcea" name="tcea" placeholder="TCEA" />
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg bg-gray-100" [value]="document.tcea"  readonly />
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Commission</label>
