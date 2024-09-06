@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Portfolios } from '../../models/portfolios';
 import { PortfoliosService } from '../../services/portfolios.service';
 import { StorageService } from '../../services/storage.service';
+import { DocumentsService } from '../../services/documents.service';
+
 
 @Component({
   selector: 'app-portfolios',
@@ -19,6 +21,7 @@ export class PortfoliosComponent implements OnInit {
   constructor(
     private portfoliosService: PortfoliosService,
     private storageService: StorageService,
+    private documentsService: DocumentsService,  // Agregar DocumentsService
     private router: Router
 ) {}
 
@@ -33,12 +36,37 @@ export class PortfoliosComponent implements OnInit {
       this.portfoliosService.getPortfoliosByUserId(userId).subscribe({
         next: (data) => {
           this.portfolios = data;
+          // Calcular el TCEA promedio para cada portafolio
+          this.portfolios.forEach(portfolio => {
+            this.calculateAverageTCEA(portfolio);
+          });
         },
         error: (error) => console.error('Error fetching portfolios:', error)
       });
     } else {
       console.error('User ID not found in storage');
     }
+  }
+
+  calculateAverageTCEA(portfolio: Portfolios): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.documentsService.getDocumentsByPortfolioId(portfolio.id).subscribe({
+        next: (documents) => {
+          if (documents.length > 0) {
+            const totalTCEA = documents.reduce((sum, doc) => sum + doc.tcea, 0);
+            portfolio.total_tcea = totalTCEA / documents.length;
+            resolve(portfolio.total_tcea);
+          } else {
+            portfolio.total_tcea = 0;
+            resolve(0);
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching documents:', error);
+          reject(error);
+        }
+      });
+    });
   }
 
   openModal() {
@@ -52,7 +80,7 @@ export class PortfoliosComponent implements OnInit {
   }
 
   addPortfolio() {
-    if (!this.portfolio.portfolio_name || !this.portfolio.description || !this.portfolio.discount_date || !this.portfolio.total_tcea) {
+    if (!this.portfolio.portfolio_name || !this.portfolio.description || !this.portfolio.discount_date /*|| !this.portfolio.total_tcea*/) {
       this.errorMessage = 'Please fill in all required fields.';
       return;
     }
@@ -77,24 +105,29 @@ export class PortfoliosComponent implements OnInit {
   }
 
   savePortfolio() {
-    if (this.isEditMode) {
-      this.portfoliosService.updatePortfolio(this.portfolio).subscribe({
-        next: (updatedPortfolio) => {
-          const index = this.portfolios.findIndex(d => d.id === updatedPortfolio.id);
-          this.portfolios[index] = updatedPortfolio;
-          this.closeModal();
-        },
-        error: (error) => console.error('Error updating portfolio:', error)
-      });
-    } else {
-      this.portfoliosService.addPortfolio(this.portfolio).subscribe({
-        next: (newPortfolio) => {
-          this.portfolios.push(newPortfolio);
-          this.closeModal();
-        },
-        error: (error) => console.error('Error adding portfolio:', error)
-      });
-    }
+    this.calculateAverageTCEA(this.portfolio).then((averageTCEA) => {
+      this.portfolio.total_tcea = averageTCEA;
+      if (this.isEditMode) {
+        this.portfoliosService.updatePortfolio(this.portfolio).subscribe({
+          next: (updatedPortfolio) => {
+            const index = this.portfolios.findIndex(d => d.id === updatedPortfolio.id);
+            this.portfolios[index] = updatedPortfolio;
+            this.closeModal();
+          },
+          error: (error) => console.error('Error updating portfolio:', error)
+        });
+      } else {
+        this.portfoliosService.addPortfolio(this.portfolio).subscribe({
+          next: (newPortfolio) => {
+            this.portfolios.push(newPortfolio);
+            this.closeModal();
+          },
+          error: (error) => console.error('Error adding portfolio:', error)
+        });
+      }
+    }).catch((error) => {
+      console.error('Error calculating average TCEA:', error);
+    });
   }
 
   editPortfolio(portfolio_id: number) {

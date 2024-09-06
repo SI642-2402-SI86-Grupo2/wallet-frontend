@@ -64,14 +64,12 @@ export class DocumentComponent implements OnInit {
     this.selectedDocument = null;
   }
 
-
-
   addDocument() {
       if (!this.document.document_type || !this.document.financial_institutions_name || !this.document.number ||
         !this.document.series || !this.document.issuer_name || !this.document.issuer_ruc || !this.document.currecy ||
         !this.document.amount || !this.document.igv || !this.document.issue_date || !this.document.due_date ||
         !this.document.discount_date || !this.document.payment_terms || !this.document.nominal_rate || !this.document.effective_rate ||
-        !this.document.tcea || !this.document.commission || !this.document.status) {
+        /*!this.document.tcea ||*/ !this.document.commission || !this.document.status) {
         this.errorMessage = 'Please fill in all required fields.';
         return;
       }
@@ -96,7 +94,12 @@ export class DocumentComponent implements OnInit {
 
 
   saveDocument() {
+
+    // Recalcular el TCEA antes de guardar los cambios
+    this.document.tcea = this.calculateTCEA();
+
     if (this.isEditMode) {
+      // Si estamos editando, actualizamos el documento
       this.documentsService.updateDocument(this.document).subscribe({
         next: (updatedDocument) => {
           const index = this.documents.findIndex(d => d.id === updatedDocument.id);
@@ -108,6 +111,7 @@ export class DocumentComponent implements OnInit {
         error: (error) => console.error('Error updating document:', error)
       });
     } else {
+      // Si estamos creando uno nuevo, lo añadimos
       this.documentsService.addDocument(this.document).subscribe({
         next: (newDocument) => {
           this.documents.push(newDocument);
@@ -117,6 +121,38 @@ export class DocumentComponent implements OnInit {
       });
     }
   }
+
+  // Función para calcular la TCEA
+  calculateTCEA() {
+    const tasaNominal = this.document.nominal_rate / 100;
+    const comision = this.document.commission || 0;
+    const monto = this.document.amount || 0;
+
+    const fechaEmision = new Date(this.document.issue_date);
+    const fechaVencimiento = new Date(this.document.due_date);
+    const fechaDescuento = new Date(this.document.discount_date);
+
+    // Días entre la fecha de emisión y vencimiento
+    const dias = (fechaVencimiento.getTime() - fechaEmision.getTime()) / (1000 * 3600 * 24);
+    // Días entre la fecha de descuento y la fecha de emisión
+    const diasDescuento = (fechaDescuento.getTime() - fechaEmision.getTime()) / (1000 * 3600 * 24);
+
+    if (dias <= 0 || monto <= 0) {
+      console.error("Las fechas o el monto no son válidos");
+      return 0; // Evitar división por cero o resultados no válidos
+    }
+
+    // Fórmula de la TCEA:
+    const tcea = Math.pow(
+      (1 + ((tasaNominal + comision / monto)) / (1 - (diasDescuento / 360))),
+      (360 / dias)
+    ) - 1;
+
+    // Multiplicamos por 100 para convertir a porcentaje
+    return tcea * 100;
+  }
+
+
 
   editDocument(id: number) {
     const index = this.documents.findIndex(d => d.id === id);
