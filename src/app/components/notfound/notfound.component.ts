@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-notfound',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class NotfoundComponent {
 
+  constructor(
+    private router: Router
+  ) {}
+
+  // routes
+  goHome(): void {
+    this.router.navigate(['/home']);
+  }
 }

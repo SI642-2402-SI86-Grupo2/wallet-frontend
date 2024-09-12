@@ -1,4 +1,38 @@
 <!-- Primer Componente -->
+<div class="bg py-16">
+  <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between px-8">
+    <!-- Texto Izquierdo -->
+    <div class="md:w-1/2">
+      <p class="text-sm uppercase text-gray-500 tracking-wide">Free 30 days trial</p>
+      <h1 class="text-4xl font-bold text-gray-900 my-4">The best way to showcase your project.</h1>
+      <p class="text-gray-600 mb-8">Here you can put a short description about your project.</p>
+
+      <!-- Botones -->
+      <div class="flex space-x-4">
+        <button class="bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
+          Try for free
+        </button>
+        <button class="border border-gray-400 py-3 px-6 rounded-lg hover:bg-gray-100">
+          See how it works
+        </button>
+      </div>
+    </div>
+
+    <!-- Sección de Imagen/Diseño 3D -->
+    <div class="mt-12 md:mt-0 md:w-1/2 flex justify-center">
+      <canvas id="canvas3d" class="w-3/4"></canvas>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- Primer Componente -->
 <div class="bg-gray-50 py-12 px-6 md:px-20">
   <div class="text-center mb-8">
     <h1 class="text-3xl font-bold text-blue-900">
@@ -66,27 +100,28 @@
   <!-- Contenedor de Tarjetas -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     <!-- Tarjeta 1 -->
-    <div class="bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center">
+    <a href="/ruta-credito" class="block bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-shadow duration-300">
       <img src="https://via.placeholder.com/80" alt="Icon 1" class="mx-auto mb-4">
       <h3 class="text-xl font-semibold text-blue-900 mb-2">Créditos según tu necesidad</h3>
       <p class="text-gray-500">Brindamos créditos según la necesidad de nuestros clientes.</p>
-    </div>
+    </a>
 
     <!-- Tarjeta 2 -->
-    <div class="bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center">
+    <a href="/ruta-pago-cuota" class="block bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-shadow duration-300">
       <img src="https://via.placeholder.com/80" alt="Icon 2" class="mx-auto mb-4">
       <h3 class="text-xl font-semibold text-blue-900 mb-2">Paga tu cuota</h3>
       <p class="text-gray-500">Mira el estado de tu crédito y más sin salir de tu negocio o casa.</p>
-    </div>
+    </a>
 
     <!-- Tarjeta 3 -->
-    <div class="bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center">
+    <a href="/ruta-facilidades-pagos" class="block bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-shadow duration-300">
       <img src="https://via.placeholder.com/80" alt="Icon 3" class="mx-auto mb-4">
       <h3 class="text-xl font-semibold text-blue-900 mb-2">Facilidades de pagos</h3>
       <p class="text-gray-500">100% seguro.</p>
-    </div>
+    </a>
   </div>
 </div>
+
 
 
 
