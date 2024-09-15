@@ -43,22 +43,22 @@
     </p>
   </div>
 
-  <div class="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-16">
+  <div class="flex flex-col 2xl:flex-row items-center justify-center space-y-8 2xl:space-y-0 2xl:space-x-16">
     <!-- Columna Izquierda -->
     <div class="flex flex-col space-y-6 text-left">
       <!-- Item 1 -->
       <div class="flex items-center space-x-3">
-        <img src="https://via.placeholder.com/40" alt="Icono 1" class="w-10 h-10">
+        <i class="fas fa-calculator text-teal-500 text-3xl"></i>
         <p class="text-lg text-teal-500">Cálculo Automático de TCEA: Realiza el cálculo de la Tasa de Coste Efectivo Anual (TCEA) de forma instantánea para todas tus letras o facturas.</p>
       </div>
       <!-- Item 2 -->
       <div class="flex items-center space-x-3">
-        <img src="https://via.placeholder.com/40" alt="Icono 2" class="w-10 h-10">
+        <i class="fas fa-exchange-alt text-blue-900 text-3xl"></i>
         <p class="text-lg text-blue-900">Gestión en Múltiples Divisas: Trabaja sin complicaciones con soles o dólares, eligiendo la moneda que mejor se ajuste a tus necesidades.</p>
       </div>
       <!-- Item 3 -->
       <div class="flex items-center space-x-3">
-        <img src="https://via.placeholder.com/40" alt="Icono 3" class="w-10 h-10">
+        <i class="fas fa-folder-open text-blue-900 text-3xl"></i>
         <p class="text-lg text-blue-900">Consolidación de Cuentas: Revisa y organiza todo tu portafolio, permitiendo la visualización clara de cada letra o factura y sus detalles.</p>
       </div>
     </div>
@@ -72,60 +72,96 @@
     <div class="flex flex-col space-y-6 text-left">
       <!-- Item 4 -->
       <div class="flex items-center space-x-3">
-        <img src="https://via.placeholder.com/40" alt="Icono 4" class="w-10 h-10">
+        <i class="fas fa-chart-line text-blue-900 text-3xl"></i>
         <p class="text-lg text-blue-900">Reportes Detallados: Genera informes completos con fecha, datos de cada letra/factura y cálculos de TCEA, para un control más preciso.</p>
       </div>
       <!-- Item 5 -->
       <div class="flex items-center space-x-3">
-        <img src="https://via.placeholder.com/40" alt="Icono 5" class="w-10 h-10">
+        <i class="fas fa-file-invoice text-blue-900 text-3xl"></i>
         <p class="text-lg text-blue-900">Alta y Edición de Letras/Facturas: Registra nuevas letras o facturas y edita sus datos según sea necesario, manteniendo siempre actualizada la información de tu portafolio.</p>
       </div>
       <!-- Item 6 -->
       <div class="flex items-center space-x-3">
-        <img src="https://via.placeholder.com/40" alt="Icono 6" class="w-10 h-10">
+        <i class="fas fa-lock text-blue-900 text-3xl"></i>
         <p class="text-lg text-blue-900">Seguridad en el Acceso: Protege tu cuenta y tus datos con autenticación segura a través de un sistema de inicio de sesión robusto.</p>
       </div>
     </div>
   </div>
 </div>
 
+
 <!-- Separador Minimalista -->
 <div class="my-12 md:my-16"></div>
 
-<!-- Segundo Componente -->
+<!-- Sección de Funcionalidades -->
 <div class="bg-white py-12 px-6 md:px-20">
   <div class="text-center mb-8">
     <h2 class="text-3xl font-bold text-blue-900">
-      Beneficios de Caja Arequipa
+      Funcionalidades Principales
     </h2>
   </div>
 
-  <!-- Contenedor de Tarjetas -->
+  <!-- Contenedor de Funcionalidades -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    <!-- Tarjeta 1 -->
-    <a href="/ruta-credito" class="block bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-shadow duration-300">
-      <img src="https://via.placeholder.com/80" alt="Icon 1" class="mx-auto mb-4">
-      <h3 class="text-xl font-semibold text-blue-900 mb-2">Créditos según tu necesidad</h3>
-      <p class="text-gray-500">Brindamos créditos según la necesidad de nuestros clientes.</p>
+
+    <!-- Funcionalidad 1: Control de Facturas por Proximidad -->
+    <a href="/ruta-facturas-proximas" class="block bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center hover:shadow-lg transform hover:-translate-y-2 transition-all duration-300"
+       (mouseenter)="onMouseEnter('icon1')" (mouseleave)="onMouseLeave('icon1')">
+      <lord-icon
+        id="icon1"
+        src="https://cdn.lordicon.com/dxjqoygy.json"
+        trigger="morph"
+        colors="primary:#1d4ed8,secondary:#f9fafb"
+        style="width:80px;height:80px">
+      </lord-icon>
+      <h3 class="text-xl font-semibold text-blue-900 mb-2">Control de Facturas</h3>
+      <p class="text-gray-500">Mantén un control de las facturas o letras pendientes de descuento, organizadas por fecha de vencimiento y banco.</p>
     </a>
 
-    <!-- Tarjeta 2 -->
-    <a href="/ruta-pago-cuota" class="block bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-shadow duration-300">
-      <img src="https://via.placeholder.com/80" alt="Icon 2" class="mx-auto mb-4">
-      <h3 class="text-xl font-semibold text-blue-900 mb-2">Paga tu cuota</h3>
-      <p class="text-gray-500">Mira el estado de tu crédito y más sin salir de tu negocio o casa.</p>
+    <!-- Funcionalidad 2: Gestión de Cartera -->
+    <a href="/ruta-gestion-cartera" class="block bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center hover:shadow-lg transform hover:-translate-y-2 transition-all duration-300"
+       (mouseenter)="onMouseEnter('icon2')" (mouseleave)="onMouseLeave('icon2')">
+      <lord-icon
+        id="icon2"
+        src="https://cdn.lordicon.com/bbnkwdur.json"
+        trigger="morph"
+        colors="primary:#1d4ed8,secondary:#f9fafb"
+        style="width:80px;height:80px">
+      </lord-icon>
+      <h3 class="text-xl font-semibold text-blue-900 mb-2">Gestión de Portfolios</h3>
+      <p class="text-gray-500">Crea y gestiona diferentes carteras de letras o facturas, calcula la TCEA de cada una y también de manera individual por documento.</p>
     </a>
 
-    <!-- Tarjeta 3 -->
-    <a href="/ruta-facilidades-pagos" class="block bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-shadow duration-300">
-      <img src="https://via.placeholder.com/80" alt="Icon 3" class="mx-auto mb-4">
-      <h3 class="text-xl font-semibold text-blue-900 mb-2">Facilidades de pagos</h3>
-      <p class="text-gray-500">100% seguro.</p>
+    <!-- Funcionalidad 3: Reportes Detallados -->
+    <a href="/ruta-reportes" class="block bg-white border border-gray-100 rounded-lg shadow-sm p-6 text-center hover:shadow-lg transform hover:-translate-y-2 transition-all duration-300"
+       (mouseenter)="onMouseEnter('icon3')" (mouseleave)="onMouseLeave('icon3')">
+      <lord-icon
+        id="icon3"
+        src="https://cdn.lordicon.com/nkmsrxys.json"
+        trigger="morph"
+        colors="primary:#1d4ed8,secondary:#f9fafb"
+        style="width:80px;height:80px">
+      </lord-icon>
+      <h3 class="text-xl font-semibold text-blue-900 mb-2">Reportes Detallados</h3>
+      <p class="text-gray-500">Genera reportes de las letras o facturas en función de las fechas ingresadas, mostrando toda la cartera y su respectiva TCEA.</p>
     </a>
+
   </div>
 </div>
 
 
 
 
+
+
+
+
 <!-- Separador Minimalista -->
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+
+
+

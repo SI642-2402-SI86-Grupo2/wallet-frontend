@@ -4,12 +4,11 @@ import { Application } from '@splinetool/runtime';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']  // Asegúrate de que el nombre del archivo sea correcto
 })
 export class HomeComponent implements AfterViewInit {
 
   ngAfterViewInit() {
-//<canvas id="canvas3d-1" class="w-full h-auto object-cover"></canvas>
     // Initialize first Spline application
     const canvas1 = document.getElementById('canvas3d-1') as HTMLCanvasElement;
     const app1 = new Application(canvas1);
@@ -19,5 +18,19 @@ export class HomeComponent implements AfterViewInit {
     const canvas2 = document.getElementById('canvas3d-2') as HTMLCanvasElement;
     const app2 = new Application(canvas2);
     app2.load('https://prod.spline.design/hczBqXhu-Hr7Vfpy/scene.splinecode');
+  }
+
+  onMouseEnter(iconId: string) {
+    const icon = document.querySelector(`#${iconId}`) as HTMLElement;
+    if (icon) {
+      icon.setAttribute('trigger', 'loop');
+    }
+  }
+
+  onMouseLeave(iconId: string) {
+    const icon = document.querySelector(`#${iconId}`) as HTMLElement;
+    if (icon) {
+      icon.setAttribute('trigger', 'morph');
+    }
   }
 }
