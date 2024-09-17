@@ -14,22 +14,42 @@
       Add
     </button>
   </div>
+  <style>
+    .table {
+      border-spacing: 0 15px;
+    }
 
-  <div class="overflow-x-auto">
-    <table class="w-full bg-white rounded-lg shadow-md overflow-hidden">
+    .table tr {
+      border-radius: 20px;
+      overflow: hidden; /* Asegura que los bordes redondeados se apliquen correctamente */
+    }
+
+    .table td:first-child,
+    .table th:first-child {
+      border-radius: .625rem 0 0 .625rem; /* Esquina superior izquierda redondeada */
+    }
+
+    .table td:last-child,
+    .table th:last-child {
+      border-radius: 0 .625rem .625rem 0; /* Esquina superior derecha redondeada */
+    }
+
+  </style>
+  <div class="flex items-center justify-center overflow-x-auto ">
+    <table class="table w-full rounded-lg shadow-md overflow-hidden border-separate">
       <thead class="bg-gray-100 text-gray-600 uppercase text-sm hidden md:table-header-group">
       <tr>
-        <th class="py-3 px-6 text-left">Document Type</th>
-        <th class="py-3 px-6 text-left">Financial Institution</th>
-        <th class="hidden xl:table-cell py-3 px-6 text-left">Currency</th>
-        <th class="hidden xl:table-cell py-3 px-6 text-left">Amount</th>
-        <th class="hidden lg:table-cell py-3 px-6 text-left">TCEA</th>
-        <th class="py-3 px-6 text-left">Status</th>
-        <th class="py-3 px-6 text-left">Actions</th>
+        <th class="py-3 px-6">Document Type</th>
+        <th class="py-3 px-6">Financial Institution</th>
+        <th class="hidden xl:table-cell py-3 px-6">Currency</th>
+        <th class="hidden xl:table-cell py-3 px-6">Amount</th>
+        <th class="hidden lg:table-cell py-3 px-6">TCEA</th>
+        <th class="py-3 px-6">Status</th>
+        <th class="py-3 px-6">Actions</th>
       </tr>
       </thead>
-      <tbody>
-      <tr *ngFor="let document of documents; let i = index" class="border-b border-gray-200 flex flex-col md:table-row">
+      <tbody class="space-y-4">
+      <tr *ngFor="let document of documents; let i = index" class="bg-white  border-b border-gray-200 flex flex-col md:table-row ">
         <td class="py-4 px-6 text-center before:content-['Document_Type'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.document_type }}
         </td>
@@ -42,7 +62,7 @@
         <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Amount'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.amount }}
         </td>
-        <td class="hidden lg:table-cell  py-4 px-6 text-center before:content-['Commission'] before:block before:font-bold before:text-lg md:before:content-none">
+        <td class="hidden lg:table-cell  py-4 px-6 text-center before:content-['TCEA'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.tcea }}
         </td>
         <td class="py-4 px-6 text-center before:content-['Status'] before:block before:font-bold before:text-lg md:before:content-none">
@@ -55,16 +75,28 @@
             </span>
           </button>
         </td>
-        <td class="py-4 px-6 flex flex-col space-y-2 text-center before:content-['Actions'] before:block before:font-bold before:text-lg md:flex-row md:space-x-2 md:space-y-0 md:before:content-none">
-          <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition" (click)="openViewModal(document)">View</button>
-          <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editDocument(document.id)">Edit</button>
-          <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" (click)="deleteDocument(document.id)">Delete</button>
+        <td class="py-4 px-6 text-center before:content-['Actions'] before:block before:font-bold before:text-lg md:before:content-none">
+          <div class="flex flex-row justify-center space-x-6 w-full">
+            <!-- Botón Ver -->
+            <div class="flex items-center justify-center text-gray-700 hover:text-gray-500 transition cursor-pointer p-4" (click)="openViewModal(document)">
+              <i class="material-icons-outlined text-3xl">visibility</i>
+            </div>
+
+            <!-- Botón Editar (Verde) -->
+            <div class="flex items-center justify-center text-green-600 hover:text-green-700 transition cursor-pointer p-4" (click)="editDocument(document.id)">
+              <i class="material-icons-outlined text-3xl">edit</i>
+            </div>
+
+            <!-- Botón Eliminar (Rojo) -->
+            <div class="flex items-center justify-center text-red-600 hover:text-red-700 transition cursor-pointer p-4" (click)="deleteDocument(document.id)">
+              <i class="material-icons-round text-3xl">delete_outline</i>
+            </div>
+          </div>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
-
 
 
   <!-- Modal -->
@@ -212,7 +244,7 @@
 
       <hr class="my-4">
 
-      <div class="text-right font-bold text-lg">Total: {{ selectedDocument?.amount | currency }}</div>
+      <div class="text-right font-bold text-lg">TCEA: {{ selectedDocument?.tcea  }}%</div>
 
       <div class="mt-4 flex justify-end">
         <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition" (click)="closeViewModal()">Close</button>
