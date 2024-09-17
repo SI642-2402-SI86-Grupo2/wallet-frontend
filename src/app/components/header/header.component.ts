@@ -38,6 +38,11 @@ export class HeaderComponent {
     this.closeMenus(); // Cierra el menú desplegable
   }
 
+  goPending(): void {
+    this.router.navigate(['/pending']);
+    this.closeMenus(); // Cierra el menú desplegable
+  }
+
   goPortfolios(): void {
     this.router.navigate(['/portfolios']);
     this.closeMenus(); // Cierra el menú desplegable
