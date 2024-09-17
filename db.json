@@ -261,6 +261,28 @@
       "commission": 2,
       "status": "Completed",
       "portfolios_id": 4
+    },
+    {
+      "id": 12,
+      "document_type": "Invoice",
+      "financial_institutions_name": "Finaktiva",
+      "number": "001",
+      "series": "2024-Q1",
+      "issuer_name": "Empresa XYZ S.A.",
+      "issuer_ruc": "20123456789",
+      "currecy": "EUR",
+      "amount": 10000,
+      "igv": 18,
+      "issue_date": "2024-02-15",
+      "due_date": "2024-10-31",
+      "discount_date": "2024-09-04",
+      "payment_terms": " 30 días",
+      "nominal_rate": 12,
+      "effective_rate": 2,
+      "tcea": 43.4204010289275,
+      "commission": 100,
+      "status": "In Progress",
+      "portfolios_id": 1
     }
   ]
 }
