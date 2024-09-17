@@ -15,6 +15,7 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DocumentComponent } from './components/portfolios/document/document.component';
 import { provideHttpClient} from "@angular/common/http";
+import { PendingComponent } from './components/pending/pending.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { provideHttpClient} from "@angular/common/http";
     SignupComponent,
     NotfoundComponent,
     ProfileComponent,
-    DocumentComponent
+    DocumentComponent,
+    PendingComponent
   ],
   imports: [
     BrowserModule,
