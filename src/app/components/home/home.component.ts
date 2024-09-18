@@ -45,4 +45,7 @@ export class HomeComponent implements AfterViewInit {
       icon.setAttribute('trigger', 'morph');
     }
   }
+
+
+
 }

@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrl: './footer.component.css'
 })
 export class FooterComponent {
-
+  scrollTo(section: string, event: Event) {
+    event.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
+    document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
+  }
 }
