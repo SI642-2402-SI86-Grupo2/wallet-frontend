@@ -12,11 +12,11 @@
     <table class="w-full bg-white rounded-lg shadow-md overflow-hidden">
       <thead class="bg-gray-100 text-gray-600 uppercase text-sm hidden md:table-header-group">
       <tr>
-        <th class="py-3 px-6 text-left">Name</th>
-        <th class="py-3 px-6 text-left">Description</th>
-        <th class="hidden lg:table-cell py-3 px-6 text-left">Discount Date</th>
-        <th class="py-3 px-6 text-left">TCEA</th>
-        <th class="py-3 px-6 text-left">Actions</th>
+        <th class="py-3 px-6 ">Name</th>
+        <th class="py-3 px-6">Description</th>
+        <th class="hidden lg:table-cell py-3 px-6">Discount Date</th>
+        <th class="py-3 px-6">TCEA</th>
+        <th class="py-3 px-6">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -24,7 +24,7 @@
         <td class="py-4 px-6 text-center before:content-['Name'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.portfolio_name }}</td>
         <td class="py-4 px-6 text-center before:content-['Description'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.description }}</td>
         <td class="hidden lg:table-cell py-4 px-6 text-center before:content-['Discount Date'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.discount_date | date:'shortDate' }}</td>
-        <td class="py-4 px-6 text-center before:content-['TCEA'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.total_tcea }}</td>
+        <td class="py-4 px-6 text-center before:content-['TCEA'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.total_tcea }}%</td>
         <td class="py-4 px-6 flex flex-col space-y-2 text-center before:content-['Actions'] before:block before:font-bold before:text-lg md:flex-row md:space-x-2 md:space-y-0 md:before:content-none">
           <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition" (click)="selectPortfolio(portfolio.id)">Select</button>
           <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editPortfolio(portfolio.id)">Edit</button>

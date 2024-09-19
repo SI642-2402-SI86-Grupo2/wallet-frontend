@@ -71,11 +71,13 @@ export class PortfoliosComponent implements OnInit {
 
   openModal() {
     this.isModalOpen = true;
+    document.body.style.overflow = 'hidden';
     this.errorMessage = '';
   }
 
   closeModal() {
     this.isModalOpen = false;
+    document.body.style.overflow = '';
     this.resetForm();
   }
 

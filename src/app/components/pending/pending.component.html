@@ -37,7 +37,7 @@
       <td class="py-4 px-6 text-center">{{ document.financial_institutions_name }}</td>
       <td class="py-4 px-6 text-center">{{ document.amount | currency }}</td>
       <td class="py-4 px-6 text-center">
-        {{ document.status === 'Completed' ? document.tcea : 'Pending' }}
+        {{ document.status === 'Completed' ? document.tcea+'%' : 'Pending' }}
       </td>
       <td class="py-4 px-6 text-center">{{ document.due_date | date: 'dd/MM/yyyy' }}</td> <!-- Formato de fecha -->
       <td class="py-4 px-6 text-center">

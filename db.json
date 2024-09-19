@@ -193,7 +193,7 @@
       "effective_rate": 7.8,
       "tcea": 0,
       "commission": 500,
-      "status": "Completed",
+      "status": "In Progress",
       "portfolios_id": 1
     },
     {
@@ -277,9 +277,9 @@
       "due_date": "2024-10-31",
       "discount_date": "2024-09-04",
       "payment_terms": " 30 días",
-      "nominal_rate": 12,
-      "effective_rate": 2,
-      "tcea": 43.4204010289275,
+      "nominal_rate": 15,
+      "effective_rate": 4,
+      "tcea": 54.03989313348061,
       "commission": 100,
       "status": "In Progress",
       "portfolios_id": 1

@@ -46,21 +46,25 @@ export class DocumentComponent implements OnInit {
 
   openModal() {
     this.isModalOpen = true;
+    document.body.style.overflow = 'hidden';
     this.errorMessage = '';
   }
 
   closeModal() {
     this.isModalOpen = false;
+    document.body.style.overflow = '';
     this.resetForm();
   }
 
-  openViewModal(document: Documents) {
-    this.selectedDocument = document;
+  openViewModal(documents: Documents) {
+    this.selectedDocument = documents;
+    document.body.style.overflow = 'hidden';
     this.isViewModalOpen = true;
   }
 
   closeViewModal() {
     this.isViewModalOpen = false;
+    document.body.style.overflow = '';
     this.selectedDocument = null;
   }
 
