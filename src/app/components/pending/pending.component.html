@@ -1,4 +1,4 @@
-<div class="flex items-center space-x-4 mb-4 justify-center">
+<div class="flex items-center space-x-4 mb-4 pt-16 justify-center">
   <!-- Filtro de Entidad Financiera -->
   <select (change)="onFinancialInstitutionChange($event)" class="border rounded px-4 py-2">
     <option value="">Todas las Entidades Financieras</option>
@@ -19,31 +19,34 @@
 </div>
 
 <!-- Tabla de Documentos -->
-<div class="overflow-x-auto">
-  <table class="table w-full rounded-lg shadow-md">
-    <thead class="bg-gray-100 text-gray-600 uppercase text-sm">
-    <tr>
-      <th class="py-3 px-6 text-center">Tipo de Documento</th>
-      <th class="py-3 px-6 text-center">Entidad Financiera</th>
-      <th class="py-3 px-6 text-center">Monto</th>
-      <th class="py-3 px-6 text-center">TCEA/Pending</th>
-      <th class="py-3 px-6 text-center">Fecha de Vencimiento</th> <!-- Nueva columna para la fecha de vencimiento -->
-      <th class="py-3 px-6 text-center">Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let document of filteredDocuments" class="bg-white border-b">
-      <td class="py-4 px-6 text-center">{{ document.document_type }}</td>
-      <td class="py-4 px-6 text-center">{{ document.financial_institutions_name }}</td>
-      <td class="py-4 px-6 text-center">{{ document.amount | currency }}</td>
-      <td class="py-4 px-6 text-center">
-        {{ document.status === 'Completed' ? document.tcea+'%' : 'Pending' }}
-      </td>
-      <td class="py-4 px-6 text-center">{{ document.due_date | date: 'dd/MM/yyyy' }}</td> <!-- Formato de fecha -->
-      <td class="py-4 px-6 text-center">
-        <button (click)="selectPortfolio(document.portfolios_id)" class="text-blue-600 hover:underline">Ver Portafolio</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+<div class="flex justify-center py-8 ">
+  <div class="w-full max-w-4xl overflow-x-auto">
+    <table class="table-auto w-full rounded-lg shadow-lg overflow-hidden">
+      <thead class="bg-[#9884B5] text-white uppercase text-sm font-semibold">
+      <tr>
+        <th class="py-4 px-6 text-center">Tipo de Documento</th>
+        <th class="py-4 px-6 text-center">Entidad Financiera</th>
+        <th class="py-4 px-6 text-center">Monto</th>
+        <th class="py-4 px-6 text-center">TCEA/Pending</th>
+        <th class="py-4 px-6 text-center">Fecha de Vencimiento</th>
+        <th class="py-4 px-6 text-center">Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let document of filteredDocuments" class="bg hover:bg-[#E2DCE5] transition-colors duration-200 border-b border-[#C1B5C8]">
+        <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.document_type }}</td>
+        <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.financial_institutions_name }}</td>
+        <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.amount | currency }}</td>
+        <td class="py-4 px-6 text-center text-[#2F2D3B]">
+          {{ document.status === 'Completed' ? document.tcea+'%' : 'Pending' }}
+        </td>
+        <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.due_date | date: 'dd/MM/yyyy' }}</td>
+        <td class="py-4 px-6 text-center">
+          <button (click)="selectPortfolio(document.portfolios_id)" class="text-[#70CF80] hover:underline hover:text-[#5EE474] transition-colors duration-200">Ver Portafolio</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+

@@ -18,6 +18,7 @@ export class HeaderComponent {
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
+    document.body.style.overflow = this.menuOpen ? 'hidden' : '';
   }
 
 
