@@ -1,4 +1,4 @@
-<header class="bg-white fixed top-0 w-full z-50">
+<header class="bg-[#453C51] fixed top-0 w-full z-50">
   <nav class="mx-auto flex max-w-8xl items-center justify-between p-4 lg:px-6" aria-label="Global">
     <div class="flex lg:flex-1">
       <button (click)="goHome()" class="-m-1.5 p-1.5" aria-label="Wallet Company">
@@ -15,18 +15,16 @@
       </button>
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
-      <button (click)="goHome()" class="text-sm font-semibold leading-6 text-gray-900">Home</button>
-      <button (click)="goPending()" class="text-sm font-semibold leading-6 text-gray-900">Pending</button>
-      <button (click)="goPortfolios()" class="text-sm font-semibold leading-6 text-gray-900">Portfolios</button>
-      <button (click)="goReports()" class="text-sm font-semibold leading-6 text-gray-900">Reports</button>
-
+      <button (click)="goHome()" class="text-sm font-semibold leading-6 text-white">Home</button>
+      <button (click)="goPending()" class="text-sm font-semibold leading-6 text-white">Pending</button>
+      <button (click)="goPortfolios()" class="text-sm font-semibold leading-6 text-white">Portfolios</button>
+      <button (click)="goReports()" class="text-sm font-semibold leading-6 text-white">Reports</button>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-2">
-      <button (click)="goLogin()" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></button>
-      <button (click)="goSignup()" class="ml-6 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
+      <button (click)="goLogin()" class="text-sm font-semibold leading-6 text-white">Log in <span aria-hidden="true">&rarr;</span></button>
+      <button (click)="goSignup()" class="ml-6 inline-flex items-center rounded-md bg-[#E9E5DA] px-3 py-2 text-sm font-semibold text-[#453C51] shadow-sm hover:bg-[#C1B5C8] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
 
       <!-- Profile Button with Dropdown Menu -->
-      <!-- Menú desplegable del perfil en modo PC -->
       <div class="relative">
         <button (click)="toggleProfileMenu()" class="flex items-center text-gray-900">
           <img src="/default-profile-photo.svg" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
@@ -39,8 +37,6 @@
           </div>
         </div>
       </div>
-
-
     </div>
   </nav>
 
@@ -49,7 +45,7 @@
     <div class="fixed inset-0 z-10 bg-black opacity-50" (click)="toggleMenu()"></div>
     <div class="fixed inset-y-0 right-0 z-20 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
       <div class="flex items-center justify-between">
-        <a (click)="goHome()"  class="-m-1.5 p-1.5">
+        <a (click)="goHome()" class="-m-1.5 p-1.5">
           <span class="sr-only">Wallet Company</span>
           <img class="h-8 w-auto" src="/icon-wallet.png" alt="Wallet Company">
         </a>
@@ -61,18 +57,16 @@
         </button>
       </div>
 
-      <!-- Profile Icon and Dropdown in Mobile Menu -->
       <div class="mt-6 text-center">
         <button (click)="toggleProfileMenu()" class="flex items-center justify-center mx-auto text-gray-900">
           <img src="/default-profile-photo.svg" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
           <span class="sr-only">Profile</span>
         </button>
         <div *ngIf="profileMenuOpen" class="mt-4 space-y-2 text-center">
-          <a (click)="goProfile()"  class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Profile</a>
+          <a (click)="goProfile()" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Profile</a>
           <button (click)="logout()" class="block w-full text-center rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white bg-red-500 hover:bg-red-600">Log out</button>
         </div>
       </div>
-
 
       <div class="mt-6 border-t border-gray-200 pt-4">
         <div class="-my-6 divide-y divide-gray-500/10">
@@ -84,7 +78,7 @@
           </div>
           <div class="py-6">
             <button (click)="goLogin()" class="w-full inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2.5 text-base font-semibold text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Log in <span aria-hidden="true">&rarr;</span></button>
-            <button (click)="goSignup()" class="mt-4 w-full inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
+            <button (click)="goSignup()" class="mt-4 w-full inline-flex items-center justify-center rounded-md bg-[#9884B5] px-3 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-[#AA79A6] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
           </div>
         </div>
       </div>
