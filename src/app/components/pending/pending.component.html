@@ -1,6 +1,6 @@
-<div class="flex items-center space-x-4 mb-4 pt-16 justify-center">
+<div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-x-4 sm:space-y-0 mb-4 pt-16 justify-center mx-4">
   <!-- Filtro de Entidad Financiera -->
-  <select (change)="onFinancialInstitutionChange($event)" class="border rounded px-4 py-2">
+  <select (change)="onFinancialInstitutionChange($event)" class="border rounded px-4 py-2 w-full sm:w-auto">
     <option value="">Todas las Entidades Financieras</option>
     <option *ngFor="let institution of financialInstitutions" [value]="institution">{{ institution }}</option>
   </select>
@@ -18,8 +18,9 @@
   </label>
 </div>
 
+
 <!-- Tabla de Documentos -->
-<div class="flex justify-center py-8 ">
+<div class="flex justify-center py-8 mx-4">
   <div class="w-full max-w-4xl overflow-x-auto">
     <table class="table-auto w-full rounded-lg shadow-lg overflow-hidden">
       <thead class="bg-[#9884B5] text-white uppercase text-sm font-semibold">
@@ -29,7 +30,7 @@
         <th class="py-4 px-6 text-center">Monto</th>
         <th class="py-4 px-6 text-center">TCEA/Pending</th>
         <th class="py-4 px-6 text-center">Fecha de Vencimiento</th>
-        <th class="py-4 px-6 text-center">Acciones</th>
+        <th class="py-4 px-6 text-center">Accion</th>
       </tr>
       </thead>
       <tbody>

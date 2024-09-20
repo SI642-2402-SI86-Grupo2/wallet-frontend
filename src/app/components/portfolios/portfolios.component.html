@@ -1,14 +1,14 @@
-<div class="max-w-[calc(100%-48px)] md:max-w-2.5xl lg:max-w-4xl mx-auto p-6 m-6 pt-16 bg-gray-50 rounded-lg shadow-lg">
+<div class="max-w-[calc(100%-48px)] md:max-w-2.5xl lg:max-w-4xl mx-auto p-6  mt-16 pt-16 bg-[#E9E5DA] rounded-lg shadow-lg">
   <div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold">Portfolios</h2>
+    <h2 class="text-3xl font-bold">Portfolios</h2>
     <button
-      class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition"
       (click)="openModal()">
       Add
     </button>
   </div>
 
-  <div class="overflow-x-auto">
+  <div class="flex items-center justify-center overflow-x-auto">
     <table class="w-full bg-white rounded-lg shadow-md overflow-hidden">
       <thead class="bg-gray-100 text-gray-600 uppercase text-sm hidden md:table-header-group">
       <tr>
@@ -25,10 +25,12 @@
         <td class="py-4 px-6 text-center before:content-['Description'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.description }}</td>
         <td class="hidden lg:table-cell py-4 px-6 text-center before:content-['Discount Date'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.discount_date | date:'shortDate' }}</td>
         <td class="py-4 px-6 text-center before:content-['TCEA'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.total_tcea }}%</td>
-        <td class="py-4 px-6 flex flex-col space-y-2 text-center before:content-['Actions'] before:block before:font-bold before:text-lg md:flex-row md:space-x-2 md:space-y-0 md:before:content-none">
-          <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition" (click)="selectPortfolio(portfolio.id)">Select</button>
-          <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editPortfolio(portfolio.id)">Edit</button>
-          <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" (click)="deletePortfolio(portfolio.id)">Delete</button>
+        <td class="py-4 px-6">
+          <div class="flex flex-col space-y-2 text-center before:content-['Actions'] before:block before:font-bold before:text-lg md:flex-row md:space-x-2 md:space-y-0 md:before:content-none">
+            <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition" (click)="selectPortfolio(portfolio.id)">Select</button>
+            <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editPortfolio(portfolio.id)">Edit</button>
+            <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" (click)="deletePortfolio(portfolio.id)">Delete</button>
+          </div>
         </td>
       </tr>
       </tbody>
@@ -87,7 +89,7 @@
            </button>
            <button
              type="submit"
-             class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+             class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition">
              {{ isEditMode ? 'Save' : 'Add' }}
            </button>
          </div>

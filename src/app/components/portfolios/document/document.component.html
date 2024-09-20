@@ -1,15 +1,15 @@
 <div class="max-w-[calc(100%-48px)]  p-6 mx-6 mt-16 bg-[#E9E5DA] rounded-lg shadow-lg">
   <div class="flex justify-between items-center mb-6">
     <button
-      class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+      class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
       (click)="goBack()">
       Back
     </button>
-    <h2 class="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold">
+    <h2 class="absolute left-1/2 transform -translate-x-1/2 text-3xl font-bold">
       Documents
     </h2>
     <button
-      class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition"
       (click)="openModal()">
       Add
     </button>
@@ -220,8 +220,8 @@
           </div>
         </div>
         <div class="mb-4 flex justify-end">
-          <button type="button" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition mr-2" (click)="closeModal()">Cancel</button>
-          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">{{ isEditMode ? 'Update' : 'Add' }}</button>
+          <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition mr-2" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition">{{ isEditMode ? 'Update' : 'Add' }}</button>
         </div>
       </form>
 
@@ -231,7 +231,7 @@
 
   <!-- View Document Modal -->
   <div *ngIf="isViewModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4" (click)="closeViewModal()">
-    <div class="bg-[#E9E5DA] p-6 rounded-lg shadow-lg w-full sm:w-2/3 md:w-1/2 lg:w-1/3 max-w-lg h-auto max-h-[80vh] overflow-y-auto" (click)="$event.stopPropagation()">
+    <div class="bg-[#E9E5DA] p-6 rounded-lg shadow-lg w-full sm:w-2/3 md:w-1/2 lg:w-2/3 max-w-4xl h-auto max-h-[80vh] overflow-y-auto" (click)="$event.stopPropagation()">
       <h3 class="text-xl font-bold mb-4 text-center">View Document</h3>
 
 
@@ -275,7 +275,7 @@
       <div class="text-center font-bold text-lg">TCEA: {{ selectedDocument?.tcea  }}%</div>
       </div>
       <div class="mt-4 flex justify-end">
-        <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition" (click)="closeViewModal()">Close</button>
+        <button class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition" (click)="closeViewModal()">Close</button>
       </div>
 
     </div>
