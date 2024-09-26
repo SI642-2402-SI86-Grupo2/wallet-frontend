@@ -1,10 +1,10 @@
-<div class="max-w-[calc(100%-48px)] md:max-w-2.5xl lg:max-w-4xl mx-auto p-6  mt-16 pt-16 bg-[#E9E5DA] rounded-lg shadow-lg">
+<div class="max-w-[calc(100%-48px)] md:max-w-2.5xl lg:max-w-4xl mx-auto p-6  mt-16 pt-6 bg-[#E9E5DA] rounded-lg shadow-lg mb-28">
   <div class="flex justify-between items-center mb-6">
-    <h2 class="text-3xl font-bold">Portfolios</h2>
+    <h2 class="text-3xl font-bold">Carteras</h2>
     <button
       class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition"
       (click)="openModal()">
-      Add
+      Agregar
     </button>
   </div>
 
@@ -12,25 +12,36 @@
     <table class="w-full bg-white rounded-lg shadow-md overflow-hidden">
       <thead class="bg-gray-100 text-gray-600 uppercase text-sm hidden md:table-header-group">
       <tr>
-        <th class="py-3 px-6 ">Name</th>
-        <th class="py-3 px-6">Description</th>
-        <th class="hidden lg:table-cell py-3 px-6">Discount Date</th>
+        <th class="py-3 px-6 ">Nombre</th>
+        <th class="py-3 px-6">Descripción</th>
+        <th class="hidden lg:table-cell py-3 px-4">Fecha de descuento</th>
         <th class="py-3 px-6">TCEA</th>
-        <th class="py-3 px-6">Actions</th>
+        <th class="py-3 px-4">Acciones</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let portfolio of portfolios; let i = index" class="border-b border-gray-200 flex flex-col md:table-row">
-        <td class="py-4 px-6 text-center before:content-['Name'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.portfolio_name }}</td>
-        <td class="py-4 px-6 text-center before:content-['Description'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.description }}</td>
-        <td class="hidden lg:table-cell py-4 px-6 text-center before:content-['Discount Date'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.discount_date | date:'shortDate' }}</td>
+        <td class="py-4 px-6 text-center before:content-['Nombre'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.portfolio_name }}</td>
+        <td class="py-4 px-6 text-center before:content-['Descripción'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.description }}</td>
+        <td class="hidden lg:table-cell py-4 px-4 text-center before:content-['Fecha de descuento'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.discount_date | date:'shortDate' }}</td>
         <td class="py-4 px-6 text-center before:content-['TCEA'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.total_tcea }}%</td>
-        <td class="py-4 px-6">
-          <div class="flex flex-col space-y-2 text-center before:content-['Actions'] before:block before:font-bold before:text-lg md:flex-row md:space-x-2 md:space-y-0 md:before:content-none">
-            <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition" (click)="selectPortfolio(portfolio.id)">Select</button>
-            <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition" (click)="editPortfolio(portfolio.id)">Edit</button>
-            <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" (click)="deletePortfolio(portfolio.id)">Delete</button>
+        <td class="py-4 px-4">
+          <div class="flex flex-col space-y-2 text-center before:content-['Acciones'] before:block before:font-bold before:text-lg md:before:content-none">
+            <!-- Botones en una sola fila en móviles y agrupados en pantallas grandes -->
+
+            <!-- Primera fila: Ingresar (siempre en una fila) -->
+            <div class="flex justify-center">
+              <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 w-full md:w-[90px] rounded-lg hover:bg-gray-100 transition" (click)="selectPortfolio(portfolio.id)">Ingresar</button>
+            </div>
+
+            <!-- Segunda fila: Editar y Eliminar (uno por fila en móviles, lado a lado en pantallas más grandes) -->
+            <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-center">
+              <button class="bg-green-600 border border-gray-300 text-white px-4 py-2 w-full md:w-[90px] rounded-lg hover:bg-green-700 transition" (click)="editPortfolio(portfolio.id)">Editar</button>
+              <button class="bg-red-600 text-white px-4 py-2 w-full md:w-[90px] rounded-lg hover:bg-red-700 transition" (click)="deletePortfolio(portfolio.id)">Eliminar</button>
+            </div>
           </div>
+
+
         </td>
       </tr>
       </tbody>
@@ -47,24 +58,24 @@
 
       <form (ngSubmit)="addPortfolio()">
         <div class="mb-4">
-          <label class="block text-gray-700">Name</label>
+          <label class="block text-gray-700">Nombre</label>
           <input
             type="text"
             class="w-full p-2 border border-gray-300 rounded-lg"
             [(ngModel)]="portfolio.portfolio_name"
             name="name"
-            placeholder="Portfolio Name" />
+            placeholder="Nombre de la cartera" />
         </div>
         <div class="mb-4">
-          <label class="block text-gray-700">Description</label>
+          <label class="block text-gray-700">Descripción</label>
           <textarea
             class="w-full p-2 border border-gray-300 rounded-lg"
             [(ngModel)]="portfolio.description"
             name="description"
-            placeholder="Portfolio Description"></textarea>
+            placeholder="Descripción de la cartera"></textarea>
         </div>
         <div class="mb-4">
-          <label class="block text-gray-700">Discount Date</label>
+          <label class="block text-gray-700">Fecha de descuento</label>
           <input
             type="date"
             class="w-full p-2 border border-gray-300 rounded-lg"
@@ -85,12 +96,12 @@
              type="button"
              class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
              (click)="closeModal()">
-             Cancel
+             Cancelar
            </button>
            <button
              type="submit"
              class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition">
-             {{ isEditMode ? 'Save' : 'Add' }}
+             {{ isEditMode ? 'Guardar' : 'Agregar' }}
            </button>
          </div>
        </form>

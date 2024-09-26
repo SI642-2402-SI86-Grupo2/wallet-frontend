@@ -16,9 +16,9 @@
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
       <button (click)="goHome()" class="text-sm font-semibold leading-6 text-white">Home</button>
-      <button (click)="goPending()" class="text-sm font-semibold leading-6 text-white">Pending</button>
-      <button (click)="goPortfolios()" class="text-sm font-semibold leading-6 text-white">Portfolios</button>
-      <button (click)="goReports()" class="text-sm font-semibold leading-6 text-white">Reports</button>
+      <button (click)="goPending()" class="text-sm font-semibold leading-6 text-white">Pendientes</button>
+      <button (click)="goPortfolios()" class="text-sm font-semibold leading-6 text-white">Carteras</button>
+      <button (click)="goReports()" class="text-sm font-semibold leading-6 text-white">Informes</button>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-2">
       <button (click)="goLogin()" class="text-sm font-semibold leading-6 text-white">Log in <span aria-hidden="true">&rarr;</span></button>
@@ -28,11 +28,11 @@
       <div class="relative">
         <button (click)="toggleProfileMenu()" class="flex items-center text-gray-900">
           <img src="/default-profile-photo.svg" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
-          <span class="sr-only">Profile</span>
+          <span class="sr-only">Perfil</span>
         </button>
         <div *ngIf="profileMenuOpen" class="absolute right-0 mt-2 w-48 rounded-md bg-[#453C51] shadow-lg ring-1 ring-black ring-opacity-5">
           <div class="p-4 space-y-2">
-            <button (click)="goProfile()" class="block px-4 py-2 w-full text-sm text-center text-white hover:text-[#453C51] hover:bg-[#E9E5DA] rounded-md">Profile</button>
+            <button (click)="goProfile()" class="block px-4 py-2 w-full text-sm text-center text-white hover:text-[#453C51] hover:bg-[#E9E5DA] rounded-md">Perfil</button>
             <button (click)="logout()" class="block w-full px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-md">Log out</button>
           </div>
         </div>
@@ -63,7 +63,7 @@
           <span class="sr-only">Profile</span>
         </button>
         <div *ngIf="profileMenuOpen" class="mt-4 space-y-2 text-center">
-          <a (click)="goProfile()" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Profile</a>
+          <a (click)="goProfile()" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Perfil</a>
           <button (click)="logout()" class="block w-full text-center rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white bg-red-500 hover:bg-red-600">Log out</button>
         </div>
       </div>
@@ -72,9 +72,9 @@
         <div class="-my-6 divide-y divide-gray-500/10">
           <div class="space-y-2 py-6">
             <a (click)="goHome()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Home</a>
-            <a (click)="goPending()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Pending</a>
-            <a (click)="goPortfolios()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Portfolios</a>
-            <a (click)="goReports()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Reports</a>
+            <a (click)="goPending()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Pendientes</a>
+            <a (click)="goPortfolios()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Carteras</a>
+            <a (click)="goReports()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Informes</a>
           </div>
           <div class="py-6">
             <button (click)="goLogin()" class="w-full inline-flex items-center justify-center rounded-md border border-gray-300 bg-[#E9E5DA] px-3 py-2.5 text-base font-semibold text-[#453C51] hover:text-white shadow-sm hover:bg-[#C1B5C8] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Log in <span aria-hidden="true">&rarr;</span></button>

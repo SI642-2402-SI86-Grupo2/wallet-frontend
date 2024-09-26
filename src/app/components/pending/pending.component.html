@@ -8,7 +8,7 @@
   <!-- Checkbox de Pending (In Progress) -->
   <label class="flex items-center space-x-2">
     <input type="checkbox" (change)="onPendingChange($event)" checked="true" />
-    <span>Pending (In Progress)</span>
+    <span>Pendientes (En Progreso)</span>
   </label>
 
   <!-- Checkbox de Ordenar por Entidad Bancaria -->
@@ -28,9 +28,9 @@
         <th class="py-4 px-6 text-center">Tipo de Documento</th>
         <th class="py-4 px-6 text-center">Entidad Financiera</th>
         <th class="py-4 px-6 text-center">Monto</th>
-        <th class="py-4 px-6 text-center">TCEA/Pending</th>
+        <th class="py-4 px-6 text-center">TCEA/Pendientes</th>
         <th class="py-4 px-6 text-center">Fecha de Vencimiento</th>
-        <th class="py-4 px-6 text-center">Accion</th>
+        <th class="py-4 px-6 text-center">Acciones</th>
       </tr>
       </thead>
       <tbody>
@@ -39,7 +39,7 @@
         <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.financial_institutions_name }}</td>
         <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.amount | currency }}</td>
         <td class="py-4 px-6 text-center text-[#2F2D3B]">
-          {{ document.status === 'Completed' ? document.tcea+'%' : 'Pending' }}
+          {{ document.status === 'Completado' ? document.tcea+'%' : 'Pendiente' }}
         </td>
         <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.due_date | date: 'dd/MM/yyyy' }}</td>
         <td class="py-4 px-6 text-center">

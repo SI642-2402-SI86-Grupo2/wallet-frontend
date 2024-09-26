@@ -1,17 +1,17 @@
 <div class="max-w-[calc(100%-48px)]  p-6 mx-6 mt-16 bg-[#E9E5DA] rounded-lg shadow-lg">
   <div class="flex justify-between items-center mb-6">
     <button
-      class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+      class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition w-[85px] md:w-[90px]"
       (click)="goBack()">
-      Back
+      Atrás
     </button>
-    <h2 class="absolute left-1/2 transform -translate-x-1/2 text-2xl md:text-3xl font-bold">
-      Documents
+    <h2 class="absolute left-1/2 transform -translate-x-1/2 text-1xl md:text-3xl font-bold">
+      Documentos
     </h2>
     <button
-      class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition"
+      class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition w-[85px] md:w-[90px]"
       (click)="openModal()">
-      Add
+      Agregar
     </button>
   </div>
   <style>
@@ -39,35 +39,35 @@
     <table class="table w-full rounded-lg shadow-md overflow-hidden border-separate">
       <thead class="bg-gray-100 text-gray-600 uppercase text-sm hidden md:table-header-group">
       <tr>
-        <th class="py-3 px-6">Document Type</th>
-        <th class="py-3 px-6">Financial Institution</th>
-        <th class="hidden xl:table-cell py-3 px-6">Currency</th>
-        <th class="hidden xl:table-cell py-3 px-6">Amount</th>
+        <th class="py-3 px-6">Tipo de Documento</th>
+        <th class="py-3 px-6">Institución Financiera</th>
+        <th class="hidden xl:table-cell py-3 px-6">Moneda</th>
+        <th class="hidden xl:table-cell py-3 px-6">Monto</th>
         <th class="hidden lg:table-cell py-3 px-6">TCEA</th>
-        <th class="py-3 px-6">Status</th>
-        <th class="py-3 px-6">Actions</th>
+        <th class="py-3 px-6">Estado</th>
+        <th class="py-3 px-6">Acciones</th>
       </tr>
       </thead>
       <tbody class="space-y-4">
       <tr *ngFor="let document of documents; let i = index" class="bg-white  border-b border-gray-200 flex flex-col md:table-row ">
-        <td class="py-4 px-6 text-center before:content-['Document_Type'] before:block before:font-bold before:text-lg md:before:content-none">
+        <td class="py-4 px-6 text-center before:content-['Tipo_de_Documento'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.document_type }}
         </td>
-        <td class="py-4 px-6 text-center before:content-['Financial_Institution'] before:block before:font-bold before:text-lg md:before:content-none">
+        <td class="py-4 px-6 text-center before:content-['Institución_Financiera'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.financial_institutions_name }}
         </td>
-        <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Currency'] before:block before:font-bold before:text-lg md:before:content-none">
+        <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Moneda'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.currecy }}
         </td>
-        <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Amount'] before:block before:font-bold before:text-lg md:before:content-none">
+        <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Monto'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.amount }}
         </td>
         <td class="hidden lg:table-cell  py-4 px-6 text-center before:content-['TCEA'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.tcea }}%
         </td>
-        <td class="py-4 px-6 text-center before:content-['Status'] before:block before:font-bold before:text-lg md:before:content-none">
+        <td class="py-4 px-6 text-center before:content-['Estado'] before:block before:font-bold before:text-lg md:before:content-none">
           <button (click)="toggleStatus(document)" class="focus:outline-none border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">
-            <span [ngClass]="{'text-green-500': document.status === 'Completed', 'text-red-500': document.status === 'Error', 'text-yellow-500': document.status === 'In Progress'}">
+            <span [ngClass]="{'text-green-500': document.status === 'Completado', 'text-red-500': document.status === 'Error', 'text-yellow-500': document.status === 'En Progreso'}">
               <svg class="inline-block h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="10" r="8"></circle>
               </svg>
@@ -75,7 +75,7 @@
             </span>
           </button>
         </td>
-        <td class="py-4 px-6 text-center before:content-['Actions'] before:block before:font-bold before:text-lg md:before:content-none">
+        <td class="py-4 px-6 text-center before:content-['Acciones'] before:block before:font-bold before:text-lg md:before:content-none">
           <div class="flex flex-row justify-center space-x-6 w-full">
             <!-- Botón Ver -->
             <div class="flex items-center justify-center text-gray-700 hover:text-gray-500 transition cursor-pointer p-4" (click)="openViewModal(document)">
@@ -102,7 +102,7 @@
   <!-- Modal -->
   <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4" (click)="closeModal()">
     <div class="bg-[#E9E5DA] p-6 rounded-lg shadow-lg w-full max-w-3xl h-[80vh] overflow-y-scroll modal-scroll" (click)="$event.stopPropagation()">
-      <h3 class="text-xl font-bold mb-8 text-center">{{ isEditMode ? 'Edit Document' : 'Add New Document' }}</h3>
+      <h3 class="text-xl font-bold mb-8 text-center">{{ isEditMode ? 'Editar Documento' : 'Agregar nuevo documento' }}</h3>
 
       <!-- Display error message if validation fails -->
       <div *ngIf="errorMessage" class="text-red-500 mb-4">{{ errorMessage }}</div>
@@ -110,19 +110,19 @@
       <form (ngSubmit)="addDocument()">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div class="col-span-1 md:col-span-2">
-            <h3 class="text-1xs font-bold text-gray-700 mb-4">Document data:</h3>
+            <h3 class="text-1xs font-bold text-gray-700 mb-4">Datos del Documento:</h3>
           </div>
 
           <div class="col-span-1">
-            <label class="block text-gray-700">Document Type</label>
+            <label class="block text-gray-700">Tipo de Documento</label>
             <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.document_type" name="document_type">
-              <option value="Letter">Letter</option>
-              <option value="Invoice">Invoice</option>
+              <option value="Letras">Letras</option>
+              <option value="Factura">Factura</option>
             </select>
           </div>
           <!-- Factoring y confirming -->
           <div class="col-span-1">
-            <label class="block text-gray-700">Financial Institution</label>
+            <label class="block text-gray-700">Institución Financiera</label>
             <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.financial_institutions_name" name="financial_institutions_name">
               <option value="Banco de Crédito del Perú">Banco de Crédito del Perú</option>
               <option value="BBVA Perú">BBVA Perú</option>
@@ -138,23 +138,23 @@
             </select>
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Number</label>
+            <label class="block text-gray-700">Número</label>
             <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.number" name="number" placeholder="Number" />
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Series</label>
+            <label class="block text-gray-700">Serie</label>
             <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.series" name="series" placeholder="Series" />
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Issuer Name</label>
+            <label class="block text-gray-700">Nombre de la Empresa</label>
             <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issuer_name" name="issuer_name" placeholder="Issuer Name" />
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Issuer RUC</label>
+            <label class="block text-gray-700">RUC de la Empresa</label>
             <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issuer_ruc" name="issuer_ruc" placeholder="Issuer RUC" />
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Currency</label>
+            <label class="block text-gray-700">Moneda</label>
             <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.currecy" name="currecy">
               <option value="USD">USD</option>
               <option value="EUR">EUR</option>
@@ -162,7 +162,7 @@
             </select>
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Amount</label>
+            <label class="block text-gray-700">Monto</label>
             <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.amount" name="amount" placeholder="Amount" />
           </div>
           <div class="col-span-1">
@@ -170,47 +170,47 @@
             <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.igv" name="igv" placeholder="IGV" />
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Issue Date</label>
+            <label class="block text-gray-700">Fecha de Emisión</label>
             <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issue_date" name="issue_date" />
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Due Date</label>
+            <label class="block text-gray-700">Fecha de Vencimiento</label>
             <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.due_date" name="due_date" />
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Payment Terms</label>
+            <label class="block text-gray-700">Términos de Pago</label>
             <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.payment_terms" name="payment_terms" placeholder="Payment Terms" />
           </div>
 
           <hr class="col-span-1 md:col-span-2 my-4">
           <div class="col-span-1 md:col-span-2">
-            <h3 class="text-1xs font-bold text-gray-700 mb-4">Discount data:</h3>
+            <h3 class="text-1xs font-bold text-gray-700 mb-4">Datos del Descuento:</h3>
           </div>
 
           <div class="col-span-1">
-            <label class="block text-gray-700">Discount Date</label>
+            <label class="block text-gray-700">Fecha de Descuento</label>
             <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.discount_date" name="discount_date" />
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Nominal Rate</label>
+            <label class="block text-gray-700">Tasa Nominal</label>
             <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.nominal_rate" name="nominal_rate" placeholder="Nominal Rate" />
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Effective Rate</label>
+            <label class="block text-gray-700">Tasa Efectiva</label>
             <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.effective_rate" name="effective_rate" placeholder="Effective Rate" />
           </div>
           <div class="col-span-1">
-            <label class="block text-gray-700">Commission</label>
+            <label class="block text-gray-700">Comisión</label>
             <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.commission" name="commission" placeholder="Commission" />
           </div>
 
           <hr class="col-span-1 md:col-span-2 my-4">
 
           <div class="col-span-1">
-            <label class="block text-gray-700">Status</label>
+            <label class="block text-gray-700">Estado</label>
             <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.status" name="status">
-              <option value="In Progress">In Progress</option>
-              <option value="Completed">Completed</option>
+              <option value="En Progreso">En Progreso</option>
+              <option value="Completado">Completado</option>
             </select>
           </div>
 
@@ -221,7 +221,7 @@
         </div>
         <div class="mb-4 flex justify-end">
           <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition mr-2" (click)="closeModal()">Cancel</button>
-          <button type="submit" class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition">{{ isEditMode ? 'Update' : 'Add' }}</button>
+          <button type="submit" class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition">{{ isEditMode ? 'Actualizar' : 'Agregar' }}</button>
         </div>
       </form>
 
@@ -237,36 +237,36 @@
 
       <div class="bg-white p-3 rounded-lg">
 
-      <h3 class="text-1xl font-bold text-gray-700 mb-4">Document data:</h3>
+      <h3 class="text-1xl font-bold text-gray-700 mb-4">Datos del Documento:</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><strong>Document Type:</strong> {{ selectedDocument?.document_type }}</div>
-        <div><strong>Financial Institution:</strong> {{ selectedDocument?.financial_institutions_name }}</div>
-        <div><strong>Number:</strong> {{ selectedDocument?.number }}</div>
-        <div><strong>Series:</strong> {{ selectedDocument?.series }}</div>
-        <div><strong>Issuer Name:</strong> {{ selectedDocument?.issuer_name }}</div>
-        <div><strong>Issuer RUC:</strong> {{ selectedDocument?.issuer_ruc }}</div>
-        <div><strong>Currency:</strong> {{ selectedDocument?.currecy }}</div>
-        <div><strong>Amount:</strong> {{ selectedDocument?.amount }}</div>
+        <div><strong>Tipo de Documento:</strong> {{ selectedDocument?.document_type }}</div>
+        <div><strong>Institución Financiera:</strong> {{ selectedDocument?.financial_institutions_name }}</div>
+        <div><strong>Número:</strong> {{ selectedDocument?.number }}</div>
+        <div><strong>Serie:</strong> {{ selectedDocument?.series }}</div>
+        <div><strong>Nombre de la Empresa:</strong> {{ selectedDocument?.issuer_name }}</div>
+        <div><strong>RUC de la Empresa:</strong> {{ selectedDocument?.issuer_ruc }}</div>
+        <div><strong>Moneda:</strong> {{ selectedDocument?.currecy }}</div>
+        <div><strong>Monto:</strong> {{ selectedDocument?.amount }}</div>
         <div><strong>IGV:</strong> {{ selectedDocument?.igv }}</div>
-        <div><strong>Issue Date:</strong> {{ selectedDocument?.issue_date | date:'shortDate' }}</div>
-        <div><strong>Due Date:</strong> {{ selectedDocument?.due_date | date:'shortDate' }}</div>
-        <div><strong>Payment Terms:</strong> {{ selectedDocument?.payment_terms }}</div>
+        <div><strong>Fecha de Emisión:</strong> {{ selectedDocument?.issue_date | date:'shortDate' }}</div>
+        <div><strong>Fecha de Vencimiento:</strong> {{ selectedDocument?.due_date | date:'shortDate' }}</div>
+        <div><strong>Términos de Pago:</strong> {{ selectedDocument?.payment_terms }}</div>
       </div>
 
         <hr class="my-4">
-        <h3 class="text-1xl font-bold text-gray-700 mb-4">Discount data:</h3>
+        <h3 class="text-1xl font-bold text-gray-700 mb-4">Datos del Descuento:</h3>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div><strong>Discount Date:</strong> {{ selectedDocument?.discount_date | date:'shortDate' }}</div>
-          <div><strong>Nominal Rate:</strong> {{ selectedDocument?.nominal_rate }}</div>
-          <div><strong>Effective Rate:</strong> {{ selectedDocument?.effective_rate }}</div>
-          <div><strong>Commission:</strong> {{ selectedDocument?.commission }}</div>
+          <div><strong>Fecha de Descuento:</strong> {{ selectedDocument?.discount_date | date:'shortDate' }}</div>
+          <div><strong>Tasa Nominal:</strong> {{ selectedDocument?.nominal_rate }}</div>
+          <div><strong>Tasa Efectiva:</strong> {{ selectedDocument?.effective_rate }}</div>
+          <div><strong>Comisión:</strong> {{ selectedDocument?.commission }}</div>
         </div>
 
         <hr class="my-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-      <div><strong>Status:</strong> {{ selectedDocument?.status }}</div>
+      <div><strong>Estado:</strong> {{ selectedDocument?.status }}</div>
 
       </div>
 
@@ -275,7 +275,7 @@
       <div class="text-center font-bold text-lg">TCEA: {{ selectedDocument?.tcea  }}%</div>
       </div>
       <div class="mt-4 flex justify-end">
-        <button class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition" (click)="closeViewModal()">Close</button>
+        <button class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition" (click)="closeViewModal()">Cerrar</button>
       </div>
 
     </div>

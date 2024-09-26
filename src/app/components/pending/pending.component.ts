@@ -54,7 +54,7 @@ export class PendingComponent implements OnInit {
     // Filtrar los documentos por entidad financiera y estado (In Progress)
     this.filteredDocuments = this.documents.filter(document => {
       const matchesInstitution = !this.selectedFinancialInstitution || document.financial_institutions_name === this.selectedFinancialInstitution;
-      const matchesPending = !this.showPendingOnly || document.status === 'In Progress';
+      const matchesPending = !this.showPendingOnly || document.status === 'En Progreso';
       return matchesInstitution && matchesPending;
     });
 

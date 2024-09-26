@@ -74,7 +74,7 @@ export class DocumentComponent implements OnInit {
         !this.document.amount || !this.document.igv || !this.document.issue_date || !this.document.due_date ||
         !this.document.discount_date || !this.document.payment_terms || !this.document.nominal_rate || !this.document.effective_rate ||
         /*!this.document.tcea ||*/ !this.document.commission || !this.document.status) {
-        this.errorMessage = 'Please fill in all required fields.';
+        this.errorMessage = 'Por favor, rellene todos los campos obligatorios.';
         return;
       }
 
@@ -86,13 +86,13 @@ export class DocumentComponent implements OnInit {
               this.document.id = maxId + 1;
               this.saveDocument();
             },
-            error: (error) => console.error('Error fetching max ID:', error)
+            error: (error) => console.error('Error al obtener el ID máximo:', error)
           });
         } else {
           this.saveDocument();
         }
       } else {
-        console.error('Portfolio ID not selected');
+        console.error('ID de cartera no seleccionada');
       }
     }
 
@@ -112,7 +112,7 @@ export class DocumentComponent implements OnInit {
           }
           this.closeModal();
         },
-        error: (error) => console.error('Error updating document:', error)
+        error: (error) => console.error('Error al actualizar el documento:', error)
       });
     } else {
       // Si estamos creando uno nuevo, lo añadimos
@@ -121,7 +121,7 @@ export class DocumentComponent implements OnInit {
           this.documents.push(newDocument);
           this.closeModal();
         },
-        error: (error) => console.error('Error adding document:', error)
+        error: (error) => console.error('Error al agregar documento:', error)
       });
     }
   }
@@ -165,12 +165,12 @@ export class DocumentComponent implements OnInit {
       this.isEditMode = true;
       this.openModal();
     } else {
-      console.error('Document not found');
+      console.error('Documento no encontrado');
     }
   }
 
   toggleStatus(document: Documents): void {
-    document.status = document.status === 'In Progress' ? 'Completed' : 'In Progress';
+    document.status = document.status === 'En Progreso' ? 'Completado' : 'En Progreso';
 
     this.documentsService.updateDocument(document).subscribe({
       next: (updatedDocument) => {
@@ -178,12 +178,12 @@ export class DocumentComponent implements OnInit {
         document = updatedDocument;
       },
       error: (error) => {
-        console.error('Error updating document status:', error);
+        console.error('Error al actualizar el estado del documento:', error);
         // Optionally, revert the status change on error
-        document.status = document.status === 'In Progress' ? 'Completed' : 'In Progress';
+        document.status = document.status === 'En Progreso' ? 'Completado' : 'En Progreso';
       },
       complete: () => {
-        console.log('Document status update completed.');
+        console.log('Actualización del estado del documento completada.');
       }
     });
   }
