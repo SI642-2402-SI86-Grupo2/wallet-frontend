@@ -18,7 +18,7 @@ export class HeaderComponent {
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
-    document.body.style.overflow = this.menuOpen ? 'hidden' : '';
+    //document.body.style.overflow = this.menuOpen ? 'hidden' : '';
   }
 
 
@@ -73,7 +73,7 @@ export class HeaderComponent {
   closeMenus(): void {
     this.menuOpen = false; // Cierra el menú móvil
     this.profileMenuOpen = false; // Cierra el menú de perfil (por si acaso)
-    document.body.style.overflow = this.menuOpen ? 'hidden' : '';
+    //document.body.style.overflow = this.menuOpen ? 'hidden' : '';
 
   }
 

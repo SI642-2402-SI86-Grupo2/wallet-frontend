@@ -39,7 +39,7 @@
 
   <!-- Modal -->
   <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" (click)="closeModal()">
-    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full sm:w-2/3 lg:w-1/3 mx-4 sm:mx-auto" (click)="$event.stopPropagation()">
+    <div class="bg-[#E9E5DA] p-4 sm:p-6 rounded-lg shadow-lg w-full sm:w-2/3 lg:w-1/3 mx-4 sm:mx-auto" (click)="$event.stopPropagation()">
       <h3 class="text-lg sm:text-xl font-bold mb-4">{{ isEditMode ? 'Edit Portfolio' : 'Add New Portfolio' }}</h3>
 
       <!-- Display error message if validation fails -->
