@@ -16,6 +16,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { DocumentComponent } from './components/portfolios/document/document.component';
 import { provideHttpClient} from "@angular/common/http";
 import { PendingComponent } from './components/pending/pending.component';
+import { ValidationComponent } from './components/users/validation/validation/validation.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { PendingComponent } from './components/pending/pending.component';
     NotfoundComponent,
     ProfileComponent,
     DocumentComponent,
-    PendingComponent
+    PendingComponent,
+    ValidationComponent
   ],
   imports: [
     BrowserModule,
