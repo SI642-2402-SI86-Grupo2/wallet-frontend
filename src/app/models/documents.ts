@@ -7,7 +7,7 @@ export class Documents {
   series: string;
   issuer_name: string;
   issuer_ruc: string;
-  currecy: string;
+  currency: string;
   amount: number;
   igv: number;
   issue_date: Date;
@@ -20,6 +20,8 @@ export class Documents {
   commission: number;
   status: string;
   portfolios_id: number;
+  initial_costs: string;
+  final_costs: string;
 
   constructor(
     id: number,
@@ -29,7 +31,7 @@ export class Documents {
     series: string,
     issuer_name: string,
     issuer_ruc: string,
-    currecy: string,
+    currency: string,
     amount: number,
     igv: number,
     issue_date: Date,
@@ -41,7 +43,9 @@ export class Documents {
     tcea: number,
     commission: number,
     status: string,
-    portfolios_id: number
+    portfolios_id: number,
+    initial_costs: string,
+    final_costs: string
   ) {
     this.id = id;
     this.document_type = document_type;
@@ -50,7 +54,7 @@ export class Documents {
     this.series = series;
     this.issuer_name = issuer_name;
     this.issuer_ruc = issuer_ruc;
-    this.currecy = currecy;
+    this.currency = currency;
     this.amount = amount;
     this.igv = igv;
     this.issue_date = issue_date;
@@ -63,5 +67,7 @@ export class Documents {
     this.commission = commission;
     this.status = status;
     this.portfolios_id = portfolios_id;
+    this.initial_costs = initial_costs;
+    this.final_costs = final_costs;
   }
 }

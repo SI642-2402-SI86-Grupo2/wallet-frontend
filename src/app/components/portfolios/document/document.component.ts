@@ -10,13 +10,18 @@ import { DocumentsService } from '../../../services/documents.service';
 })
 export class DocumentComponent implements OnInit {
   documents: Documents[] = [];
-  document: Documents = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', 0);
+  document: Documents = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', 0, '', '');
   selectedDocument: Documents | null = null;
   isModalOpen = false;
   isViewModalOpen = false;
   isEditMode = false;
   errorMessage = '';
   selectedPortfolioId: number | null = null;
+
+  // Cambia la definición de initialCosts y finalCosts
+  initialCosts: { motivo: string; valor: string; tipo: string }[] = [];
+  finalCosts: { motivo: string; valor: string; tipo: string }[] = [];
+
 
   constructor(
     private documentsService: DocumentsService,
@@ -44,6 +49,36 @@ export class DocumentComponent implements OnInit {
     }
   }
 
+
+  // Métodos para manejar los costos
+  addInitialCost(motivo: string, valor: string, tipo: string) {
+    // Si el tipo es porcentaje, se añade '%' al valor
+    if (tipo === 'porcentaje') {
+      valor += '%';
+    }
+    this.initialCosts.push({ motivo, valor, tipo });
+  }
+
+
+  removeInitialCost(index: number) {
+    this.initialCosts.splice(index, 1);
+  }
+
+  addFinalCost(motivo: string, valor: string, tipo: string) {
+    // Si el tipo es porcentaje, se añade '%' al valor
+    if (tipo === 'porcentaje') {
+      valor += '%';
+    }
+    this.finalCosts.push({ motivo, valor, tipo });
+  }
+
+  removeFinalCost(index: number) {
+    this.finalCosts.splice(index, 1);
+  }
+
+
+
+
   openModal() {
     this.isModalOpen = true;
     document.body.style.overflow = 'hidden';
@@ -70,7 +105,7 @@ export class DocumentComponent implements OnInit {
 
   addDocument() {
       if (!this.document.document_type || !this.document.financial_institutions_name || !this.document.number ||
-        !this.document.series || !this.document.issuer_name || !this.document.issuer_ruc || !this.document.currecy ||
+        !this.document.series || !this.document.issuer_name || !this.document.issuer_ruc || !this.document.currency ||
         !this.document.amount || !this.document.igv || !this.document.issue_date || !this.document.due_date ||
         !this.document.discount_date || !this.document.payment_terms || !this.document.nominal_rate || !this.document.effective_rate ||
         /*!this.document.tcea ||*/ !this.document.commission || !this.document.status) {
@@ -95,12 +130,22 @@ export class DocumentComponent implements OnInit {
         console.error('ID de cartera no seleccionada');
       }
     }
-
+// Método para formatear costos
+  private formatCosts(costs: { motivo: string; valor: string }[]): string {
+    const formattedCosts = costs.map(item => `${item.motivo}:${item.valor}`).join(', ');
+    return `{${formattedCosts}}`; // Devuelve la cadena en el formato deseado
+  }
 
   saveDocument() {
+    // Convertir los costos a formato de cadena
+    this.document.initial_costs = this.formatCosts(this.initialCosts);
+    this.document.final_costs = this.formatCosts(this.finalCosts);
 
     // Recalcular el TCEA antes de guardar los cambios
     this.document.tcea = this.calculateTCEA();
+
+    console.log('Datos a enviar:', this.document); // Agrega este log para verificar los datos
+
 
     if (this.isEditMode) {
       // Si estamos editando, actualizamos el documento
@@ -164,10 +209,50 @@ export class DocumentComponent implements OnInit {
       this.document = { ...this.documents[index] };
       this.isEditMode = true;
       this.openModal();
+
+      // Cargar los costos iniciales y finales
+      this.loadCostsForEditing(this.document);
     } else {
       console.error('Documento no encontrado');
     }
   }
+
+  // Nuevo método para cargar los costos al editar
+  private loadCostsForEditing(document: Documents) {
+    // Aquí asumo que los costos vienen en formato string, si es diferente, ajusta según sea necesario.
+    this.initialCosts = this.parseCosts(document.initial_costs);
+    this.finalCosts = this.parseCosts(document.final_costs);
+  }
+
+  // Método para convertir la cadena de costos en un arreglo de objetos
+  private parseCosts(costsString: string): { motivo: string; valor: string; tipo: string }[] {
+    const costsArray: { motivo: string; valor: string; tipo: string }[] = [];
+
+    // Elimina las llaves y separa los costos
+    const formattedCosts = costsString.replace(/[{}]/g, '').split(',').map(cost => cost.trim());
+
+    for (const cost of formattedCosts) {
+      const [motivo, valorTipo] = cost.split(':');
+      if (valorTipo) {
+        const [valor, tipo] = valorTipo.split('('); // Asumiendo que el tipo se pasa entre paréntesis
+        costsArray.push({
+          motivo: motivo.trim(),
+          valor: valor.trim(),
+          tipo: tipo ? tipo.replace(')', '').trim() : '' // Limpia el tipo
+        });
+      }
+    }
+
+    return costsArray;
+  }
+
+
+
+
+
+
+
+
 
   toggleStatus(document: Documents): void {
     document.status = document.status === 'En Progreso' ? 'Completado' : 'En Progreso';
@@ -199,7 +284,7 @@ export class DocumentComponent implements OnInit {
   }
 
   resetForm() {
-    this.document = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', 0);
+    this.document = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', 0, '', '');
     this.isEditMode = false;
     this.errorMessage = '';
   }
