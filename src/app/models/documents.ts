@@ -19,9 +19,9 @@ export class Documents {
   tcea: number;
   commission: number;
   status: string;
-  portfolios_id: number;
   initial_costs: string;
   final_costs: string;
+  portfolios_id: number;
 
   constructor(
     id: number,
@@ -43,9 +43,9 @@ export class Documents {
     tcea: number,
     commission: number,
     status: string,
-    portfolios_id: number,
     initial_costs: string,
-    final_costs: string
+    final_costs: string,
+    portfolios_id: number
   ) {
     this.id = id;
     this.document_type = document_type;
@@ -66,8 +66,8 @@ export class Documents {
     this.tcea = tcea;
     this.commission = commission;
     this.status = status;
-    this.portfolios_id = portfolios_id;
     this.initial_costs = initial_costs;
     this.final_costs = final_costs;
+    this.portfolios_id = portfolios_id;
   }
 }

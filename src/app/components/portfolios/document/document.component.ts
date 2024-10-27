@@ -10,7 +10,7 @@ import { DocumentsService } from '../../../services/documents.service';
 })
 export class DocumentComponent implements OnInit {
   documents: Documents[] = [];
-  document: Documents = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', 0, '', '');
+  document: Documents = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', '', '', 0);
   selectedDocument: Documents | null = null;
   isModalOpen = false;
   isViewModalOpen = false;
@@ -131,7 +131,7 @@ export class DocumentComponent implements OnInit {
       }
     }
 // Método para formatear costos
-  private formatCosts(costs: { motivo: string; valor: string }[]): string {
+  formatCosts(costs: { motivo: string; valor: string }[]): string {
     const formattedCosts = costs.map(item => `${item.motivo}:${item.valor}`).join(', ');
     return `{${formattedCosts}}`; // Devuelve la cadena en el formato deseado
   }
@@ -148,6 +148,8 @@ export class DocumentComponent implements OnInit {
 
 
     if (this.isEditMode) {
+      console.log('Datos del documento antes de PUT:', this.document);
+
       // Si estamos editando, actualizamos el documento
       this.documentsService.updateDocument(this.document).subscribe({
         next: (updatedDocument) => {
@@ -218,14 +220,14 @@ export class DocumentComponent implements OnInit {
   }
 
   // Nuevo método para cargar los costos al editar
-  private loadCostsForEditing(document: Documents) {
+  loadCostsForEditing(document: Documents) {
     // Aquí asumo que los costos vienen en formato string, si es diferente, ajusta según sea necesario.
     this.initialCosts = this.parseCosts(document.initial_costs);
     this.finalCosts = this.parseCosts(document.final_costs);
   }
 
   // Método para convertir la cadena de costos en un arreglo de objetos
-  private parseCosts(costsString: string): { motivo: string; valor: string; tipo: string }[] {
+  parseCosts(costsString: string): { motivo: string; valor: string; tipo: string }[] {
     const costsArray: { motivo: string; valor: string; tipo: string }[] = [];
 
     // Elimina las llaves y separa los costos
@@ -284,7 +286,7 @@ export class DocumentComponent implements OnInit {
   }
 
   resetForm() {
-    this.document = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', 0, '', '');
+    this.document = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', '', '', 0);
     this.isEditMode = false;
     this.errorMessage = '';
   }
