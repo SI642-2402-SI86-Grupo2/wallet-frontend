@@ -1,11 +1,11 @@
 /* Ocultar barra de scroll en Chrome, Safari y Edge */
 ::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+  width: 6px;
+  background:transparent;
 }
 
-/* Para otros navegadores */
-.modal-scroll {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+/* Color del pulgar de la barra de desplazamiento */
+::-webkit-scrollbar-thumb {
+  background-color: white; /* Color del pulgar */
+  border-radius: 50px; /* Bordes redondeados */
 }
