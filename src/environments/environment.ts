@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://json-server-vercel-xi-silk.vercel.app'
+  apiUrl: 'http://localhost:3000'
 };
