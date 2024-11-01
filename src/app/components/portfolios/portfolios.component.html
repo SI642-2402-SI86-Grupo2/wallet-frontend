@@ -20,7 +20,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let portfolio of portfolios; let i = index" class="border-b border-gray-200 flex flex-col md:table-row">
+      <tr *ngFor="let portfolio of portfolios; let i = index; trackBy: trackByFn" class="border-b border-gray-200 flex flex-col md:table-row">
         <td class="py-4 px-6 text-center before:content-['Nombre'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.portfolio_name }}</td>
         <td class="py-4 px-6 text-center before:content-['Descripción'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.description }}</td>
         <td class="hidden lg:table-cell py-4 px-4 text-center before:content-['Fecha de descuento'] before:block before:font-bold before:text-lg md:before:content-none">{{ portfolio.discount_date | date:'shortDate' }}</td>

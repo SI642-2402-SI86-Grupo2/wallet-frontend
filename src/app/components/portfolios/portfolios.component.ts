@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Portfolios } from '../../models/portfolios';
 import { PortfoliosService } from '../../services/portfolios.service';
 import { StorageService } from '../../services/storage.service';
 import { DocumentsService } from '../../services/documents.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -11,12 +12,13 @@ import { DocumentsService } from '../../services/documents.service';
   templateUrl: './portfolios.component.html',
   styleUrls: ['./portfolios.component.css']
 })
-export class PortfoliosComponent implements OnInit {
+export class PortfoliosComponent implements OnInit, OnDestroy {
   portfolios: Portfolios[] = [];
   isModalOpen = false;
   isEditMode = false;
   portfolio: Portfolios = new Portfolios(0, '', '', new Date(), 0, 0);
   errorMessage = '';
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private portfoliosService: PortfoliosService,
@@ -29,20 +31,24 @@ export class PortfoliosComponent implements OnInit {
     this.storageService.setTestUserId();
     this.loadPortfolios();
   }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    console.log('Component destroyed and resources cleaned up');
+  }
 
   loadPortfolios(): void {
     const userId = this.storageService.getUserId();
     if (userId !== null) {
-      this.portfoliosService.getPortfoliosByUserId(userId).subscribe({
+      const portfoliosSubscription = this.portfoliosService.getPortfoliosByUserId(userId).subscribe({
         next: (data) => {
           this.portfolios = data;
-          // Calcular el TCEA promedio para cada portafolio
           this.portfolios.forEach(portfolio => {
             this.calculateAverageTCEA(portfolio);
           });
         },
         error: (error) => console.error('Error fetching portfolios:', error)
       });
+      this.subscriptions.push(portfoliosSubscription);
     } else {
       console.error('User ID not found in storage');
     }
@@ -162,5 +168,7 @@ export class PortfoliosComponent implements OnInit {
   selectPortfolio(portfolioId: number) {
     this.router.navigate([`/portfolios/${portfolioId}/documents`]);
   }
-
+  trackByFn(index: number, item: Portfolios): number {
+    return item.id;
+  }
 }

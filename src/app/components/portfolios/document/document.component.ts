@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Documents } from '../../../models/documents'; // Adjust the import path as necessary
 import { DocumentsService } from '../../../services/documents.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-document',
   templateUrl: './document.component.html',
   styleUrls: ['./document.component.css']
 })
-export class DocumentComponent implements OnInit {
+export class DocumentComponent implements OnInit, OnDestroy {
   documents: Documents[] = [];
   document: Documents = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', '', '', 0);
   selectedDocument: Documents | null = null;
@@ -22,6 +23,8 @@ export class DocumentComponent implements OnInit {
   initialCosts: { motivo: string; valor: string; tipo: string }[] = [];
   finalCosts: { motivo: string; valor: string; tipo: string }[] = [];
 
+  private subscriptions: Subscription[] = [];
+
 
   constructor(
     private documentsService: DocumentsService,
@@ -30,10 +33,15 @@ export class DocumentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    const routeSubscription = this.route.paramMap.subscribe(params => {
       this.selectedPortfolioId = +params.get('id')!;
       this.loadDocuments();
     });
+    this.subscriptions.push(routeSubscription);
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    console.log('Component destroyed and resources cleaned up');
   }
 
   loadDocuments(): void {
@@ -293,5 +301,8 @@ export class DocumentComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/portfolios']);
+  }
+  trackByFn(index: number, item: any): number {
+    return item.id; // or any unique identifier for the item
   }
 }

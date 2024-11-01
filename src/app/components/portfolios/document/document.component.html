@@ -49,7 +49,7 @@
       </tr>
       </thead>
       <tbody class="space-y-4">
-      <tr *ngFor="let document of documents; let i = index" class="bg-white  border-b border-gray-200 flex flex-col md:table-row ">
+      <tr *ngFor="let document of documents; let i = index; trackBy: trackByFn" class="bg-white  border-b border-gray-200 flex flex-col md:table-row ">
         <td class="py-4 px-6 text-center before:content-['Tipo_de_Documento'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.document_type }}
         </td>
@@ -210,9 +210,9 @@
           </div>
 
           <div class="col-span-1">
-            <h3 class="text-1xstext-gray-700">Iniciales:</h3>
+            <h3 class="text-1xs text-gray-700">Iniciales:</h3>
           </div>
-          <div class="col-span-1">
+          <div class="col-span-1 hidden md:block">
             <h3 class="text-1xs text-gray-700">Finales:</h3>
           </div>
 
@@ -234,16 +234,16 @@
             </div>
             <label class="label text-xs text-gray-700">Valor expresado en</label>
             <div class="control flex items-center space-x-2">
-              <select #initialType class="w-2/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select #initialType class=" w-2/4 md:w-2/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="efectivo">Efectivo</option>
                 <option value="porcentaje">Porcentaje</option>
               </select>
-              <input type="text" #initialValor class="w-3/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0 o 3%">
+              <input type="text" #initialValor class="w-2/4 md:w-3/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0 o 3%">
               <div class="flex items-center cursor-pointer" (click)="addInitialCost(initialMotivo.value, initialValor.value, initialType.value); initialValor.value=''; initialType.value='efectivo'">
                 <i class="material-icons-round text-3xl text-blue-500 mr-2">add_circle_outline</i>
               </div>
             </div>
-            <div *ngFor="let cost of initialCosts; let i = index" class="flex justify-between items-center mt-2 bg-gray-100 p-2 rounded-lg">
+            <div *ngFor="let cost of initialCosts; let i = index; trackBy: trackByFn" class="flex justify-between items-center mt-2 bg-gray-100 p-2 rounded-lg">
               <span class="text-gray-800">{{ cost.motivo }}: {{ cost.valor }}</span>
               <div class="flex items-center justify-center text-red-600 hover:text-red-700 transition cursor-pointer p-2" (click)="removeInitialCost(i)">
                 <i class="material-icons-round text-3xl">delete_outline</i>
@@ -252,6 +252,9 @@
           </div>
 
           <!-- Sección para Costos Finales -->
+          <div class="col-span-1 block md:hidden">
+            <h3 class="text-1xs text-gray-700 mt-4">Finales:</h3>
+          </div>
 
           <div class="field mb-4 col-span-1">
             <label class="label text-xs text-gray-700">Motivo</label>
@@ -264,16 +267,16 @@
             </div>
             <label class="label text-xs text-gray-700">Valor expresado en</label>
             <div class="control flex items-center space-x-2">
-              <select #finalType class="w-2/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <select #finalType class="w-2/4 md:w-2/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="efectivo">Efectivo</option>
                 <option value="porcentaje">Porcentaje</option>
               </select>
-              <input type="text" #finalValor class="w-3/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0 o 3%">
+              <input type="text" #finalValor class="w-2/4 md:w-3/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0 o 3%">
               <div class="flex items-center cursor-pointer" (click)="addFinalCost(finalMotivo.value, finalValor.value, finalType.value); finalValor.value=''; finalType.value='efectivo'">
                 <i class="material-icons-round text-3xl text-blue-500 mr-2">add_circle_outline</i>
               </div>
             </div>
-            <div *ngFor="let cost of finalCosts; let i = index" class="flex justify-between items-center mt-2 bg-gray-100 p-2 rounded-lg">
+            <div *ngFor="let cost of finalCosts; let i = index; trackBy: trackByFn" class="flex justify-between items-center mt-2 bg-gray-100 p-2 rounded-lg">
               <span class="text-gray-800">{{ cost.motivo }}: {{ cost.valor }}</span>
               <div class="flex items-center justify-center text-red-600 hover:text-red-700 transition cursor-pointer p-2" (click)="removeFinalCost(i)">
                 <i class="material-icons-round text-3xl">delete_outline</i>
