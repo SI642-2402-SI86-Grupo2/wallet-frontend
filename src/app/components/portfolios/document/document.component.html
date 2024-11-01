@@ -348,10 +348,42 @@
           <div><strong>Comisión:</strong> {{ selectedDocument?.commission }}</div>
         </div>
 
+        <hr class="my-4">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Encabezados de Costos Iniciales y Costos Finales en una sola fila -->
+          <h3 class="col-span-1 lg:col-span-2 text-1xl font-bold text-gray-800 ">Detalles de Costos</h3>
+
+          <!-- Costos Iniciales -->
+          <div class="col-span-1 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-700 mb-3">Costos Iniciales:</h3>
+            <div *ngIf="selectedDocument?.initial_costs" class="space-y-2">
+              <div *ngFor="let cost of parseCosts(selectedDocument?.initial_costs ?? '')" class="p-2 bg-gray-100 border border-gray-300 rounded-lg shadow">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600 font-medium w-3/5">{{ cost.motivo }}</span>
+                  <span class="text-right font-bold text-gray-800 truncate w-2/5 ml-2" title="{{ cost.valor }}">{{ cost.valor }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Costos Finales -->
+          <div class="col-span-1 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-700 mb-3">Costos Finales:</h3>
+            <div *ngIf="selectedDocument?.final_costs" class="space-y-4">
+              <div *ngFor="let cost of parseCosts(selectedDocument?.final_costs ?? '')" class="p-4 bg-gray-100 border border-gray-300 rounded-lg shadow">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600 font-medium w-3/5">{{ cost.motivo }}</span>
+                  <span class="text-right font-bold text-gray-800 truncate w-2/5 mr-2" title="{{ cost.valor }}">{{ cost.valor }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
-        <p><strong>Initial Costs:</strong> {{ selectedDocument?.initial_costs }}</p>
-        <p><strong>Final Costs:</strong> {{ selectedDocument?.final_costs }}</p>
+
+
 
         <hr class="my-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
