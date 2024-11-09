@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class DocumentComponent implements OnInit, OnDestroy {
   documents: Documents[] = [];
-  document: Documents = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', '', '', 0);
+  document: Documents = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, '', '', '', 0);
   selectedDocument: Documents | null = null;
   isModalOpen = false;
   isViewModalOpen = false;
@@ -116,7 +116,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
         !this.document.series || !this.document.issuer_name || !this.document.issuer_ruc || !this.document.currency ||
         !this.document.amount || !this.document.igv || !this.document.issue_date || !this.document.due_date ||
         !this.document.discount_date || !this.document.payment_terms || !this.document.nominal_rate || !this.document.effective_rate ||
-        /*!this.document.tcea ||*/ !this.document.commission || !this.document.status) {
+        /*!this.document.tcea ||*/  !this.document.status) {
         this.errorMessage = 'Por favor, rellene todos los campos obligatorios.';
         return;
       }
@@ -184,7 +184,6 @@ export class DocumentComponent implements OnInit, OnDestroy {
   // Función para calcular la TCEA
   calculateTCEA() {
     const tasaNominal = this.document.nominal_rate / 100;
-    const comision = this.document.commission || 0;
     const monto = this.document.amount || 0;
 
     const fechaEmision = new Date(this.document.issue_date);
@@ -203,7 +202,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
 
     // Fórmula de la TCEA:
     const tcea = Math.pow(
-      (1 + ((tasaNominal + comision / monto)) / (1 - (diasDescuento / 360))),
+      (1 + ((tasaNominal /*+ comision*/ / monto)) / (1 - (diasDescuento / 360))),
       (360 / dias)
     ) - 1;
 
@@ -294,7 +293,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
   }
 
   resetForm() {
-    this.document = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, 0, '', '', '', 0);
+    this.document = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, '', '', '', 0);
     this.isEditMode = false;
     this.errorMessage = '';
   }

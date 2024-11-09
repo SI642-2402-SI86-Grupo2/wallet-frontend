@@ -199,10 +199,6 @@
             <label class="block text-gray-700">Tasa Efectiva</label>
             <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.effective_rate" name="effective_rate" placeholder="Effective Rate" />
           </div>
-          <div class="col-span-1">
-            <label class="block text-gray-700">Comisión</label>
-            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.commission" name="commission" placeholder="Commission" />
-          </div>
 
           <hr class="col-span-1 md:col-span-2 my-4">
           <div class="col-span-1 md:col-span-2">
@@ -345,7 +341,6 @@
           <div><strong>Fecha de Descuento:</strong> {{ selectedDocument?.discount_date | date:'shortDate' }}</div>
           <div><strong>Tasa Nominal:</strong> {{ selectedDocument?.nominal_rate }}</div>
           <div><strong>Tasa Efectiva:</strong> {{ selectedDocument?.effective_rate }}</div>
-          <div><strong>Comisión:</strong> {{ selectedDocument?.commission }}</div>
         </div>
 
         <hr class="my-4">

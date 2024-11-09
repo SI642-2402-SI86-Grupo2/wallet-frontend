@@ -17,7 +17,6 @@ export class Documents {
   nominal_rate: number;
   effective_rate: number;
   tcea: number;
-  commission: number;
   status: string;
   initial_costs: string;
   final_costs: string;
@@ -41,7 +40,6 @@ export class Documents {
     nominal_rate: number,
     effective_rate: number,
     tcea: number,
-    commission: number,
     status: string,
     initial_costs: string,
     final_costs: string,
@@ -64,7 +62,6 @@ export class Documents {
     this.nominal_rate = nominal_rate;
     this.effective_rate = effective_rate;
     this.tcea = tcea;
-    this.commission = commission;
     this.status = status;
     this.initial_costs = initial_costs;
     this.final_costs = final_costs;
