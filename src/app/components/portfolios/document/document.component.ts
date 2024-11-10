@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Documents } from '../../../models/documents'; // Adjust the import path as necessary
 import { DocumentsService } from '../../../services/documents.service';
@@ -7,7 +7,8 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-document',
   templateUrl: './document.component.html',
-  styleUrls: ['./document.component.css']
+  styleUrls: ['./document.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentComponent implements OnInit, OnDestroy {
   documents: Documents[] = [];
@@ -29,7 +30,8 @@ export class DocumentComponent implements OnInit, OnDestroy {
   constructor(
     private documentsService: DocumentsService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +51,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
       this.documentsService.getDocumentsByPortfolioId(this.selectedPortfolioId).subscribe({
         next: (data) => {
           this.documents = data;
+          this.cdr.markForCheck();
         },
         error: (error) => console.error('Error fetching documents:', error)
       });

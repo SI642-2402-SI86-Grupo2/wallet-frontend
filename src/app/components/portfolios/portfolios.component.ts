@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { Router } from '@angular/router';
 import { Portfolios } from '../../models/portfolios';
 import { PortfoliosService } from '../../services/portfolios.service';
@@ -10,7 +10,8 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-portfolios',
   templateUrl: './portfolios.component.html',
-  styleUrls: ['./portfolios.component.css']
+  styleUrls: ['./portfolios.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PortfoliosComponent implements OnInit, OnDestroy {
   portfolios: Portfolios[] = [];
@@ -24,7 +25,9 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
     private portfoliosService: PortfoliosService,
     private storageService: StorageService,
     private documentsService: DocumentsService,  // Agregar DocumentsService
-    private router: Router
+    private router: Router,
+  private cdr: ChangeDetectorRef
+
 ) {}
 
   ngOnInit(): void {
@@ -45,6 +48,7 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
           this.portfolios.forEach(portfolio => {
             this.calculateAverageTCEA(portfolio);
           });
+          this.cdr.markForCheck();
         },
         error: (error) => console.error('Error fetching portfolios:', error)
       });
