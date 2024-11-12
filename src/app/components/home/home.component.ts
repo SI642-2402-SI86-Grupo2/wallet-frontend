@@ -9,6 +9,13 @@ import { Application } from '@splinetool/runtime';
 export class HomeComponent implements AfterViewInit {
 
   ngAfterViewInit() {
+    const video = document.getElementById('videoElement') as HTMLVideoElement;
+    if (video) {
+      video.playbackRate = 0.5; // Adjust the playback speed to 50%
+    }
+  }
+/*
+  ngAfterViewInit() {
     // Initialize first Spline application
     const canvas1 = document.getElementById('canvas3d-1') as HTMLCanvasElement;
     if (canvas1) {
@@ -32,6 +39,9 @@ export class HomeComponent implements AfterViewInit {
     }
   }
 
+        <canvas id="canvas3d-2" width="800" height="600" class="w-full"></canvas> -->
+
+*/
   onMouseEnter(iconId: string) {
     const icon = document.querySelector(`#${iconId}`) as HTMLElement;
     if (icon) {

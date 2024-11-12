@@ -20,8 +20,10 @@
 
     <!-- Sección de Imagen/Diseño 3D -->
     <div class="mt-12 md:mt-0 md:w-1/2 flex justify-center md:pl-12">
-      <!--
-      <canvas id="canvas3d-1" width="800" height="600" class="w-full"></canvas>-->
+      <video id="videoElement" width="800" height="600" class="w-full" autoplay muted loop>
+        <source src="/p1.mp4" type="video/mp4">
+        Tu navegador no soporta la etiqueta de video.
+      </video>
     </div>
   </div>
 </div>
@@ -65,9 +67,8 @@
     </div>
 
     <!-- Imagen Principal (Cuadrada y grande) -->
-    <div class="flex justify-center w-full md:w-2/3 h-96">
-      <!--
-      <canvas id="canvas3d-2" width="800" height="600" class="w-full"></canvas> -->
+    <div class="flex justify-center w-full md:w-2/3 h-72 md:h-96">
+      <img src="/p2.png" alt="p2" class="w-full h-full object-cover">
     </div>
 
     <!-- Columna Derecha -->
