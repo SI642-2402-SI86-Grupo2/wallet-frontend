@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class StorageService {
   private userIdKey = 'loggedInUserId';
+  private tokenKey = 'authToken';
 
   setUserId(userId: number): void {
     localStorage.setItem(this.userIdKey, userId.toString());
@@ -21,5 +22,12 @@ export class StorageService {
 
   setTestUserId(): void {
     this.setUserId(1); // Assign a test user ID, e.g., 1
+  }
+
+  setToken(token: string): void {
+  }
+
+  clearToken(): void {
+    localStorage.removeItem(this.tokenKey);
   }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../../services/auth.service';
 import { StorageService } from '../../../services/storage.service';
 
 @Component({
@@ -7,10 +8,26 @@ import { StorageService } from '../../../services/storage.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  constructor(private storageService: StorageService) {}
+  email: string = '';
+  password: string = '';
+  welcomeMessage: string = '';
 
-  login(userId: number): void {
-    this.storageService.setUserId(userId);
-    // Redirect to another page or perform other actions after login
+  constructor(private authService: AuthService, private storageService: StorageService) {}
+
+  login(): void {
+    this.authService.signIn(this.email, this.password).subscribe(response => {
+      this.storageService.setUserId(response.id);
+      this.storageService.setToken(response.token);
+      this.welcomeMessage = 'Bienvenido';
+      setTimeout(() => {
+        this.welcomeMessage = '';
+      }, 3000);
+    }, error => {
+      console.error('Login failed', error);
+      this.welcomeMessage = 'Login failed. Please try again.';
+      setTimeout(() => {
+        this.welcomeMessage = '';
+      }, 3000);
+    });
   }
 }

@@ -1,7 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule aquí
-
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -14,9 +13,9 @@ import { SignupComponent } from './components/users/signup/signup.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DocumentComponent } from './components/portfolios/document/document.component';
-import { provideHttpClient} from "@angular/common/http";
 import { PendingComponent } from './components/pending/pending.component';
 import { ValidationComponent } from './components/users/validation/validation/validation.component';
+import { provideHttpClient, withJsonpSupport } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -38,12 +37,11 @@ import { ValidationComponent } from './components/users/validation/validation/va
     BrowserModule,
     AppRoutingModule,
     FormsModule
-
   ],
-  providers: [    provideHttpClient() // Use the recommended alternative
+  providers: [
+    provideHttpClient(withJsonpSupport())
   ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],  // Añadir este esquema
-
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

@@ -1,17 +1,17 @@
-<div class="flex h-screen flex-col justify-center px-6 py-12 lg:px-8 mt-14 md:-mt-6 mb-28 ">
-  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-      Regístrese para obtener una nueva cuenta
-    </h2>
-  </div>
+<form (ngSubmit)="signUp()" class="space-y-6">
+  <div class="flex h-screen flex-col justify-center px-6 py-12 lg:px-8 mt-14 md:-mt-6 mb-28">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        Regístrese para obtener una nueva cuenta
+      </h2>
+    </div>
 
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" action="#" method="POST">
-      <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div class="space-y-6">
         <div>
-          <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">Nombre</label>
+          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Correo Electrónico</label>
           <div class="mt-2">
-            <input id="first-name" name="first-name" type="text" autocomplete="given-name" required
+            <input id="email" name="email" type="email" [(ngModel)]="email" autocomplete="email" required
                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm
                           ring-1 ring-inset ring-gray-300 placeholder:text-gray-400
                           focus:ring-2 focus:ring-inset focus:ring-[#9884B5] sm:text-sm sm:leading-6">
@@ -19,59 +19,33 @@
         </div>
 
         <div>
-          <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Apellido</label>
+          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Contraseña</label>
           <div class="mt-2">
-            <input id="last-name" name="last-name" type="text" autocomplete="family-name" required
+            <input id="password" name="password" type="password" [(ngModel)]="password" autocomplete="new-password" required
                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm
                           ring-1 ring-inset ring-gray-300 placeholder:text-gray-400
                           focus:ring-2 focus:ring-inset focus:ring-[#9884B5] sm:text-sm sm:leading-6">
           </div>
         </div>
-      </div>
 
-      <div>
-        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Correo Electrónico</label>
-        <div class="mt-2">
-          <input id="email" name="email" type="email" autocomplete="email" required
-                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm
-                        ring-1 ring-inset ring-gray-300 placeholder:text-gray-400
-                        focus:ring-2 focus:ring-inset focus:ring-[#9884B5] sm:text-sm sm:leading-6">
+        <div>
+          <button type="submit"
+                  class="flex w-full justify-center rounded-md bg-gradient-to-r from-[#4A90E2] to-[#9013FE] px-3 py-1.5
+                         text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gradient-to-r hover:from-[#1D4ED8] hover:to-[#7B68A5]
+                         focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A90E2] z-10">
+            Sign up
+          </button>
         </div>
       </div>
 
-      <div>
-        <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Contraseña</label>
-        <div class="mt-2">
-          <input id="password" name="password" type="password" autocomplete="new-password" required
-                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm
-                        ring-1 ring-inset ring-gray-300 placeholder:text-gray-400
-                        focus:ring-2 focus:ring-inset focus:ring-[#9884B5] sm:text-sm sm:leading-6">
-        </div>
-      </div>
-
-      <div>
-        <label for="confirm-password" class="block text-sm font-medium leading-6 text-gray-900">Confirmar Contraseña</label>
-        <div class="mt-2">
-          <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" required
-                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm
-                        ring-1 ring-inset ring-gray-300 placeholder:text-gray-400
-                        focus:ring-2 focus:ring-inset focus:ring-[#9884B5] sm:text-sm sm:leading-6">
-        </div>
-      </div>
-
-      <div>
-        <button type="submit"
-                class="flex w-full justify-center rounded-md bg-gradient-to-r from-[#9884B5] to-[#1D4ED8] px-3 py-1.5
-                       text-sm font-semibold leading-6 text-white shadow-sm hover:from-[#7b68a5] hover:to-[#1a4abc]
-                       focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9884B5]">
-          Sign up
-        </button>
-      </div>
-    </form>
-
-    <p class="mt-10 text-center text-sm text-gray-500">
-      ¿Ya tienes una cuenta?
-      <a href="/login" class="font-semibold leading-6 text-[#1D4ED8] hover:text-[#9884B5]">Iniciar sesión</a>
-    </p>
+      <p class="mt-10 text-center text-sm text-gray-500">
+        ¿Ya tienes una cuenta?
+        <a href="/login" class="font-semibold leading-6 text-[#1D4ED8] hover:text-[#9884B5]">Iniciar sesión</a>
+      </p>
+    </div>
   </div>
+</form>
+
+<div *ngIf="welcomeMessage" class="welcome-message">
+  {{ welcomeMessage }}
 </div>
