@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/v1/authentication';
+  private apiUrl = 'https://wallet-company-409716454006.us-central1.run.app/api/v1/authentication';
 
   constructor(private http: HttpClient) {}
 
@@ -16,5 +16,9 @@ export class AuthService {
 
   signIn(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/sign-in`, { email, password });
+  }
+
+  getToken(): string {
+    return localStorage.getItem('token') || '';
   }
 }
