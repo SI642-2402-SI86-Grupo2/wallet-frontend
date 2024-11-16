@@ -73,4 +73,3 @@ export class ReportsComponent implements OnInit {
     doc.save('reportes.pdf');
   }
 }
-```
