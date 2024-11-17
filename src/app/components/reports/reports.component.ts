@@ -1,5 +1,4 @@
-
-import { Component, OnInit } from '@angular/core';
+import {Component, NgIterable, OnInit} from '@angular/core';
 import { DataService } from '../../services/data.service';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -11,58 +10,37 @@ import 'jspdf-autotable';
 })
 export class ReportsComponent implements OnInit {
   portfolios: any[] = [];
-  documents: any[] = [];
-  report: any[] = [];
+  report: (NgIterable<unknown> & NgIterable<any>) | undefined | null;
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.fetchData();
+    this.loadPortfolios();
   }
 
-  fetchData(): void {
-    this.dataService.getPortfolios().subscribe((portfolios: any[]) => {
-      this.portfolios = portfolios;
-      this.dataService.getDocuments().subscribe((documents: any[]) => {
-        this.documents = documents;
-        this.generateReport();
-      });
+  loadPortfolios(): void {
+    this.dataService.getPortfolios().subscribe((data) => {
+      this.portfolios = data;
     });
   }
 
-  generateReport(): void {
-    this.report = this.portfolios.map((portfolio) => {
-      const relatedDocuments = this.documents.filter(
-        (doc) => doc.portfolios_id === portfolio.id
-      );
-      const totalTCEA = relatedDocuments.reduce(
-        (sum, doc) => sum + doc.tcea,
-        0
-      );
-
-      return {
-        Nombre: portfolio.portfolio_name,
-        'TCEA Consolidado': `${totalTCEA.toFixed(2)}%`,
-        Documentos: relatedDocuments.length,
-      };
-    });
-  }
-
-  exportToPDF(): void {
+  generatePDF(): void {
     const doc = new jsPDF();
 
     // Título del reporte
     doc.text('Reporte de Portafolios', 10, 10);
 
-    // Columnas y filas
-    const columns = ['Nombre del Portafolio', 'TCEA Consolidado', 'Número de Documentos'];
-    const rows = this.report.map((item) => [
-      item.Nombre,
-      item['TCEA Consolidado'],
-      item.Documentos,
+    // Columnas y filas para la tabla
+    const columns = ['ID', 'Nombre', 'Descripción', 'TCEA Total', 'Fecha Descuento'];
+    const rows = this.portfolios.map((portfolio) => [
+      portfolio.id,
+      portfolio.portfolio_name,
+      portfolio.description,
+      `${portfolio.total_tcea.toFixed(2)}%`,
+      portfolio.discount_date,
     ]);
 
-    // Tabla
+    // Generar la tabla
     (doc as any).autoTable({
       head: [columns],
       body: rows,
@@ -70,6 +48,10 @@ export class ReportsComponent implements OnInit {
     });
 
     // Guardar el archivo PDF
-    doc.save('reportes.pdf');
+    doc.save('portafolios.pdf');
+  }
+
+  exportToPDF() {
+
   }
 }

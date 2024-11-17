@@ -1,6 +1,7 @@
 <div class="container">
   <h1>Reportes</h1>
-  <table border="1">
+
+  <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
     <thead>
     <tr>
       <th>Nombre del Portafolio</th>
@@ -11,10 +12,12 @@
     <tbody>
     <tr *ngFor="let item of report">
       <td>{{ item.Nombre }}</td>
-      <td>{{ item['TCEA Consolidado'] }}</td>
+      <td>{{ item['TCEA Consolidado'] }}%</td>
       <td>{{ item.Documentos }}</td>
     </tr>
     </tbody>
   </table>
-  <button (click)="exportToPDF()">Exportar a PDF</button>
+
+  <button (click)="exportToPDF()" style="margin-top: 20px;">Exportar a PDF</button>
 </div>
+
