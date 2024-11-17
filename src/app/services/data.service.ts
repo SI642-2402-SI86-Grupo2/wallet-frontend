@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root', // Este decorador asegura que el servicio esté disponible globalmente
 })
 export class DataService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = 'http://localhost:3000'; // URL base del JSON Server
 
   constructor(private http: HttpClient) {}
 
-  getPortfolios(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/portfolios`);
+  getPortfolios() {
+    return this.http.get<any[]>(`${this.baseUrl}/portfolios`);
   }
 
-  getDocuments(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/documents`);
+  getDocuments() {
+    return this.http.get<any[]>(`${this.baseUrl}/documents`);
   }
 }
