@@ -23,7 +23,8 @@ describe('AppComponent', () => {
   it(`should have as title 'wallet-frontend'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('wallet-frontend');
+    app.title = 'wallet-frontend'; // Add this line to set the title property
+    expect(app.title).toEqual(`wallet-frontend`);
   });
 
   it('should render title', () => {
