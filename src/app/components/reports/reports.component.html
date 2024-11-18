@@ -1,20 +1,24 @@
-<div class="container">
-  <h1>Reportes</h1>
-  <table border="1">
-    <thead>
-    <tr>
-      <th>Nombre del Portafolio</th>
-      <th>TCEA Consolidado</th>
-      <th>Número de Documentos</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let item of report">
-      <td>{{ item.Nombre }}</td>
-      <td>{{ item['TCEA Consolidado'] }}</td>
-      <td>{{ item.Documentos }}</td>
-    </tr>
-    </tbody>
-  </table>
-  <button (click)="exportToPDF()">Exportar a PDF</button>
+<div class="container mt-4">
+  <h2 class="text-center">Reporte de Portafolios</h2>
+  <div class="table-responsive mt-4">
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+      <tr>
+        <th>Nombre del Portafolio</th>
+        <th>TCEA Consolidado</th>
+        <th>Número de Documentos</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of report">
+        <td>{{ item.Nombre }}</td>
+        <td>{{ item['TCEA Consolidado'] }}</td>
+        <td>{{ item.Documentos }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="text-center mt-4">
+    <button class="btn btn-primary" (click)="exportToPDF()">Exportar a PDF</button>
+  </div>
 </div>

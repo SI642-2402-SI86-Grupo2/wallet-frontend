@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-reports',
@@ -49,12 +49,14 @@ export class ReportsComponent implements OnInit {
   }
 
   exportToPDF(): void {
-    const doc = new jsPDF();
+    if (this.report.length === 0) {
+      alert('No hay datos para generar el reporte.');
+      return;
+    }
 
-    // Título del reporte
+    const doc = new jsPDF();
     doc.text('Reporte de Portafolios', 10, 10);
 
-    // Columnas y filas
     const columns = ['Nombre del Portafolio', 'TCEA Consolidado', 'Número de Documentos'];
     const rows = this.report.map((item) => [
       item.Nombre,
@@ -62,15 +64,25 @@ export class ReportsComponent implements OnInit {
       item.Documentos,
     ]);
 
-    // Tabla
-    (doc as any).autoTable({
+    autoTable(doc, {
       head: [columns],
       body: rows,
       startY: 20,
+      styles: {
+        fontSize: 10,
+        halign: 'center',
+        valign: 'middle',
+      },
+      headStyles: {
+        fillColor: [41, 128, 185],
+        textColor: [255, 255, 255],
+        fontSize: 12,
+      },
+      alternateRowStyles: {
+        fillColor: [240, 240, 240],
+      },
     });
 
-    // Guardar el archivo PDF
     doc.save('reportes.pdf');
   }
 }
-```

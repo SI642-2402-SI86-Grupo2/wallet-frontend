@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   isAccessGranted: boolean = false; // Estado de acceso
+  title = 'wallet-frontend' ;
 
   constructor() {
     this.checkAccess();
