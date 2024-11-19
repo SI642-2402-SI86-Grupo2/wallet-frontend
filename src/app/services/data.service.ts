@@ -7,7 +7,7 @@ import {environment} from "../../environments/environment";
   providedIn: 'root',
 })
 export class DataService {
-  private apiUrl = `${environment.apiUrl}/reports`; // Cambia esto por la URL de tu API
+  private apiUrl = `${environment.apiUrl}/reports`;
 
   constructor(private http: HttpClient) {}
 
