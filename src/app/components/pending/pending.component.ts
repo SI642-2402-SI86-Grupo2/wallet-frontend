@@ -47,13 +47,13 @@ export class PendingComponent implements OnInit {
   }
 
   populateFinancialInstitutions(): void {
-    this.financialInstitutions = [...new Set(this.documents.map(doc => doc.financial_institutions_name))];
+    this.financialInstitutions = [...new Set(this.documents.map(doc => doc.financialInstitutionsName))];
   }
 
   filterDocuments(): void {
     // Filtrar los documentos por entidad financiera y estado (In Progress)
     this.filteredDocuments = this.documents.filter(document => {
-      const matchesInstitution = !this.selectedFinancialInstitution || document.financial_institutions_name === this.selectedFinancialInstitution;
+      const matchesInstitution = !this.selectedFinancialInstitution || document.financialInstitutionsName === this.selectedFinancialInstitution;
       const matchesPending = !this.showPendingOnly || document.status === 'En Progreso';
       return matchesInstitution && matchesPending;
     });
@@ -61,15 +61,15 @@ export class PendingComponent implements OnInit {
     if (this.orderByBank) {
       // Ordenar por entidad bancaria y luego por fecha de vencimiento si el checkbox está activo
       this.filteredDocuments.sort((a, b) => {
-        if (a.financial_institutions_name === b.financial_institutions_name) {
+        if (a.financialInstitutionsName === b.financialInstitutionsName) {
           // Si las entidades son iguales, ordenar por fecha de vencimiento
-          return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
+          return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
         }
-        return a.financial_institutions_name.localeCompare(b.financial_institutions_name);
+        return a.financialInstitutionsName.localeCompare(b.financialInstitutionsName);
       });
     } else {
       // Ordenar solo por fecha de vencimiento si el checkbox de entidad bancaria no está activo
-      this.filteredDocuments.sort((a, b) => new Date(a.due_date).getTime() - new Date(b.due_date).getTime());
+      this.filteredDocuments.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
     }
   }
 

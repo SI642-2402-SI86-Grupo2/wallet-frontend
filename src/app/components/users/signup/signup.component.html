@@ -1,3 +1,4 @@
+
 <form (ngSubmit)="signUp()" class="space-y-6">
   <div class="flex h-screen flex-col justify-center px-6 py-12 lg:px-8 mt-14 md:-mt-6 mb-28">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -44,7 +45,17 @@
       </p>
     </div>
   </div>
-</form>
+
+  <div *ngIf="!hasToken()">
+    <button type="submit" class="flex w-full justify-center rounded-md bg-gradient-to-r from-[#4A90E2] to-[#9013FE] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gradient-to-r hover:from-[#1D4ED8] hover:to-[#7B68A5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A90E2] z-10">
+      Sign up
+    </button>
+  </div>
+  <div *ngIf="hasToken()">
+    <button (click)="logout()" class="flex w-full justify-center rounded-md bg-gradient-to-r from-[#4A90E2] to-[#9013FE] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gradient-to-r hover:from-[#1D4ED8] hover:to-[#7B68A5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A90E2] z-10">
+      Logout
+    </button>
+  </div>
 
 <div *ngIf="welcomeMessage" class="welcome-message">
   {{ welcomeMessage }}

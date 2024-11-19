@@ -1,9 +1,10 @@
+// src/app/services/portfolios.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Portfolios } from '../models/portfolios';
 import { environment } from '../../environments/environment';
-import { AuthService } from './auth.service';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,10 @@ import { AuthService } from './auth.service';
 export class PortfoliosService {
   private apiUrl = `${environment.apiUrl}/portfolio`;
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private storageService: StorageService) { }
 
   private getHeaders(): HttpHeaders {
-    const token = this.authService.getToken();
+    const token = this.storageService.getToken();
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 

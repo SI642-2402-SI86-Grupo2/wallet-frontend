@@ -18,22 +18,18 @@
     .table {
       border-spacing: 0 15px;
     }
-
     .table tr {
       border-radius: 20px;
       overflow: hidden; /* Asegura que los bordes redondeados se apliquen correctamente */
     }
-
     .table td:first-child,
     .table th:first-child {
       border-radius: .625rem 0 0 .625rem; /* Esquina superior izquierda redondeada */
     }
-
     .table td:last-child,
     .table th:last-child {
       border-radius: 0 .625rem .625rem 0; /* Esquina superior derecha redondeada */
     }
-
   </style>
   <div class="flex items-center justify-center overflow-x-auto ">
     <table class="table w-full rounded-lg shadow-md overflow-hidden border-separate">
@@ -51,10 +47,10 @@
       <tbody class="space-y-4">
       <tr *ngFor="let document of documents; let i = index; trackBy: trackByFn" class="bg-white  border-b border-gray-200 flex flex-col md:table-row ">
         <td class="py-4 px-6 text-center before:content-['Tipo_de_Documento'] before:block before:font-bold before:text-lg md:before:content-none">
-          {{ document.document_type }}
+          {{ document.documentType }}
         </td>
         <td class="py-4 px-6 text-center before:content-['Institución_Financiera'] before:block before:font-bold before:text-lg md:before:content-none">
-          {{ document.financial_institutions_name }}
+          {{ document.financialInstitutionsName }}
         </td>
         <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Moneda'] before:block before:font-bold before:text-lg md:before:content-none">
           {{ document.currency }}
@@ -98,7 +94,6 @@
     </table>
   </div>
 
-
   <!-- Modal -->
   <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4" (click)="closeModal()">
     <div class="bg-[#E9E5DA] p-6 rounded-lg shadow-lg w-full max-w-3xl h-[80vh] overflow-y-scroll modal-scroll" (click)="$event.stopPropagation()">
@@ -115,7 +110,7 @@
 
           <div class="col-span-1">
             <label class="block text-gray-700">Tipo de Documento</label>
-            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.document_type" name="document_type">
+            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.documentType" name="document_type">
               <option value="Letras">Letras</option>
               <option value="Factura">Factura</option>
             </select>
@@ -123,7 +118,7 @@
           <!-- Factoring y confirming -->
           <div class="col-span-1">
             <label class="block text-gray-700">Institución Financiera</label>
-            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.financial_institutions_name" name="financial_institutions_name">
+            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.financialInstitutionsName" name="financial_institutions_name">
               <option value="Banco de Crédito del Perú">Banco de Crédito del Perú</option>
               <option value="BBVA Perú">BBVA Perú</option>
               <option value="Scotiabank Perú">Scotiabank Perú</option>
@@ -147,11 +142,11 @@
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Nombre de la Empresa</label>
-            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issuer_name" name="issuer_name" placeholder="Issuer Name" />
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issuerName" name="issuer_name" placeholder="Issuer Name" />
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">RUC de la Empresa</label>
-            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issuer_ruc" name="issuer_ruc" placeholder="Issuer RUC" />
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issuerRuc" name="issuer_ruc" placeholder="Issuer RUC" />
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Moneda</label>
@@ -161,6 +156,12 @@
               <option value="PEN">PEN</option>
             </select>
           </div>
+
+
+
+
+
+
           <div class="col-span-1">
             <label class="block text-gray-700">Monto</label>
             <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.amount" name="amount" placeholder="Amount" />
@@ -171,15 +172,15 @@
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Fecha de Emisión</label>
-            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issue_date" name="issue_date" />
+            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issueDate" name="issue_date" />
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Fecha de Vencimiento</label>
-            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.due_date" name="due_date" />
+            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.dueDate" name="due_date" />
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Términos de Pago</label>
-            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.payment_terms" name="payment_terms" placeholder="Payment Terms" />
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.paymentTerms" name="payment_terms" placeholder="Payment Terms" />
           </div>
 
           <hr class="col-span-1 md:col-span-2 my-4">
@@ -189,15 +190,15 @@
 
           <div class="col-span-1">
             <label class="block text-gray-700">Fecha de Descuento</label>
-            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.discount_date" name="discount_date" />
+            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.discountDate" name="discount_date" />
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Tasa Nominal</label>
-            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.nominal_rate" name="nominal_rate" placeholder="Nominal Rate" />
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.nominalRate" name="nominal_rate" placeholder="Nominal Rate" />
           </div>
           <div class="col-span-1">
             <label class="block text-gray-700">Tasa Efectiva</label>
-            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.effective_rate" name="effective_rate" placeholder="Effective Rate" />
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.effectiveRate" name="effective_rate" placeholder="Effective Rate" />
           </div>
 
           <hr class="col-span-1 md:col-span-2 my-4">
@@ -280,11 +281,6 @@
             </div>
           </div>
 
-
-
-
-
-
           <hr class="col-span-1 md:col-span-2 my-4">
 
           <div class="col-span-1">
@@ -305,42 +301,37 @@
           <button type="submit" class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition">{{ isEditMode ? 'Actualizar' : 'Agregar' }}</button>
         </div>
       </form>
-
     </div>
   </div>
-
 
   <!-- View Document Modal -->
   <div *ngIf="isViewModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4" (click)="closeViewModal()">
     <div class="bg-[#E9E5DA] p-6 rounded-lg shadow-lg w-full sm:w-2/3 md:w-1/2 lg:w-2/3 max-w-4xl h-auto max-h-[80vh] overflow-y-auto" (click)="$event.stopPropagation()">
       <h3 class="text-xl font-bold mb-4 text-center">View Document</h3>
-
-
       <div class="bg-white p-3 rounded-lg">
-
       <h3 class="text-1xl font-bold text-gray-700 mb-4">Datos del Documento:</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><strong>Tipo de Documento:</strong> {{ selectedDocument?.document_type }}</div>
-        <div><strong>Institución Financiera:</strong> {{ selectedDocument?.financial_institutions_name }}</div>
+        <div><strong>Tipo de Documento:</strong> {{ selectedDocument?.documentType }}</div>
+        <div><strong>Institución Financiera:</strong> {{ selectedDocument?.financialInstitutionsName }}</div>
         <div><strong>Número:</strong> {{ selectedDocument?.number }}</div>
         <div><strong>Serie:</strong> {{ selectedDocument?.series }}</div>
-        <div><strong>Nombre de la Empresa:</strong> {{ selectedDocument?.issuer_name }}</div>
-        <div><strong>RUC de la Empresa:</strong> {{ selectedDocument?.issuer_ruc }}</div>
+        <div><strong>Nombre de la Empresa:</strong> {{ selectedDocument?.issuerName }}</div>
+        <div><strong>RUC de la Empresa:</strong> {{ selectedDocument?.issuerRuc }}</div>
         <div><strong>Moneda:</strong> {{ selectedDocument?.currency }}</div>
         <div><strong>Monto:</strong> {{ selectedDocument?.amount }}</div>
         <div><strong>IGV:</strong> {{ selectedDocument?.igv }}</div>
-        <div><strong>Fecha de Emisión:</strong> {{ selectedDocument?.issue_date | date:'shortDate' }}</div>
-        <div><strong>Fecha de Vencimiento:</strong> {{ selectedDocument?.due_date | date:'shortDate' }}</div>
-        <div><strong>Términos de Pago:</strong> {{ selectedDocument?.payment_terms }}</div>
+        <div><strong>Fecha de Emisión:</strong> {{ selectedDocument?.issueDate | date:'shortDate' }}</div>
+        <div><strong>Fecha de Vencimiento:</strong> {{ selectedDocument?.dueDate | date:'shortDate' }}</div>
+        <div><strong>Términos de Pago:</strong> {{ selectedDocument?.paymentTerms }}</div>
       </div>
 
         <hr class="my-4">
         <h3 class="text-1xl font-bold text-gray-700 mb-4">Datos del Descuento:</h3>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div><strong>Fecha de Descuento:</strong> {{ selectedDocument?.discount_date | date:'shortDate' }}</div>
-          <div><strong>Tasa Nominal:</strong> {{ selectedDocument?.nominal_rate }}</div>
-          <div><strong>Tasa Efectiva:</strong> {{ selectedDocument?.effective_rate }}</div>
+          <div><strong>Fecha de Descuento:</strong> {{ selectedDocument?.discountDate | date:'shortDate' }}</div>
+          <div><strong>Tasa Nominal:</strong> {{ selectedDocument?.nominalRate }}</div>
+          <div><strong>Tasa Efectiva:</strong> {{ selectedDocument?.effectiveRate }}</div>
         </div>
 
         <hr class="my-4">
@@ -352,8 +343,8 @@
           <!-- Costos Iniciales -->
           <div class="col-span-1 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
             <h3 class="text-lg font-semibold text-gray-700 mb-3">Costos Iniciales:</h3>
-            <div *ngIf="selectedDocument?.initial_costs" class="space-y-2">
-              <div *ngFor="let cost of parseCosts(selectedDocument?.initial_costs ?? '')" class="p-2 bg-gray-100 border border-gray-300 rounded-lg shadow">
+            <div *ngIf="selectedDocument?.initialCosts" class="space-y-2">
+              <div *ngFor="let cost of parseCosts(selectedDocument?.initialCosts ?? '')" class="p-2 bg-gray-100 border border-gray-300 rounded-lg shadow">
                 <div class="flex justify-between items-center">
                   <span class="text-gray-600 font-medium w-3/5">{{ cost.motivo }}</span>
                   <span class="text-right font-bold text-gray-800 truncate w-2/5 ml-2" title="{{ cost.valor }}">{{ cost.valor }}</span>
@@ -365,8 +356,8 @@
           <!-- Costos Finales -->
           <div class="col-span-1 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
             <h3 class="text-lg font-semibold text-gray-700 mb-3">Costos Finales:</h3>
-            <div *ngIf="selectedDocument?.final_costs" class="space-y-4">
-              <div *ngFor="let cost of parseCosts(selectedDocument?.final_costs ?? '')" class="p-4 bg-gray-100 border border-gray-300 rounded-lg shadow">
+            <div *ngIf="selectedDocument?.finalCosts" class="space-y-4">
+              <div *ngFor="let cost of parseCosts(selectedDocument?.finalCosts ?? '')" class="p-4 bg-gray-100 border border-gray-300 rounded-lg shadow">
                 <div class="flex justify-between items-center">
                   <span class="text-gray-600 font-medium w-3/5">{{ cost.motivo }}</span>
                   <span class="text-right font-bold text-gray-800 truncate w-2/5 mr-2" title="{{ cost.valor }}">{{ cost.valor }}</span>
@@ -375,11 +366,6 @@
             </div>
           </div>
         </div>
-
-
-
-
-
         <hr class="my-4">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
@@ -398,5 +384,3 @@
     </div>
   </div>
 </div>
-
-

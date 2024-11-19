@@ -1,3 +1,4 @@
+// src/app/components/portfolios/portfolios.component.ts
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Portfolios } from '../../models/portfolios';
@@ -29,7 +30,6 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.storageService.setTestUserId();
     this.loadPortfolios();
   }
 

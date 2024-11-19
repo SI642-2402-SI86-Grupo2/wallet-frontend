@@ -1,5 +1,6 @@
 import { Component, HostListener, ElementRef } from '@angular/core';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { StorageService } from '../.././services/storage.service';
 
 @Component({
   selector: 'app-header',
@@ -12,21 +13,17 @@ export class HeaderComponent {
 
   constructor(
     private eRef: ElementRef,
-    private router: Router
+    private router: Router,
+    private storageService: StorageService
   ) {}
-
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
-    //document.body.style.overflow = this.menuOpen ? 'hidden' : '';
   }
-
 
   toggleProfileMenu() {
     this.profileMenuOpen = !this.profileMenuOpen;
   }
-
-
 
   // routes
   goHome(): void {
@@ -65,18 +62,20 @@ export class HeaderComponent {
   }
 
   logout(): void {
-    console.log('Logout');
+    this.storageService.clearToken();
+    this.router.navigate(['/login']);
     this.closeMenus(); // Cierra el menú desplegable
   }
 
-// Método para cerrar los menús desplegables
+  hasToken(): boolean {
+    return !!this.storageService.getToken();
+  }
+
+  // Método para cerrar los menús desplegables
   closeMenus(): void {
     this.menuOpen = false; // Cierra el menú móvil
     this.profileMenuOpen = false; // Cierra el menú de perfil (por si acaso)
-    //document.body.style.overflow = this.menuOpen ? 'hidden' : '';
-
   }
-
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
@@ -84,8 +83,4 @@ export class HeaderComponent {
       this.profileMenuOpen = false;
     }
   }
-
-
-
-
 }

@@ -35,15 +35,15 @@
       </thead>
       <tbody>
       <tr *ngFor="let document of filteredDocuments" class="bg hover:bg-[#E2DCE5] transition-colors duration-200 border-b border-[#C1B5C8]">
-        <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.document_type }}</td>
-        <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.financial_institutions_name }}</td>
+        <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.documentType }}</td>
+        <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.financialInstitutionsName }}</td>
         <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.amount | currency }}</td>
         <td class="py-4 px-6 text-center text-[#2F2D3B]">
           {{ document.status === 'Completado' ? document.tcea+'%' : 'Pendiente' }}
         </td>
-        <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.due_date | date: 'dd/MM/yyyy' }}</td>
+        <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.dueDate | date: 'dd/MM/yyyy' }}</td>
         <td class="py-4 px-6 text-center">
-          <button (click)="selectPortfolio(document.portfolios_id)" class="text-[#70CF80] hover:underline hover:text-[#5EE474] transition-colors duration-200">Ver Portafolio</button>
+          <button (click)="selectPortfolio(document.portfolioId)" class="text-[#70CF80] hover:underline hover:text-[#5EE474] transition-colors duration-200">Ver Portafolio</button>
         </td>
       </tr>
       </tbody>

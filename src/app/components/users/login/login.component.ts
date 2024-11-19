@@ -1,4 +1,6 @@
+// src/app/components/users/login/login.component.ts
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { StorageService } from '../../../services/storage.service';
 
@@ -12,7 +14,7 @@ export class LoginComponent {
   password: string = '';
   welcomeMessage: string = '';
 
-  constructor(private authService: AuthService, private storageService: StorageService) {}
+  constructor(private authService: AuthService, private storageService: StorageService, private router: Router) {}
 
   login(): void {
     this.authService.signIn(this.email, this.password).subscribe(response => {
@@ -21,6 +23,7 @@ export class LoginComponent {
       this.welcomeMessage = 'Bienvenido';
       setTimeout(() => {
         this.welcomeMessage = '';
+        this.router.navigate(['/main-app']);
       }, 3000);
     }, error => {
       console.error('Login failed', error);
@@ -29,5 +32,14 @@ export class LoginComponent {
         this.welcomeMessage = '';
       }, 3000);
     });
+  }
+
+  logout(): void {
+    this.storageService.clearToken();
+    this.router.navigate(['/login']);
+  }
+
+  hasToken(): boolean {
+    return !!this.storageService.getToken();
   }
 }

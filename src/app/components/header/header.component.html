@@ -1,5 +1,5 @@
 <header class="bg-[#453C51] fixed top-0 w-full z-50 shadow-md shadow-[rgba(0,0,0,0.2)]">
-<nav class="mx-auto flex max-w-8xl items-center justify-between p-4 lg:px-6" aria-label="Global">
+  <nav class="mx-auto flex max-w-8xl items-center justify-between p-4 lg:px-6" aria-label="Global">
     <div class="flex lg:flex-1">
       <button (click)="goHome()" class="-m-1.5 p-1.5" aria-label="Wallet Company">
         <span class="sr-only">Wallet Company</span>
@@ -21,22 +21,13 @@
       <button (click)="goReports()" class="text-sm font-semibold leading-6 text-white">Informes</button>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-2">
-      <button (click)="goLogin()" class="text-sm font-semibold leading-6 text-white">Log in <span aria-hidden="true">&rarr;</span></button>
-      <button (click)="goSignup()" class="ml-6 inline-flex items-center rounded-md bg-[#E9E5DA] px-3 py-2 text-sm font-semibold text-[#453C51] hover:text-white shadow-sm hover:bg-[#C1B5C8] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
-
-      <!-- Profile Button with Dropdown Menu -->
-      <div class="relative">
-        <button (click)="toggleProfileMenu()" class="flex items-center text-gray-900">
-          <img src="/default-profile-photo.svg" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
-          <span class="sr-only">Perfil</span>
-        </button>
-        <div *ngIf="profileMenuOpen" class="absolute right-0 mt-2 w-48 rounded-md bg-[#453C51] shadow-lg ring-1 ring-black ring-opacity-5">
-          <div class="p-4 space-y-2">
-            <button (click)="goProfile()" class="block px-4 py-2 w-full text-sm text-center text-white hover:text-[#453C51] hover:bg-[#E9E5DA] rounded-md">Perfil</button>
-            <button (click)="logout()" class="block w-full px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-md">Log out</button>
-          </div>
-        </div>
-      </div>
+      <ng-container *ngIf="!hasToken(); else loggedIn">
+        <button (click)="goLogin()" class="text-sm font-semibold leading-6 text-white">Log in <span aria-hidden="true">&rarr;</span></button>
+        <button (click)="goSignup()" class="ml-6 inline-flex items-center rounded-md bg-[#E9E5DA] px-3 py-2 text-sm font-semibold text-[#453C51] hover:text-white shadow-sm hover:bg-[#C1B5C8] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
+      </ng-container>
+      <ng-template #loggedIn>
+        <button (click)="logout()" class="text-sm font-semibold leading-6 text-white">Log out</button>
+      </ng-template>
     </div>
   </nav>
 
@@ -77,8 +68,13 @@
             <a (click)="goReports()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Informes</a>
           </div>
           <div class="py-6">
-            <button (click)="goLogin()" class="w-full inline-flex items-center justify-center rounded-md border border-gray-300 bg-[#E9E5DA] px-3 py-2.5 text-base font-semibold text-[#453C51] hover:text-white shadow-sm hover:bg-[#C1B5C8] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Log in <span aria-hidden="true">&rarr;</span></button>
-            <button (click)="goSignup()" class="mt-4 w-full inline-flex items-center justify-center rounded-md bg-[#9884B5] px-3 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-[#AA79A6] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
+            <ng-container *ngIf="!hasToken(); else loggedInMobile">
+              <button (click)="goLogin()" class="w-full inline-flex items-center justify-center rounded-md border border-gray-300 bg-[#E9E5DA] px-3 py-2.5 text-base font-semibold text-[#453C51] hover:text-white shadow-sm hover:bg-[#C1B5C8] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Log in <span aria-hidden="true">&rarr;</span></button>
+              <button (click)="goSignup()" class="mt-4 w-full inline-flex items-center justify-center rounded-md bg-[#9884B5] px-3 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-[#AA79A6] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
+            </ng-container>
+            <ng-template #loggedInMobile>
+              <button (click)="logout()" class="w-full inline-flex items-center justify-center rounded-md bg-red-500 px-3 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Log out</button>
+            </ng-template>
           </div>
         </div>
       </div>
