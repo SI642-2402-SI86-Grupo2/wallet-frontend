@@ -1,37 +1,46 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 import { Portfolios } from '../models/portfolios';
 import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PortfoliosService {
-  private apiUrl = `${environment.apiUrl}/portfolios`;
+  private apiUrl = `${environment.apiUrl}/portfolio`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
+
+  private getHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
 
   getPortfoliosByUserId(userId: number): Observable<Portfolios[]> {
-    return this.http.get<Portfolios[]>(`${this.apiUrl}?users_id=${userId}`);
+    return this.http.get<Portfolios[]>(`${this.apiUrl}/profile/${userId}`, { headers: this.getHeaders() });
   }
 
   addPortfolio(portfolio: Portfolios): Observable<Portfolios> {
-    return this.http.post<Portfolios>(this.apiUrl, portfolio);
+    return this.http.post<Portfolios>(this.apiUrl, portfolio, { headers: this.getHeaders() });
   }
 
   updatePortfolio(portfolio: Portfolios): Observable<Portfolios> {
-    return this.http.put<Portfolios>(`${this.apiUrl}/${portfolio.id}`, portfolio);
+    return this.http.put<Portfolios>(`${this.apiUrl}/${portfolio.id}`, portfolio, { headers: this.getHeaders() });
   }
 
   deletePortfolio(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
   getMaxId(): Observable<number> {
-    return this.http.get<Portfolios[]>(this.apiUrl).pipe(
+    return this.http.get<Portfolios[]>(this.apiUrl, { headers: this.getHeaders() }).pipe(
       map((portfolios: Portfolios[]) => Math.max(...portfolios.map((p: Portfolios) => p.id || 0), 0))
     );
   }
 
+  getPortfoliosByDateRange(): Observable<Portfolios[]> {
+    return this.http.get<Portfolios[]>(`${this.apiUrl}/date-range`, { headers: this.getHeaders() });
+  }
 }

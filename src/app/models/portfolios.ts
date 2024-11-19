@@ -1,19 +1,17 @@
 export class Portfolios {
   id: number;
-  portfolio_name: string;
+  portfolioName: string;
   description: string;
-  discount_date: Date;
-  total_tcea: number;
-  users_id: number;
+  discountDate: Date;
+  totalTcea: number;
+  profileId: number;
 
-
-  constructor(id: number, portfolio_name: string, description: string, discount_date: Date, total_tcea: number, users_id: number) {
+  constructor(id: number, portfolioName: string, description: string, discountDate: Date, totalTcea: number, profileId: number) {
     this.id = id;
-    this.portfolio_name = portfolio_name;
+    this.portfolioName = portfolioName;
     this.description = description;
-    this.discount_date = discount_date;
-    this.total_tcea = total_tcea;
-    this.users_id = users_id;
-
+    this.discountDate = discountDate;
+    this.totalTcea = totalTcea;
+    this.profileId = profileId;
   }
 }

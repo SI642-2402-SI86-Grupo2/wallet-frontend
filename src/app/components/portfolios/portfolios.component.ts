@@ -1,11 +1,10 @@
-import {Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Portfolios } from '../../models/portfolios';
 import { PortfoliosService } from '../../services/portfolios.service';
 import { StorageService } from '../../services/storage.service';
 import { DocumentsService } from '../../services/documents.service';
 import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'app-portfolios',
@@ -24,16 +23,16 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
   constructor(
     private portfoliosService: PortfoliosService,
     private storageService: StorageService,
-    private documentsService: DocumentsService,  // Agregar DocumentsService
+    private documentsService: DocumentsService,
     private router: Router,
-  private cdr: ChangeDetectorRef
-
-) {}
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.storageService.setTestUserId();
     this.loadPortfolios();
   }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
     console.log('Component destroyed and resources cleaned up');
@@ -64,10 +63,10 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
         next: (documents) => {
           if (documents.length > 0) {
             const totalTCEA = documents.reduce((sum, doc) => sum + doc.tcea, 0);
-            portfolio.total_tcea = totalTCEA / documents.length;
-            resolve(portfolio.total_tcea);
+            portfolio.totalTcea = totalTCEA / documents.length;
+            resolve(portfolio.totalTcea);
           } else {
-            portfolio.total_tcea = 0;
+            portfolio.totalTcea = 0;
             resolve(0);
           }
         },
@@ -92,14 +91,14 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
   }
 
   addPortfolio() {
-    if (!this.portfolio.portfolio_name || !this.portfolio.description || !this.portfolio.discount_date /*|| !this.portfolio.total_tcea*/) {
+    if (!this.portfolio.portfolioName || !this.portfolio.description || !this.portfolio.discountDate) {
       this.errorMessage = 'Please fill in all required fields.';
       return;
     }
 
     const userId = this.storageService.getUserId();
     if (userId !== null) {
-      this.portfolio.users_id = userId;
+      this.portfolio.profileId = userId;
       if (!this.portfolio.id) {
         this.portfoliosService.getMaxId().subscribe({
           next: (maxId) => {
@@ -118,7 +117,7 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
 
   savePortfolio() {
     this.calculateAverageTCEA(this.portfolio).then((averageTCEA) => {
-      this.portfolio.total_tcea = averageTCEA;
+      this.portfolio.totalTcea = averageTCEA;
       if (this.isEditMode) {
         this.portfoliosService.updatePortfolio(this.portfolio).subscribe({
           next: (updatedPortfolio) => {
@@ -142,8 +141,8 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
     });
   }
 
-  editPortfolio(portfolio_id: number) {
-    const index = this.portfolios.findIndex(p => p.id === portfolio_id);
+  editPortfolio(portfolioId: number) {
+    const index = this.portfolios.findIndex(p => p.id === portfolioId);
     if (index !== -1) {
       this.portfolio = { ...this.portfolios[index] };
 
@@ -172,6 +171,7 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
   selectPortfolio(portfolioId: number) {
     this.router.navigate([`/portfolios/${portfolioId}/documents`]);
   }
+
   trackByFn(index: number, item: Portfolios): number {
     return item.id;
   }
