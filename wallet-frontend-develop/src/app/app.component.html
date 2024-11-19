@@ -1,0 +1,24 @@
+<div class="app-container flex flex-col min-h-screen relative">
+  <app-validation *ngIf="!isAccessGranted" (accessGranted)="onAccessGranted()"/> <!-- Componente de acceso -->
+  <main class="flex-grow mt-16" *ngIf="isAccessGranted">
+  <div *ngIf="isAuth; else headerBeforeLogin">
+    <app-header/> <!-- Displayed after login -->
+  </div>
+  <ng-template #headerBeforeLogin>
+    <app-header0/> <!-- Displayed before login -->
+  </ng-template>
+
+    <router-outlet/> <!-- Aquí puedes cargar el contenido principal -->
+  </main>
+
+  <app-footer/> <!-- Solo mostrar si el acceso es válido -->
+
+  <!-- Botón flotante para eliminar el localStorage y salir -->
+  <button
+    (click)="logout()"
+    class="fixed bottom-4 right-4 bg-[#453C51] text-white rounded-full p-4 shadow-lg hover:bg-[#9884B5] transition"
+    title="Eliminar acceso"
+  >
+    ✖️
+  </button>
+</div>

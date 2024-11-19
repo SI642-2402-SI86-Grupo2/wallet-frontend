@@ -1,0 +1,402 @@
+<div class="max-w-[calc(100%-48px)]  p-6 mx-6 mt-16 bg-[#E9E5DA] rounded-lg shadow-lg">
+  <div class="flex justify-between items-center mb-6">
+    <button
+      class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition w-[85px] md:w-[90px]"
+      (click)="goBack()">
+      Atrás
+    </button>
+    <h2 class="absolute left-1/2 transform -translate-x-1/2 text-1xl md:text-3xl font-bold">
+      Documentos
+    </h2>
+    <button
+      class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition w-[85px] md:w-[90px]"
+      (click)="openModal()">
+      Agregar
+    </button>
+  </div>
+  <style>
+    .table {
+      border-spacing: 0 15px;
+    }
+
+    .table tr {
+      border-radius: 20px;
+      overflow: hidden; /* Asegura que los bordes redondeados se apliquen correctamente */
+    }
+
+    .table td:first-child,
+    .table th:first-child {
+      border-radius: .625rem 0 0 .625rem; /* Esquina superior izquierda redondeada */
+    }
+
+    .table td:last-child,
+    .table th:last-child {
+      border-radius: 0 .625rem .625rem 0; /* Esquina superior derecha redondeada */
+    }
+
+  </style>
+  <div class="flex items-center justify-center overflow-x-auto ">
+    <table class="table w-full rounded-lg shadow-md overflow-hidden border-separate">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-sm hidden md:table-header-group">
+      <tr>
+        <th class="py-3 px-6">Tipo de Documento</th>
+        <th class="py-3 px-6">Institución Financiera</th>
+        <th class="hidden xl:table-cell py-3 px-6">Moneda</th>
+        <th class="hidden xl:table-cell py-3 px-6">Monto</th>
+        <th class="hidden lg:table-cell py-3 px-6">TCEA</th>
+        <th class="py-3 px-6">Estado</th>
+        <th class="py-3 px-6">Acciones</th>
+      </tr>
+      </thead>
+      <tbody class="space-y-4">
+      <tr *ngFor="let document of documents; let i = index; trackBy: trackByFn" class="bg-white  border-b border-gray-200 flex flex-col md:table-row ">
+        <td class="py-4 px-6 text-center before:content-['Tipo_de_Documento'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.document_type }}
+        </td>
+        <td class="py-4 px-6 text-center before:content-['Institución_Financiera'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.financial_institutions_name }}
+        </td>
+        <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Moneda'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.currency }}
+        </td>
+        <td class="hidden xl:table-cell py-4 px-6 text-center before:content-['Monto'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.amount }}
+        </td>
+        <td class="hidden lg:table-cell  py-4 px-6 text-center before:content-['TCEA'] before:block before:font-bold before:text-lg md:before:content-none">
+          {{ document.tcea }}%
+        </td>
+        <td class="py-4 px-6 text-center before:content-['Estado'] before:block before:font-bold before:text-lg md:before:content-none">
+          <button (click)="toggleStatus(document)" class="focus:outline-none border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">
+            <span [ngClass]="{'text-green-500': document.status === 'Completado', 'text-red-500': document.status === 'Error', 'text-yellow-500': document.status === 'En Progreso'}">
+              <svg class="inline-block h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <circle cx="10" cy="10" r="8"></circle>
+              </svg>
+              {{ document.status }}
+            </span>
+          </button>
+        </td>
+        <td class="py-4 px-6 text-center before:content-['Acciones'] before:block before:font-bold before:text-lg md:before:content-none">
+          <div class="flex flex-row justify-center space-x-6 w-full">
+            <!-- Botón Ver -->
+            <div class="flex items-center justify-center text-gray-700 hover:text-gray-500 transition cursor-pointer p-4" (click)="openViewModal(document)">
+              <i class="material-icons-outlined text-3xl">visibility</i>
+            </div>
+
+            <!-- Botón Editar (Verde) -->
+            <div class="flex items-center justify-center text-green-600 hover:text-green-700 transition cursor-pointer p-4" (click)="editDocument(document.id)">
+              <i class="material-icons-outlined text-3xl">edit</i>
+            </div>
+
+            <!-- Botón Eliminar (Rojo) -->
+            <div class="flex items-center justify-center text-red-600 hover:text-red-700 transition cursor-pointer p-4" (click)="deleteDocument(document.id)">
+              <i class="material-icons-round text-3xl">delete_outline</i>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- Modal -->
+  <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4" (click)="closeModal()">
+    <div class="bg-[#E9E5DA] p-6 rounded-lg shadow-lg w-full max-w-3xl h-[80vh] overflow-y-scroll modal-scroll" (click)="$event.stopPropagation()">
+      <h3 class="text-xl font-bold mb-8 text-center">{{ isEditMode ? 'Editar Documento' : 'Agregar nuevo documento' }}</h3>
+
+      <!-- Display error message if validation fails -->
+      <div *ngIf="errorMessage" class="text-red-500 mb-4">{{ errorMessage }}</div>
+
+      <form (ngSubmit)="addDocument()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div class="col-span-1 md:col-span-2">
+            <h3 class="text-1xs font-bold text-gray-700 mb-4">Datos del Documento:</h3>
+          </div>
+
+          <div class="col-span-1">
+            <label class="block text-gray-700">Tipo de Documento</label>
+            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.document_type" name="document_type">
+              <option value="Letras">Letras</option>
+              <option value="Factura">Factura</option>
+            </select>
+          </div>
+          <!-- Factoring y confirming -->
+          <div class="col-span-1">
+            <label class="block text-gray-700">Institución Financiera</label>
+            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.financial_institutions_name" name="financial_institutions_name">
+              <option value="Banco de Crédito del Perú">Banco de Crédito del Perú</option>
+              <option value="BBVA Perú">BBVA Perú</option>
+              <option value="Scotiabank Perú">Scotiabank Perú</option>
+              <option value="Interbank">Interbank</option>
+              <option value="BanBif">BanBif</option>
+              <option value="Banco Pichincha">Banco Pichincha</option>
+              <option value="Finaktiva">Finaktiva</option>
+              <option value="Quipu">Quipu</option>
+              <option value="Daviplata">Daviplata</option>
+              <option value="Nequi">Nequi</option>
+              <option value="Movii">Movii</option>
+            </select>
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Número</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.number" name="number" placeholder="Number" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Serie</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.series" name="series" placeholder="Series" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Nombre de la Empresa</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issuer_name" name="issuer_name" placeholder="Issuer Name" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">RUC de la Empresa</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issuer_ruc" name="issuer_ruc" placeholder="Issuer RUC" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Moneda</label>
+            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.currency" name="currency">
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="PEN">PEN</option>
+            </select>
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Monto</label>
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.amount" name="amount" placeholder="Amount" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">IGV</label>
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.igv" name="igv" placeholder="IGV" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Fecha de Emisión</label>
+            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.issue_date" name="issue_date" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Fecha de Vencimiento</label>
+            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.due_date" name="due_date" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Términos de Pago</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.payment_terms" name="payment_terms" placeholder="Payment Terms" />
+          </div>
+
+          <hr class="col-span-1 md:col-span-2 my-4">
+          <div class="col-span-1 md:col-span-2">
+            <h3 class="text-1xs font-bold text-gray-700 mb-4">Datos del Descuento:</h3>
+          </div>
+
+          <div class="col-span-1">
+            <label class="block text-gray-700">Fecha de Descuento</label>
+            <input type="date" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.discount_date" name="discount_date" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Tasa Nominal</label>
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.nominal_rate" name="nominal_rate" placeholder="Nominal Rate" />
+          </div>
+          <div class="col-span-1">
+            <label class="block text-gray-700">Tasa Efectiva</label>
+            <input type="number" class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.effective_rate" name="effective_rate" placeholder="Effective Rate" />
+          </div>
+
+          <hr class="col-span-1 md:col-span-2 my-4">
+          <div class="col-span-1 md:col-span-2">
+            <h3 class="text-1xs font-bold text-gray-700 mb-4">Costes / Gastos:</h3>
+          </div>
+
+          <div class="col-span-1">
+            <h3 class="text-1xs text-gray-700">Iniciales:</h3>
+          </div>
+          <div class="col-span-1 hidden md:block">
+            <h3 class="text-1xs text-gray-700">Finales:</h3>
+          </div>
+
+          <!-- Sección para Costos Iniciales -->
+          <div class=" col-span-1">
+            <label class="label text-xs text-gray-700">Motivo</label>
+            <div class="control mb-2">
+              <select #initialMotivo class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Portes">Portes</option>
+                <option value="Fotocopias">Fotocopias</option>
+                <option value="Comisión de desembolso">Comisión de desembolso</option>
+                <option value="Comisión de intermediación">Comisión de intermediación</option>
+                <option value="Gastos de administración">Gastos de administración</option>
+                <option value="Gastos notariales">Gastos notariales</option>
+                <option value="Gastos registrales">Gastos registrales</option>
+                <option value="Seguro">Seguro</option>
+                <option value="Otros gastos">Otros gastos</option>
+              </select>
+            </div>
+            <label class="label text-xs text-gray-700">Valor expresado en</label>
+            <div class="control flex items-center space-x-2">
+              <select #initialType class=" w-2/4 md:w-2/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="efectivo">Efectivo</option>
+                <option value="porcentaje">Porcentaje</option>
+              </select>
+              <input type="text" #initialValor class="w-2/4 md:w-3/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0 o 3%">
+              <div class="flex items-center cursor-pointer" (click)="addInitialCost(initialMotivo.value, initialValor.value, initialType.value); initialValor.value=''; initialType.value='efectivo'">
+                <i class="material-icons-round text-3xl text-blue-500 mr-2">add_circle_outline</i>
+              </div>
+            </div>
+            <div *ngFor="let cost of initialCosts; let i = index; trackBy: trackByFn" class="flex justify-between items-center mt-2 bg-gray-100 p-2 rounded-lg">
+              <span class="text-gray-800">{{ cost.motivo }}: {{ cost.valor }}</span>
+              <div class="flex items-center justify-center text-red-600 hover:text-red-700 transition cursor-pointer p-2" (click)="removeInitialCost(i)">
+                <i class="material-icons-round text-3xl">delete_outline</i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección para Costos Finales -->
+          <div class="col-span-1 block md:hidden">
+            <h3 class="text-1xs text-gray-700 mt-4">Finales:</h3>
+          </div>
+
+          <div class="field mb-4 col-span-1">
+            <label class="label text-xs text-gray-700">Motivo</label>
+            <div class="control mb-2">
+              <select #finalMotivo class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Portes">Portes</option>
+                <option value="Gastos de administración">Gastos de administración</option>
+                <option value="Otros gastos">Otros gastos</option>
+              </select>
+            </div>
+            <label class="label text-xs text-gray-700">Valor expresado en</label>
+            <div class="control flex items-center space-x-2">
+              <select #finalType class="w-2/4 md:w-2/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="efectivo">Efectivo</option>
+                <option value="porcentaje">Porcentaje</option>
+              </select>
+              <input type="text" #finalValor class="w-2/4 md:w-3/5 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0 o 3%">
+              <div class="flex items-center cursor-pointer" (click)="addFinalCost(finalMotivo.value, finalValor.value, finalType.value); finalValor.value=''; finalType.value='efectivo'">
+                <i class="material-icons-round text-3xl text-blue-500 mr-2">add_circle_outline</i>
+              </div>
+            </div>
+            <div *ngFor="let cost of finalCosts; let i = index; trackBy: trackByFn" class="flex justify-between items-center mt-2 bg-gray-100 p-2 rounded-lg">
+              <span class="text-gray-800">{{ cost.motivo }}: {{ cost.valor }}</span>
+              <div class="flex items-center justify-center text-red-600 hover:text-red-700 transition cursor-pointer p-2" (click)="removeFinalCost(i)">
+                <i class="material-icons-round text-3xl">delete_outline</i>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
+          <hr class="col-span-1 md:col-span-2 my-4">
+
+          <div class="col-span-1">
+            <label class="block text-gray-700">Estado</label>
+            <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.status" name="status">
+              <option value="En Progreso">En Progreso</option>
+              <option value="Completado">Completado</option>
+            </select>
+          </div>
+
+          <div class="col-span-1">
+            <label class="block text-gray-700">TCEA</label>
+            <span class="w-full p-2 border border-gray-300 rounded-lg bg-gray-100 block">{{ document.tcea }}%</span>
+          </div>
+        </div>
+        <div class="mb-4 flex justify-end">
+          <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition mr-2" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="bg-[#9884B5] text-white px-4 py-2 rounded-lg hover:bg-[#AA79A6] transition">{{ isEditMode ? 'Actualizar' : 'Agregar' }}</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+
+  <!-- View Document Modal -->
+  <div *ngIf="isViewModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4" (click)="closeViewModal()">
+    <div class="bg-[#E9E5DA] p-6 rounded-lg shadow-lg w-full sm:w-2/3 md:w-1/2 lg:w-2/3 max-w-4xl h-auto max-h-[80vh] overflow-y-auto" (click)="$event.stopPropagation()">
+      <h3 class="text-xl font-bold mb-4 text-center">View Document</h3>
+
+
+      <div class="bg-white p-3 rounded-lg">
+
+      <h3 class="text-1xl font-bold text-gray-700 mb-4">Datos del Documento:</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><strong>Tipo de Documento:</strong> {{ selectedDocument?.document_type }}</div>
+        <div><strong>Institución Financiera:</strong> {{ selectedDocument?.financial_institutions_name }}</div>
+        <div><strong>Número:</strong> {{ selectedDocument?.number }}</div>
+        <div><strong>Serie:</strong> {{ selectedDocument?.series }}</div>
+        <div><strong>Nombre de la Empresa:</strong> {{ selectedDocument?.issuer_name }}</div>
+        <div><strong>RUC de la Empresa:</strong> {{ selectedDocument?.issuer_ruc }}</div>
+        <div><strong>Moneda:</strong> {{ selectedDocument?.currency }}</div>
+        <div><strong>Monto:</strong> {{ selectedDocument?.amount }}</div>
+        <div><strong>IGV:</strong> {{ selectedDocument?.igv }}</div>
+        <div><strong>Fecha de Emisión:</strong> {{ selectedDocument?.issue_date | date:'shortDate' }}</div>
+        <div><strong>Fecha de Vencimiento:</strong> {{ selectedDocument?.due_date | date:'shortDate' }}</div>
+        <div><strong>Términos de Pago:</strong> {{ selectedDocument?.payment_terms }}</div>
+      </div>
+
+        <hr class="my-4">
+        <h3 class="text-1xl font-bold text-gray-700 mb-4">Datos del Descuento:</h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div><strong>Fecha de Descuento:</strong> {{ selectedDocument?.discount_date | date:'shortDate' }}</div>
+          <div><strong>Tasa Nominal:</strong> {{ selectedDocument?.nominal_rate }}</div>
+          <div><strong>Tasa Efectiva:</strong> {{ selectedDocument?.effective_rate }}</div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Encabezados de Costos Iniciales y Costos Finales en una sola fila -->
+          <h3 class="col-span-1 lg:col-span-2 text-1xl font-bold text-gray-800 ">Detalles de Costos</h3>
+
+          <!-- Costos Iniciales -->
+          <div class="col-span-1 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-700 mb-3">Costos Iniciales:</h3>
+            <div *ngIf="selectedDocument?.initial_costs" class="space-y-2">
+              <div *ngFor="let cost of parseCosts(selectedDocument?.initial_costs ?? '')" class="p-2 bg-gray-100 border border-gray-300 rounded-lg shadow">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600 font-medium w-3/5">{{ cost.motivo }}</span>
+                  <span class="text-right font-bold text-gray-800 truncate w-2/5 ml-2" title="{{ cost.valor }}">{{ cost.valor }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Costos Finales -->
+          <div class="col-span-1 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+            <h3 class="text-lg font-semibold text-gray-700 mb-3">Costos Finales:</h3>
+            <div *ngIf="selectedDocument?.final_costs" class="space-y-4">
+              <div *ngFor="let cost of parseCosts(selectedDocument?.final_costs ?? '')" class="p-4 bg-gray-100 border border-gray-300 rounded-lg shadow">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-600 font-medium w-3/5">{{ cost.motivo }}</span>
+                  <span class="text-right font-bold text-gray-800 truncate w-2/5 mr-2" title="{{ cost.valor }}">{{ cost.valor }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        <hr class="my-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+      <div><strong>Estado:</strong> {{ selectedDocument?.status }}</div>
+
+      </div>
+
+      <hr class="my-4">
+
+      <div class="text-center font-bold text-lg">TCEA: {{ selectedDocument?.tcea  }}%</div>
+      </div>
+      <div class="mt-4 flex justify-end">
+        <button class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition" (click)="closeViewModal()">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+

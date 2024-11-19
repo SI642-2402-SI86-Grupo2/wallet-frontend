@@ -1,0 +1,44 @@
+<div class="min-h-screen flex items-center justify-center bg-[#F8F8F8]">
+  <div class="w-3/4 max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-semibold mb-6 text-gray-900">Edita tu Perfil</h2>
+
+    <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
+      <div class="flex flex-col items-center justify-center flex-shrink-0">
+        <img [src]="profile.photo || '/default-profile-photo.svg'" alt="Profile photo" class="h-24 w-24 rounded-full object-cover shadow-md" onerror="this.onerror=null;this.src='/default_image_path.png';">
+        <button class="mt-4 px-4 py-2 bg-gradient-to-r from-[#9884B5] to-[#1D4ED8] text-white text-sm font-medium rounded-md hover:from-[#7b68a5] hover:to-[#1a4abc] focus:outline-none focus:ring-2 focus:ring-[#9884B5] focus:ring-opacity-75">
+          Cambiar foto
+        </button>
+      </div>
+
+      <div class="flex-grow">
+        <div class="grid grid-cols-1 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Nombre:</label>
+            <input [(ngModel)]="profile.firstName" type="text" class="p-1 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-[#9884B5] focus:ring-[#9884B5] sm:text-sm" placeholder="First Name">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Apellido:</label>
+            <input [(ngModel)]="profile.lastName" type="text" class="p-1 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-[#9884B5] focus:ring-[#9884B5] sm:text-sm" placeholder="Last Name">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Correo Electrónico:</label>
+            <input [(ngModel)]="profile.email" type="email" class="p-1 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-[#9884B5] focus:ring-[#9884B5] sm:text-sm" placeholder="email@example.com">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Contraseña:</label>
+            <input type="password" class="p-1 mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-[#9884B5] focus:ring-[#9884B5] sm:text-sm" placeholder="********">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-end">
+      <button (click)="saveProfile()" class="px-6 py-2 bg-gradient-to-r from-[#9884B5] to-[#1D4ED8] text-white text-sm font-medium rounded-md hover:from-[#7b68a5] hover:to-[#1a4abc] focus:outline-none focus:ring-2 focus:ring-[#9884B5] focus:ring-opacity-75">
+        Guardar
+      </button>
+    </div>
+  </div>
+</div>
