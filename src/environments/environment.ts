@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api/v1'
+  apiUrl: 'https://walletbackend-738164563611.us-central1.run.app/api/v1'
 };

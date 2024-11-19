@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/v1/authentication';
+  private apiUrl = 'https://walletbackend-738164563611.us-central1.run.app/api/v1/authentication';
 
   constructor(private http: HttpClient) {}
 
