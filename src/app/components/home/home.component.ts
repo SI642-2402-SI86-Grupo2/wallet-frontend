@@ -8,12 +8,22 @@ import { Application } from '@splinetool/runtime';
 })
 export class HomeComponent implements AfterViewInit {
 
-  ngAfterViewInit() {
+
+  ngAfterViewInit(): void {
     const video = document.getElementById('videoElement') as HTMLVideoElement;
+
     if (video) {
-      video.playbackRate = 0.5; // Adjust the playback speed to 50%
+      video.muted = true; // Asegurarse de que el video esté silenciado
+      video.playbackRate = 0.5; // Ajustar velocidad de reproducción si es necesario.
+
+      video.play().then(() => {
+        console.log('Video reproduciéndose automáticamente.');
+      }).catch(error => {
+        console.error('Error al intentar reproducir el video automáticamente:', error);
+      });
     }
   }
+
 /*
   ngAfterViewInit() {
     // Initialize first Spline application

@@ -1,15 +1,37 @@
-<div class="app-container flex flex-col min-h-screen relative">
-  <app-validation *ngIf="!isAccessGranted" (accessGranted)="onAccessGranted()"></app-validation> <!-- Componente de acceso -->
+<div class="app-container flex flex-col min-h-screen">
+  <app-header></app-header>
 
-  <app-header *ngIf="isAccessGranted"></app-header> <!-- Solo mostrar si el acceso es válido -->
-
-  <main class="flex-grow mt-16" *ngIf="isAccessGranted">
-    <router-outlet></router-outlet> <!-- Aquí puedes cargar el contenido principal -->
+  <main class="flex-grow mt-16 ">
+    <router-outlet></router-outlet>
   </main>
 
-  <app-footer *ngIf="isAccessGranted"></app-footer> <!-- Solo mostrar si el acceso es válido -->
+  <app-footer></app-footer>
+</div>
 
-  <!-- Botón flotante para eliminar el localStorage y salir -->
+
+
+
+
+
+
+
+
+
+
+<!--
+
+<div class="app-container flex flex-col min-h-screen relative">
+  <app-validation *ngIf="!isAccessGranted" (accessGranted)="onAccessGranted()"></app-validation> Componente de acceso
+
+  <app-header *ngIf="isAccessGranted"></app-header> Solo mostrar si el acceso es válido
+
+  <main class="flex-grow mt-16" *ngIf="isAccessGranted">
+    <router-outlet></router-outlet> Aquí puedes cargar el contenido principal
+  </main>
+
+  <app-footer *ngIf="isAccessGranted"></app-footer>  Solo mostrar si el acceso es válido
+
+  Botón flotante para eliminar el localStorage y salir
   <button
     (click)="logout()"
     class="fixed bottom-4 right-4 bg-[#453C51] text-white rounded-full p-4 shadow-lg hover:bg-[#9884B5] transition"
@@ -18,3 +40,5 @@
     ✖️
   </button>
 </div>
+
+-->
