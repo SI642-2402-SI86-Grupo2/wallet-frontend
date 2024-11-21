@@ -1,88 +1,83 @@
-
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import { FirebaseService } from '@angular/fire/compat/firestore';  // Asegúrate de que el path sea correcto
+import { saveAs } from 'file-saver';  // Asegúrate de tener el paquete file-saver instalado
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.css'],
+  styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
-  portfolios: any[] = [];
   documents: any[] = [];
-  report: any[] = [];
+  portfolios: any[] = [];
+  reportData: any[] = [];
 
-  constructor(private dataService: DataService) {}
+  constructor(private firebaseService: FirebaseService) {}
 
   ngOnInit(): void {
-    this.fetchData();
+    // Cargar los documentos y portafolios al iniciar
+    this.loadDocuments();
+    this.loadPortfolios();
   }
 
-  fetchData(): void {
-    this.dataService.getPortfolios().subscribe((portfolios: any[]) => {
-      this.portfolios = portfolios;
-      this.dataService.getDocuments().subscribe((documents: any[]) => {
-        this.documents = documents;
+  // Cargar documentos desde Firebase
+  loadDocuments(): void {
+    this.firebaseService.getDocuments().subscribe({
+      next: (data) => {
+        this.documents = data;
         this.generateReport();
-      });
+      },
+      error: (error) => console.error('Error loading documents:', error)
     });
   }
 
+  // Cargar portafolios desde Firebase
+  loadPortfolios(): void {
+    this.firebaseService.getPortfolios().subscribe({
+      next: (data) => {
+        this.portfolios = data;
+        this.generateReport();
+      },
+      error: (error) => console.error('Error loading portfolios:', error)
+    });
+  }
+
+  // Generar el reporte uniendo documentos y portafolios
   generateReport(): void {
-    this.report = this.portfolios.map((portfolio) => {
-      const relatedDocuments = this.documents.filter(
-        (doc) => doc.portfolios_id === portfolio.id
-      );
-      const totalTCEA = relatedDocuments.reduce(
-        (sum, doc) => sum + doc.tcea,
-        0
-      );
-
-      return {
-        Nombre: portfolio.portfolio_name,
-        'TCEA Consolidado': `${totalTCEA.toFixed(2)}%`,
-        Documentos: relatedDocuments.length,
-      };
-    });
+    if (this.documents.length && this.portfolios.length) {
+      this.reportData = this.documents.map((doc) => {
+        const portfolio = this.portfolios.find(p => p.id === doc.portfolioId);
+        return {
+          documentName: doc.name,
+          documentType: doc.type,
+          portfolioName: portfolio ? portfolio.name : 'Unknown',
+          portfolioDescription: portfolio ? portfolio.description : 'No description'
+        };
+      });
+    }
   }
 
-  exportToPDF(): void {
-    if (this.report.length === 0) {
-      alert('No hay datos para generar el reporte.');
-      return;
+  // Guardar el reporte en Firebase
+  async saveReportToFirebase(): Promise<void> {
+    const report = {
+      data: this.reportData,
+      generatedAt: new Date().toISOString()
+    };
+
+    try {
+      await this.firebaseService.saveReport(report);
+      console.log('Report saved to Firebase');
+    } catch (error) {
+      console.error('Error saving report to Firebase:', error);
     }
+  }
 
-    const doc = new jsPDF();
-    doc.text('Reporte de Portafolios', 10, 10);
-
-    const columns = ['Nombre del Portafolio', 'TCEA Consolidado', 'Número de Documentos'];
-    const rows = this.report.map((item) => [
-      item.Nombre,
-      item['TCEA Consolidado'],
-      item.Documentos,
-    ]);
-
-    autoTable(doc, {
-      head: [columns],
-      body: rows,
-      startY: 20,
-      styles: {
-        fontSize: 10,
-        halign: 'center',
-        valign: 'middle',
-      },
-      headStyles: {
-        fillColor: [41, 128, 185],
-        textColor: [255, 255, 255],
-        fontSize: 12,
-      },
-      alternateRowStyles: {
-        fillColor: [240, 240, 240],
-      },
+  // Descargar el reporte como archivo JSON
+  downloadReport(): void {
+    const blob = new Blob([JSON.stringify(this.reportData, null, 2)], {
+      type: 'application/json'
     });
-
-    doc.save('reportes.pdf');
+    saveAs(blob, 'report.json');
   }
 }

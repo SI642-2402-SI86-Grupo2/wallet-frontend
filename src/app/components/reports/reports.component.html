@@ -1,24 +1,25 @@
-<div class="container mt-4">
-  <h2 class="text-center">Reporte de Portafolios</h2>
-  <div class="table-responsive mt-4">
-    <table class="table table-bordered">
-      <thead class="thead-dark">
-      <tr>
-        <th>Nombre del Portafolio</th>
-        <th>TCEA Consolidado</th>
-        <th>Número de Documentos</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let item of report">
-        <td>{{ item.Nombre }}</td>
-        <td>{{ item['TCEA Consolidado'] }}</td>
-        <td>{{ item.Documentos }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="text-center mt-4">
-    <button class="btn btn-primary" (click)="exportToPDF()">Exportar a PDF</button>
-  </div>
+<div class="report-container">
+  <h1>Reportes de Documentos y Portafolios</h1>
+
+  <button (click)="saveReportToFirebase()">Guardar Reporte en Firebase</button>
+  <button (click)="downloadReport()">Descargar Reporte</button>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Documento</th>
+      <th>Tipo</th>
+      <th>Portafolio</th>
+      <th>Descripción</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let report of reportData">
+      <td>{{ report.documentName }}</td>
+      <td>{{ report.documentType }}</td>
+      <td>{{ report.portfolioName }}</td>
+      <td>{{ report.portfolioDescription }}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
