@@ -166,27 +166,49 @@ export class DocumentComponent implements OnInit, OnDestroy {
   }
 
   calculateTCEA(): number {
-    const tasaNominal = this.document.nominalRate / 100;
-    const monto = this.document.amount || 0;
+    // Captura de valores requeridos
+    const valorNeto = this.document.amount || 0; // Monto del documento (Valor Neto)
 
-    const fechaEmision = new Date(this.document.issueDate);
-    const fechaVencimiento = new Date(this.document.dueDate);
-    const fechaDescuento = new Date(this.document.discountDate);
+    // Manejo seguro de initialCosts
+    const initialCostsArray: Array<{ valor: number }> = Array.isArray(this.document.initialCosts)
+      ? this.document.initialCosts
+      : [];
 
-    const dias = (fechaVencimiento.getTime() - fechaEmision.getTime()) / (1000 * 3600 * 24);
-    const diasDescuento = (fechaDescuento.getTime() - fechaEmision.getTime()) / (1000 * 3600 * 24);
+    // Suma de Costos Iniciales
+    const costosIniciales = initialCostsArray.reduce((total, cost) => total + (cost.valor || 0), 0);
 
-    if (dias <= 0 || monto <= 0) {
-      console.error("Las fechas o el monto no son válidos");
+    const retencion = valorNeto * 0.005; // Retención automática (0.5% del Valor Neto)
+    const fechaDescuento = new Date(this.document.discountDate); // Fecha de Descuento
+    const fechaVencimiento = new Date(this.document.dueDate); // Fecha de Vencimiento
+
+    // Validaciones iniciales
+    if (valorNeto <= 0 || !fechaDescuento || !fechaVencimiento) {
+      console.error("Datos insuficientes para calcular la TCEA");
       return 0;
     }
 
-    const tcea = Math.pow(
-      (1 + ((tasaNominal / monto)) / (1 - (diasDescuento / 360))),
-      (360 / dias)
-    ) - 1;
+    // 1. Calcular el Valor Recibido (interno)
+    const valorRecibido = valorNeto - costosIniciales - retencion;
 
-    return tcea * 100;
+    if (valorRecibido <= 0) {
+      console.error("El Valor Recibido no puede ser menor o igual a cero");
+      return 0;
+    }
+
+    // 2. Calcular los días entre descuento y vencimiento
+    const diasTrasladar = (fechaVencimiento.getTime() - fechaDescuento.getTime()) / (1000 * 3600 * 24);
+    if (diasTrasladar <= 0) {
+      console.error("El rango de días entre descuento y vencimiento no es válido");
+      return 0;
+    }
+
+    // 3. Obtener el Valor Entregado
+    const valorEntregado = valorNeto; // Suponemos que el Valor Neto equivale al Valor Entregado
+
+    // 4. Calcular la TCEA usando la fórmula
+    const tcea = Math.pow(valorEntregado / valorRecibido, (360 / diasTrasladar)) - 1;
+
+    return tcea * 100; // Retornar el resultado en porcentaje
   }
 
   editDocument(id: number): void {
