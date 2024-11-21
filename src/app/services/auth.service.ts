@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://walletbackend-738164563611.us-central1.run.app/api/v1/authentication';
+  private apiUrl = `${environment.apiUrl}/api/v1/authentication`;
 
   constructor(private http: HttpClient) {}
 

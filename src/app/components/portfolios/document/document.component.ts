@@ -147,20 +147,20 @@ export class DocumentComponent implements OnInit, OnDestroy {
       this.documentsService.updateDocument(this.document).subscribe({
         next: (updatedDocument) => {
           const index = this.documents.findIndex(d => d.id === updatedDocument.id);
-          if (index !== -1) {
-            this.documents[index] = updatedDocument;
-          }
+          this.documents[index] = updatedDocument;
           this.closeModal();
+          this.loadDocuments(); // Recargar los documentos
         },
-        error: (error) => console.error('Error al actualizar el documento:', error)
+        error: (error) => console.error('Error updating document:', error)
       });
     } else {
       this.documentsService.addDocument(this.document).subscribe({
         next: (newDocument) => {
           this.documents.push(newDocument);
           this.closeModal();
+          this.loadDocuments(); // Recargar los documentos
         },
-        error: (error) => console.error('Error al agregar documento:', error)
+        error: (error) => console.error('Error adding document:', error)
       });
     }
   }

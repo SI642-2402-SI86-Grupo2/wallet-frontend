@@ -9,12 +9,15 @@ import { StorageService } from './storage.service';
   providedIn: 'root'
 })
 export class DocumentsService {
-  private apiUrl = `${environment.apiUrl}/document`;
+  private apiUrl = `${environment.apiUrl}/api/v1/document`;
 
   constructor(private http: HttpClient, private storageService: StorageService) { }
 
   private getHeaders(): HttpHeaders {
     const token = this.storageService.getToken();
+    if (!token) {
+      throw new Error('Token not found');
+    }
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 

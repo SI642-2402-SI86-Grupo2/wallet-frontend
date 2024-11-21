@@ -23,13 +23,13 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     const userId = this.route.snapshot.params['userId'];
     this.token = this.authService.getToken(); // Asume que tienes un método para obtener el token
-    this.profileService.getProfileByUserId(userId, this.token).subscribe(data => {
+    this.profileService.getProfileByUserId(userId).subscribe(data => {
       this.profile = data;
     });
   }
 
   saveProfile(): void {
-    this.profileService.updateProfile(this.profile, this.token).subscribe(response => {
+    this.profileService.updateProfile(this.profile).subscribe(response => {
       console.log('Profile updated successfully', response);
     });
   }

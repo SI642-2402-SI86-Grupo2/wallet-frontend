@@ -132,6 +132,8 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
           next: (newPortfolio) => {
             this.portfolios.push(newPortfolio);
             this.closeModal();
+            this.loadPortfolios(); // Recargar los portfolios
+
           },
           error: (error) => console.error('Error adding portfolio:', error)
         });

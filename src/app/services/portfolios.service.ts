@@ -1,4 +1,3 @@
-// src/app/services/portfolios.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
@@ -10,12 +9,15 @@ import { StorageService } from './storage.service';
   providedIn: 'root'
 })
 export class PortfoliosService {
-  private apiUrl = `${environment.apiUrl}/portfolio`;
+  private apiUrl = `${environment.apiUrl}/api/v1/portfolio`;
 
   constructor(private http: HttpClient, private storageService: StorageService) { }
 
   private getHeaders(): HttpHeaders {
     const token = this.storageService.getToken();
+    if (!token) {
+      throw new Error('Token not found');
+    }
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 

@@ -20,11 +20,8 @@ export class LoginComponent {
     this.authService.signIn(this.email, this.password).subscribe(response => {
       this.storageService.setUserId(response.id);
       this.storageService.setToken(response.token);
-      this.welcomeMessage = 'Bienvenido';
-      setTimeout(() => {
-        this.welcomeMessage = '';
-        this.router.navigate(['/main-app']);
-      }, 3000);
+      this.router.navigate(['/portfolios']);
+      
     }, error => {
       console.error('Login failed', error);
       this.welcomeMessage = 'Login failed. Please try again.';
@@ -34,10 +31,6 @@ export class LoginComponent {
     });
   }
 
-  logout(): void {
-    this.storageService.clearToken();
-    this.router.navigate(['/login']);
-  }
 
   hasToken(): boolean {
     return !!this.storageService.getToken();

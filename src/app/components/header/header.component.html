@@ -15,10 +15,9 @@
       </button>
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
-      <button (click)="goHome()" class="text-sm font-semibold leading-6 text-white">Home</button>
-      <button (click)="goPending()" class="text-sm font-semibold leading-6 text-white">Pendientes</button>
-      <button (click)="goPortfolios()" class="text-sm font-semibold leading-6 text-white">Carteras</button>
-      <button (click)="goReports()" class="text-sm font-semibold leading-6 text-white">Informes</button>
+      <button *ngIf="hasToken()" (click)="goPending()" class="text-sm font-semibold leading-6 text-white">Pendientes</button>
+      <button *ngIf="hasToken()" (click)="goPortfolios()" class="text-sm font-semibold leading-6 text-white">Carteras</button>
+      <button *ngIf="hasToken()" (click)="goReports()" class="text-sm font-semibold leading-6 text-white">Informes</button>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-2">
       <ng-container *ngIf="!hasToken(); else loggedIn">
@@ -26,7 +25,19 @@
         <button (click)="goSignup()" class="ml-6 inline-flex items-center rounded-md bg-[#E9E5DA] px-3 py-2 text-sm font-semibold text-[#453C51] hover:text-white shadow-sm hover:bg-[#C1B5C8] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Sign up</button>
       </ng-container>
       <ng-template #loggedIn>
-        <button (click)="logout()" class="text-sm font-semibold leading-6 text-white">Log out</button>
+        <!-- Profile Button with Dropdown Menu -->
+        <div class="relative">
+          <button (click)="toggleProfileMenu()" class="flex items-center text-gray-900">
+            <img src="/default-profile-photo.svg" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
+            <span class="sr-only">Perfil</span>
+          </button>
+          <div *ngIf="profileMenuOpen" class="absolute right-0 mt-2 w-48 rounded-md bg-[#453C51] shadow-lg ring-1 ring-black ring-opacity-5">
+            <div class="p-4 space-y-2">
+              <button (click)="goProfile()" class="block px-4 py-2 w-full text-sm text-center text-white hover:text-[#453C51] hover:bg-[#E9E5DA] rounded-md">Perfil</button>
+              <button (click)="logout()" class="block w-full px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-md">Log out</button>
+            </div>
+          </div>
+        </div>
       </ng-template>
     </div>
   </nav>
@@ -62,10 +73,9 @@
       <div class="mt-6 border-t border-gray-200 pt-4">
         <div class="-my-6 divide-y divide-gray-500/10">
           <div class="space-y-2 py-6">
-            <a (click)="goHome()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Home</a>
-            <a (click)="goPending()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Pendientes</a>
-            <a (click)="goPortfolios()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Carteras</a>
-            <a (click)="goReports()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Informes</a>
+            <a *ngIf="hasToken()" (click)="goPending()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Pendientes</a>
+            <a *ngIf="hasToken()" (click)="goPortfolios()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Carteras</a>
+            <a *ngIf="hasToken()" (click)="goReports()" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:text-[#453C51] hover:bg-[#E9E5DA]">Informes</a>
           </div>
           <div class="py-6">
             <ng-container *ngIf="!hasToken(); else loggedInMobile">

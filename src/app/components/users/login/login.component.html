@@ -33,12 +33,12 @@
           </div>
         </div>
 
-        <div>
+        <div *ngIf="!hasToken()">
           <button type="submit"
                   class="flex w-full justify-center rounded-md bg-gradient-to-r from-[#4A90E2] to-[#9013FE] px-3 py-1.5
                          text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gradient-to-r hover:from-[#1D4ED8] hover:to-[#7B68A5]
                          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A90E2] z-10">
-            Sign in
+            Log in
           </button>
         </div>
       </div>
@@ -49,16 +49,6 @@
       </p>
     </div>
   </div>
-    <div *ngIf="!hasToken()">
-      <button type="submit" class="flex w-full justify-center rounded-md bg-gradient-to-r from-[#4A90E2] to-[#9013FE] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gradient-to-r hover:from-[#1D4ED8] hover:to-[#7B68A5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A90E2] z-10">
-        Sign in
-      </button>
-    </div>
-    <div *ngIf="hasToken()">
-      <button (click)="logout()" class="flex w-full justify-center rounded-md bg-gradient-to-r from-[#4A90E2] to-[#9013FE] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gradient-to-r hover:from-[#1D4ED8] hover:to-[#7B68A5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A90E2] z-10">
-        Logout
-      </button>
-    </div>
   </form>
 
 <div *ngIf="welcomeMessage" class="welcome-message">
