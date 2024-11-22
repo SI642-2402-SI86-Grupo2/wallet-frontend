@@ -166,49 +166,65 @@ export class DocumentComponent implements OnInit, OnDestroy {
   }
 
   calculateTCEA(): number {
-    // Captura de valores requeridos
-    const valorNeto = this.document.amount || 0; // Monto del documento (Valor Neto)
+    // Paso 1: Calcular el Valor Nominal (VN)
+    const VN = this.document.amount; // Monto total de la factura
 
-    // Manejo seguro de initialCosts
-    const initialCostsArray: Array<{ valor: number }> = Array.isArray(this.document.initialCosts)
-      ? this.document.initialCosts
-      : [];
+    // Paso 2: Calcular el Tiempo de Descuento (t) en días
+    const discountDate = new Date(this.document.discountDate); // Fecha de descuento
+    const dueDate = new Date(this.document.dueDate); // Fecha de vencimiento
+    const t = (dueDate.getTime() - discountDate.getTime()) / (1000 * 60 * 60 * 24); // Convertir a días
 
-    // Suma de Costos Iniciales
-    const costosIniciales = initialCostsArray.reduce((total, cost) => total + (cost.valor || 0), 0);
-
-    const retencion = valorNeto * 0.005; // Retención automática (0.5% del Valor Neto)
-    const fechaDescuento = new Date(this.document.discountDate); // Fecha de Descuento
-    const fechaVencimiento = new Date(this.document.dueDate); // Fecha de Vencimiento
-
-    // Validaciones iniciales
-    if (valorNeto <= 0 || !fechaDescuento || !fechaVencimiento) {
-      console.error("Datos insuficientes para calcular la TCEA");
-      return 0;
+    if (t <= 0) {
+      console.error("El tiempo de descuento (t) debe ser mayor a 0.");
+      return NaN;
     }
 
-    // 1. Calcular el Valor Recibido (interno)
-    const valorRecibido = valorNeto - costosIniciales - retencion;
+    // Paso 3: Calcular el Descuento (D)
+    const TE = this.document.effectiveRate / 100; // Tasa efectiva anual en formato decimal
+    const D = VN * (TE * t / 360); // Fórmula del descuento
 
-    if (valorRecibido <= 0) {
-      console.error("El Valor Recibido no puede ser menor o igual a cero");
-      return 0;
+    // Paso 4: Calcular el Valor Entregado (VE)
+    const VE = VN - D;
+
+    // Paso 5: Calcular los Costos Iniciales (CI)
+    const initialCosts = JSON.parse(this.document.initialCosts || "[]");
+    const CI = Array.isArray(initialCosts)
+      ? initialCosts.reduce((total, cost: any) => {
+        return total + (cost.type === "porcentaje" ? (VN * cost.valor / 100) : cost.valor);
+      }, 0)
+      : 0;
+
+    // Paso 6: Calcular los Costos Finales (CF)
+    const finalCosts = JSON.parse(this.document.finalCosts || "[]");
+    const CF = Array.isArray(finalCosts)
+      ? finalCosts.reduce((total, cost: any) => {
+        return total + (cost.type === "porcentaje" ? (VN * cost.valor / 100) : cost.valor);
+      }, 0)
+      : 0;
+
+    // Paso 7: Calcular el Valor Neto Recibido (VNR)
+    const VNR = VE - CI;
+
+    // Paso 8: Calcular el Valor Neto Pagado (VNP)
+    const VNP = VN + CF;
+
+    if (VNR <= 0 || VNP <= 0) {
+      console.error("VNR o VNP es menor o igual a cero, no se puede calcular la TCEA.");
+      return NaN;
     }
 
-    // 2. Calcular los días entre descuento y vencimiento
-    const diasTrasladar = (fechaVencimiento.getTime() - fechaDescuento.getTime()) / (1000 * 3600 * 24);
-    if (diasTrasladar <= 0) {
-      console.error("El rango de días entre descuento y vencimiento no es válido");
-      return 0;
+    // Paso 9: Calcular la TCEA
+    const exponent = 360 / t; // Exponente de la fórmula
+    const TCEA = Math.pow(VNP / VNR, exponent) - 1;
+
+    if (isNaN(TCEA)) {
+      console.error("No se pudo calcular la TCEA.");
+      return NaN;
     }
 
-    // 3. Obtener el Valor Entregado
-    const valorEntregado = valorNeto; // Suponemos que el Valor Neto equivale al Valor Entregado
-
-    // 4. Calcular la TCEA usando la fórmula
-    const tcea = Math.pow(valorEntregado / valorRecibido, (360 / diasTrasladar)) - 1;
-
-    return tcea * 100; // Retornar el resultado en porcentaje
+    // Paso 10: Asignar el resultado a la propiedad tcea y devolverlo como porcentaje
+    this.document.tcea = TCEA * 100; // Guardar el valor calculado en la propiedad tcea
+    return this.document.tcea;
   }
 
   editDocument(id: number): void {
