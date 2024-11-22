@@ -20,6 +20,8 @@ export class Documents {
   initialCosts: string;
   finalCosts: string;
   portfolioId: number;
+  title?: string; // Agregar propiedad opcional
+  description?: string; // Agregar propiedad opcional
 
   constructor(
     id: number,
@@ -42,7 +44,9 @@ export class Documents {
     status: string,
     initialCosts: string,
     finalCosts: string,
-    portfolioId: number
+    portfolioId: number,
+    title?: string, // Actualizar constructor
+    description?: string // Actualizar constructor
   ) {
     this.id = id;
     this.documentType = documentType;
@@ -65,5 +69,7 @@ export class Documents {
     this.initialCosts = initialCosts;
     this.finalCosts = finalCosts;
     this.portfolioId = portfolioId;
+    this.title = title || 'Sin título'; // Manejo de valores predeterminados
+    this.description = description || 'Sin descripción'; // Manejo
   }
 }
