@@ -133,9 +133,8 @@ export class DocumentComponent implements OnInit, OnDestroy {
     }
   }
 
-  formatCosts(costs: { motivo: string; valor: string }[]): string {
-    const formattedCosts = costs.map(item => `${item.motivo}:${item.valor}`).join(', ');
-    return `{${formattedCosts}}`;
+  formatCosts(costs: { motivo: string; valor: string; tipo: string }[]): string {
+    return JSON.stringify(costs);
   }
 
   saveDocument(): void {
@@ -187,18 +186,18 @@ export class DocumentComponent implements OnInit, OnDestroy {
     const VE = VN - D;
 
     // Paso 5: Calcular los Costos Iniciales (CI)
-    const initialCosts = JSON.parse(this.document.initialCosts || "[]");
+    const initialCosts = this.parseCosts(this.document.initialCosts || "[]");
     const CI = Array.isArray(initialCosts)
       ? initialCosts.reduce((total, cost: any) => {
-        return total + (cost.type === "porcentaje" ? (VN * cost.valor / 100) : cost.valor);
+        return total + (cost.tipo === "porcentaje" ? (VN * parseFloat(cost.valor) / 100) : parseFloat(cost.valor));
       }, 0)
       : 0;
 
     // Paso 6: Calcular los Costos Finales (CF)
-    const finalCosts = JSON.parse(this.document.finalCosts || "[]");
+    const finalCosts = this.parseCosts(this.document.finalCosts || "[]");
     const CF = Array.isArray(finalCosts)
       ? finalCosts.reduce((total, cost: any) => {
-        return total + (cost.type === "porcentaje" ? (VN * cost.valor / 100) : cost.valor);
+        return total + (cost.tipo === "porcentaje" ? (VN * parseFloat(cost.valor) / 100) : parseFloat(cost.valor));
       }, 0)
       : 0;
 
@@ -245,23 +244,14 @@ export class DocumentComponent implements OnInit, OnDestroy {
   }
 
   parseCosts(costsString: string): { motivo: string; valor: string; tipo: string }[] {
-    const costsArray: { motivo: string; valor: string; tipo: string }[] = [];
-    const formattedCosts = costsString.replace(/[{}]/g, '').split(',').map(cost => cost.trim());
-
-    for (const cost of formattedCosts) {
-      const [motivo, valorTipo] = cost.split(':');
-      if (valorTipo) {
-        const [valor, tipo] = valorTipo.split('(');
-        costsArray.push({
-          motivo: motivo.trim(),
-          valor: valor.trim(),
-          tipo: tipo ? tipo.replace(')', '').trim() : ''
-        });
-      }
-    }
-
-    return costsArray;
+  try {
+    console.log('Parsing costs string:', costsString); // Add this line to log the costs string
+    return JSON.parse(costsString);
+  } catch (error) {
+    console.error('Error parsing costs:', error, 'Costs string:', costsString); // Add costs string to error log
+    return [];
   }
+}
 
   toggleStatus(document: Documents): void {
     document.status = document.status === 'En Progreso' ? 'Facturado' : 'En Progreso';
