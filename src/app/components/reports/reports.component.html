@@ -1,25 +1,36 @@
-<div class="report-container">
-  <h1>Reportes de Documentos y Portafolios</h1>
+<div class="portfolios-section">
+  <h3 class="section-title">Portafolios</h3>
+  <div class="portfolio-cards">
+    <div *ngFor="let portfolio of portfolios; let i = index" class="portfolio-card">
+      <div class="portfolio-header">
+        <h4 class="portfolio-name">{{ portfolio.portfolioName }}</h4>
+        <p class="portfolio-description">{{ portfolio.description }}</p>
 
-  <button (click)="saveReportToFirebase()">Guardar Reporte en Firebase</button>
-  <button (click)="downloadReport()">Descargar Reporte</button>
+        <!-- Checkbox para seleccionar portafolio -->
+        <div class="portfolio-select">
+          <input
+            type="checkbox"
+            [id]="'portfolio-' + i"
+            [(ngModel)]="portfolio.selected"
+            class="portfolio-checkbox"
+          />
+          <label [for]="'portfolio-' + i"></label>
+        </div>
+      </div>
 
-  <table>
-    <thead>
-    <tr>
-      <th>Documento</th>
-      <th>Tipo</th>
-      <th>Portafolio</th>
-      <th>Descripción</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let report of reportData">
-      <td>{{ report.documentName }}</td>
-      <td>{{ report.documentType }}</td>
-      <td>{{ report.portfolioName }}</td>
-      <td>{{ report.portfolioDescription }}</td>
-    </tr>
-    </tbody>
-  </table>
+      <div *ngIf="portfolio.documents && portfolio.documents.length" class="portfolio-documents">
+        <h5>Documentos Relacionados:</h5>
+        <ul>
+          <li *ngFor="let doc of portfolio.documents">
+            <strong>{{ doc.title }}</strong>: {{ doc.description }} (TCEA: {{ doc.tcea }}%)
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="action-buttons">
+  <button (click)="generateSelectedPDF()" class="generate-pdf-button">Generar PDF Seleccionado</button>
+  <button (click)="downloadSelectedPortfolios()" class="download-selected-button">Descargar Seleccionados</button>
 </div>

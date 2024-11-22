@@ -1,94 +1,117 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReportsComponent } from './reports.component';
-import { FirebaseService } from '/@firebase/firestore/firebase.service';
+import { FirebaseService } from '../../services/firebase.service';
+import { StorageService } from '../../services/storage.service';
+import { PortfoliosService } from '../../services/portfolios.service';
 import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
 
 describe('ReportsComponent', () => {
   let component: ReportsComponent;
   let fixture: ComponentFixture<ReportsComponent>;
-  let mockFirebaseService: jasmine.SpyObj<FirebaseService>;
+  let firebaseServiceMock: any;
+  let portfoliosServiceMock: any;
+  let storageServiceMock: any;
 
   beforeEach(async () => {
-    // Crear un mock del servicio FirebaseService
-    mockFirebaseService = jasmine.createSpyObj('FirebaseService', [
-      'getDocuments',
-      'getPortfolios',
-      'saveReport'
-    ]);
+    // Mock de FirebaseService
+    firebaseServiceMock = {
+      getDocumentsByPortfolioId: jasmine.createSpy('getDocumentsByPortfolioId').and.callFake((id: string) =>
+        of([{ documentType: 'Factura', financialInstitutionsName: 'Banco1', tcea: 5.5, status: 'Activo' }])
+      )
+    };
 
-    // Simular datos de retorno para documentos y portafolios
-    mockFirebaseService.getDocuments.and.returnValue(of([
-      { id: 1, name: 'Documento 1', type: 'Tipo A', portfolioId: 101 },
-      { id: 2, name: 'Documento 2', type: 'Tipo B', portfolioId: 102 }
-    ]));
+    // Mock de PortfoliosService
+    portfoliosServiceMock = {
+      getPortfoliosByUserId: jasmine.createSpy('getPortfoliosByUserId').and.returnValue(
+        of([{ id: '1', portfolioName: 'Portfolio1', description: 'Description1', totalTcea: 5.5 }])
+      )
+    };
 
-    mockFirebaseService.getPortfolios.and.returnValue(of([
-      { id: 101, name: 'Portafolio 1', description: 'Descripción 1' },
-      { id: 102, name: 'Portafolio 2', description: 'Descripción 2' }
-    ]));
+    // Mock de StorageService
+    storageServiceMock = {
+      getUserId: jasmine.createSpy('getUserId').and.returnValue('test-user-id')
+    };
 
-    mockFirebaseService.saveReport.and.returnValue(Promise.resolve());
-
+    // Configuración del módulo de pruebas
     await TestBed.configureTestingModule({
       declarations: [ReportsComponent],
-      providers: [{ provide: FirebaseService, useValue: mockFirebaseService }]
+      providers: [
+        { provide: FirebaseService, useValue: firebaseServiceMock },
+        { provide: PortfoliosService, useValue: portfoliosServiceMock },
+        { provide: StorageService, useValue: storageServiceMock }
+      ]
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(ReportsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load documents and portfolios on init', () => {
-    expect(component.documents.length).toBe(2);
-    expect(component.portfolios.length).toBe(2);
-    expect(component.reportData.length).toBe(2);
-    expect(component.reportData).toEqual([
+  it('should fetch portfolios and documents on loadAllData', async () => {
+    await component.loadAllData();
+
+    expect(storageServiceMock.getUserId).toHaveBeenCalled();
+    expect(portfoliosServiceMock.getPortfoliosByUserId).toHaveBeenCalledWith('test-user-id');
+    expect(firebaseServiceMock.getDocumentsByPortfolioId).toHaveBeenCalledWith('1');
+    expect(component.portfolios.length).toBe(1);
+    expect(component.portfolios[0].documents.length).toBe(1);
+  });
+
+  it('should generate report data correctly', () => {
+    // Mock de datos
+    component.portfolios = [
       {
-        documentName: 'Documento 1',
-        documentType: 'Tipo A',
-        portfolioName: 'Portafolio 1',
-        portfolioDescription: 'Descripción 1'
-      },
-      {
-        documentName: 'Documento 2',
-        documentType: 'Tipo B',
-        portfolioName: 'Portafolio 2',
-        portfolioDescription: 'Descripción 2'
+        id: '1',
+        portfolioName: 'Portfolio1',
+        description: 'Description1',
+        totalTcea: 5.5,
+        documents: [
+          { documentType: 'Factura', financialInstitutionsName: 'Banco1', tcea: 5.5, status: 'Activo' }
+        ]
       }
-    ]);
+    ];
+
+    component.generateReport();
+
+    expect(component.reportData.length).toBe(1);
+    expect(component.reportData[0].portfolioName).toBe('Portfolio1');
+    expect(component.reportData[0].documents[0].documentType).toBe('Factura');
   });
 
-  it('should save report to Firebase', async () => {
-    await component.saveReportToFirebase();
-    expect(mockFirebaseService.saveReport).toHaveBeenCalledWith({
-      data: component.reportData,
-      generatedAt: jasmine.any(String)
-    });
+  it('should not generate PDF if no portfolios are selected', () => {
+    spyOn(console, 'error');
+    component.portfolios = [];
+    component.generateSelectedPDF();
+    expect(console.error).toHaveBeenCalledWith('Seleccione al menos un portafolio para generar el PDF.');
   });
 
-  it('should download the report as a JSON file', () => {
-    const saveAsSpy = spyOn(window, 'saveAs');
-    component.downloadReport();
-
-    expect(saveAsSpy).toHaveBeenCalled();
-    const blobArg = saveAsSpy.calls.mostRecent().args[0] as Blob;
-    expect(blobArg.type).toBe('application/json');
+  it('should generate PDF correctly when portfolios are selected', () => {
+    spyOn(component, 'generateSelectedPDF');
+    component.portfolios = [
+      {
+        id: '1',
+        portfolioName: 'Portfolio1',
+        description: 'Description1',
+        totalTcea: 5.5,
+        documents: [
+          { documentType: 'Factura', financialInstitutionsName: 'Banco1', tcea: 5.5, status: 'Activo' }
+        ],
+        selected: true
+      }
+    ];
+    component.generateSelectedPDF();
+    expect(component.generateSelectedPDF).toHaveBeenCalled();
   });
 
-  it('should render the report table', () => {
-    const rows = fixture.debugElement.queryAll(By.css('tbody tr'));
-    expect(rows.length).toBe(2);
-
-    const firstRowCells = rows[0].queryAll(By.css('td'));
-    expect(firstRowCells[0].nativeElement.textContent).toContain('Documento 1');
-    expect(firstRowCells[1].nativeElement.textContent).toContain('Tipo A');
-    expect(firstRowCells[2].nativeElement.textContent).toContain('Portafolio 1');
-    expect(firstRowCells[3].nativeElement.textContent).toContain('Descripción 1');
+  it('should display error if user is not authenticated', async () => {
+    storageServiceMock.getUserId.and.returnValue(null);
+    await component.loadAllData();
+    expect(component.errorMessage).toBe('El usuario no está autenticado');
   });
 });

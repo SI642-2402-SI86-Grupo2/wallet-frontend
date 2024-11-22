@@ -1,0 +1,192 @@
+/* General styling for the portfolio section */
+.portfolios-section {
+  margin-top: 20px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4a4a4a;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Portfolio cards styling */
+.portfolio-card {
+  display: flex;
+  flex-direction: column;
+  background: #f9f9f9;
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* Header of the portfolio card */
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.portfolio-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333333;
+  margin: 0;
+}
+
+.portfolio-description {
+  font-size: 14px;
+  color: #666666;
+  margin: 0;
+}
+
+/* Checkbox styling */
+.portfolio-select {
+  position: relative;
+}
+
+.portfolio-checkbox {
+  opacity: 0;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.portfolio-checkbox + label {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #cccccc;
+  border-radius: 50%;
+  background-color: #ffffff;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.portfolio-checkbox:checked + label {
+  border-color: #007bff;
+  background-color: #007bff;
+}
+
+.portfolio-checkbox:checked + label::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Document list styling */
+.portfolio-documents h5 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #4a4a4a;
+  margin-top: 10px;
+}
+
+.portfolio-documents ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.portfolio-documents li {
+  font-size: 14px;
+  color: #555555;
+  margin-bottom: 5px;
+}
+
+/* Action buttons styling */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.action-buttons button {
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons button:hover {
+  transform: translateY(-2px);
+}
+
+.download-selected-button {
+  background-color: #f0ad4e;
+  color: #ffffff;
+}
+
+.generate-pdf-button {
+  background-color: #0275d8;
+  color: #ffffff;
+}
+
+.save-report-button {
+  background-color: #5cb85c;
+  color: #ffffff;
+}
+
+.download-report-button {
+  background-color: #d9534f;
+  color: #ffffff;
+}
+
+.download-selected-button:hover {
+  background-color: #ec9a2c;
+}
+
+.generate-pdf-button:hover {
+  background-color: #0256b3;
+}
+
+.save-report-button:hover {
+  background-color: #4cae4c;
+}
+
+.download-report-button:hover {
+  background-color: #c9302c;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .portfolio-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .portfolio-select {
+    margin-top: 10px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
