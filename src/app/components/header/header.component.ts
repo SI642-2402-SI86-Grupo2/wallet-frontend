@@ -63,7 +63,7 @@ export class HeaderComponent {
 
   logout(): void {
     this.storageService.clearToken();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
     this.closeMenus(); // Cierra el menú desplegable
   }
 

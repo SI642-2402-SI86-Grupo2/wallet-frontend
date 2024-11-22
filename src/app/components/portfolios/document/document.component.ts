@@ -284,6 +284,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
     this.documentsService.deleteDocument(id).subscribe({
       next: () => {
         this.documents = this.documents.filter(d => d.id !== id);
+        this.loadDocuments(); // Recargar los documentos
       },
       error: (error) => console.error('Error deleting document:', error)
     });
@@ -291,6 +292,8 @@ export class DocumentComponent implements OnInit, OnDestroy {
 
   resetForm(): void {
     this.document = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, '', '', '', 0);
+    this.initialCosts = [];
+    this.finalCosts = [];
     this.isEditMode = false;
     this.errorMessage = '';
   }

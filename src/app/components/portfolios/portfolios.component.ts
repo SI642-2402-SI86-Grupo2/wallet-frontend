@@ -42,11 +42,12 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
     const userId = this.storageService.getUserId();
     if (userId !== null) {
       const portfoliosSubscription = this.portfoliosService.getPortfoliosByUserId(userId).subscribe({
-        next: (data) => {
-          this.portfolios = data;
-          this.portfolios.forEach(portfolio => {
-            this.calculateAverageTCEA(portfolio);
-          });
+        next: async (data) => {
+          const portfoliosWithTCEA = await Promise.all(data.map(async (portfolio) => {
+            portfolio.totalTcea = await this.calculateAverageTCEA(portfolio);
+            return portfolio;
+          }));
+          this.portfolios = portfoliosWithTCEA;
           this.cdr.markForCheck();
         },
         error: (error) => console.error('Error fetching portfolios:', error)
@@ -62,11 +63,10 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
       this.documentsService.getDocumentsByPortfolioId(portfolio.id).subscribe({
         next: (documents) => {
           if (documents.length > 0) {
-            const totalTCEA = documents.reduce((sum, doc) => sum + doc.tcea, 0);
-            portfolio.totalTcea = totalTCEA / documents.length;
-            resolve(portfolio.totalTcea);
+            const totalWeightedTCEA = documents.reduce((sum, doc) => sum + (doc.tcea * doc.amount), 0);
+            const totalAmount = documents.reduce((sum, doc) => sum + doc.amount, 0);
+            resolve(totalWeightedTCEA / totalAmount);
           } else {
-            portfolio.totalTcea = 0;
             resolve(0);
           }
         },
@@ -77,7 +77,7 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
       });
     });
   }
-
+  
   openModal() {
     this.isModalOpen = true;
     document.body.style.overflow = 'hidden';
@@ -124,6 +124,7 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
             const index = this.portfolios.findIndex(d => d.id === updatedPortfolio.id);
             this.portfolios[index] = updatedPortfolio;
             this.closeModal();
+            this.loadPortfolios(); // Recargar los portfolios
           },
           error: (error) => console.error('Error updating portfolio:', error)
         });
@@ -159,6 +160,8 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
     this.portfoliosService.deletePortfolio(id).subscribe({
       next: () => {
         this.portfolios = this.portfolios.filter(portfolio => portfolio.id !== id);
+        this.loadPortfolios(); // Recargar los portfolios
+
       },
       error: (error) => console.error('Error deleting portfolio:', error)
     });
