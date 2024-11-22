@@ -10,7 +10,7 @@ interface Portfolio {
   description: string;
   discountDate: Date;
   totalTcea: number;
-  documents?: Document[];
+  documents: Document[];
 }
 
 interface Document {
@@ -63,6 +63,7 @@ export class FirebaseService {
     return this.documentsCollection.valueChanges({ idField: 'id' });
   }
 
+
   /**
    * Obtener documentos por ID de portafolio
    * @param portfolioId - ID del portafolio
@@ -84,6 +85,17 @@ export class FirebaseService {
       console.log('Report saved successfully in Firebase.');
     } catch (error) {
       console.error('Error saving report to Firebase:', error);
+      throw error;
+    }
+  }
+// Dentro del servicio FirebaseService
+
+  async saveDocument(document: Document): Promise<void> {
+    try {
+      await this.documentsCollection.add(document);
+      console.log('Document saved successfully in Firebase.');
+    } catch (error) {
+      console.error('Error saving document to Firebase:', error);
       throw error;
     }
   }

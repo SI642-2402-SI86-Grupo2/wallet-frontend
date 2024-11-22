@@ -306,4 +306,6 @@ export class DocumentComponent implements OnInit, OnDestroy {
   trackByFn(index: number, item: any): number {
     return item.id;
   }
+
+
 }

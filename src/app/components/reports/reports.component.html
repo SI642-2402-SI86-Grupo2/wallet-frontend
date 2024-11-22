@@ -18,11 +18,12 @@
         </div>
       </div>
 
-      <div *ngIf="portfolio.documents && portfolio.documents.length" class="portfolio-documents">
+      <div *ngIf="portfolio.documents?.length" class="portfolio-documents">
         <h5>Documentos Relacionados:</h5>
         <ul>
           <li *ngFor="let doc of portfolio.documents">
-            <strong>{{ doc.title }}</strong>: {{ doc.description }} (TCEA: {{ doc.tcea }}%)
+            <strong>{{ doc.title || 'Sin título' }}</strong>: {{ doc.description || 'Sin descripción' }}
+            (TCEA: {{ doc.tcea ? doc.tcea.toFixed(2) : 'N/A' }}%)
           </li>
         </ul>
       </div>

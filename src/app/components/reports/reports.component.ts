@@ -44,14 +44,28 @@ export class ReportsComponent implements OnInit {
       const portfolios = await firstValueFrom(this.portfoliosService.getPortfoliosByUserId(userId));
       this.portfolios = portfolios.map((portfolio) => ({
         ...portfolio,
+        totalTcea: portfolio.totalTcea ?? 0, // Mantén el valor si ya existe
         selected: false,
       }));
 
       for (const portfolio of this.portfolios) {
         const documents = await firstValueFrom(this.firebaseService.getDocumentsByPortfolioId(portfolio.id));
         portfolio.documents = documents;
-      }
+        this.documents.push(...documents); // Add documents to the main documents array
 
+        // Depuración
+        console.log(`Documentos para el portafolio ${portfolio.portfolioName || 'Sin nombre'}:`, documents);
+
+        // Calcula el total TCEA (si aplica)
+        portfolio.totalTcea = documents.reduce(
+          (sum: number, doc: any) => sum + (doc.financialDetails?.tcea ?? 0),
+          0
+        );
+
+        console.log(`Total TCEA para ${portfolio.portfolioName || 'Sin nombre'}:`, portfolio.totalTcea);
+      }
+      console.log('Estructura de documento:', this.documents);
+      console.log('Documentos de cada portafolio:', this.documents);
       console.log('Datos cargados:', this.portfolios);
       this.generateReport();
     } catch (error) {
@@ -68,22 +82,29 @@ export class ReportsComponent implements OnInit {
       return;
     }
 
-    this.reportData = this.portfolios.map((portfolio) => ({
-      portfolioName: portfolio.portfolioName || 'Portafolio sin nombre',
-      portfolioDescription: portfolio.description || 'Sin descripción',
-      totalTcea: portfolio.totalTcea || 0,
-      documents: portfolio.documents?.map((doc: any) => ({
-        title: doc.title || 'Sin título',
-        description: doc.description || 'Sin descripción',
-        tcea: doc.tcea || 0,
-        documentType: doc.documentType,
-        financialInstitutionsName: doc.financialInstitutionsName,
-        status: doc.status,
-      })),
-    }));
+    this.reportData = this.portfolios.map((portfolio) => {
+      if (!portfolio.documents || portfolio.documents.length === 0) {
+        console.log(`No documents for portfolio ${portfolio.portfolioName}`);
+      }
+      return {
+        portfolioName: portfolio.portfolioName || 'Portafolio sin nombre',
+        portfolioDescription: portfolio.description || 'Sin descripción',
+        totalTcea: portfolio.totalTcea?.toFixed(2) || '0.00',
+        documents: portfolio.documents?.map((doc: any) => ({
+          title: doc.title || 'Sin título',
+          description: doc.description || 'Sin descripción',
+          tcea: doc.tcea?.toFixed(2) || '0.00',
+          documentType: doc.documentType,
+          financialInstitutionsName: doc.financialInstitutionsName,
+          status: doc.status,
+        })),
+      };
+    });
 
+    console.log('Portafolios obtenidos:', this.portfolios);
     console.log('Datos del reporte generados:', this.reportData);
   }
+
 
   downloadSelectedPortfolios(): void {
     const selectedPortfolios = this.portfolios.filter((portfolio) => portfolio.selected);
@@ -110,71 +131,64 @@ export class ReportsComponent implements OnInit {
 
     const doc = new jsPDF();
     const date = new Date().toLocaleDateString();
-    const invoiceNumber = Math.floor(100000000 + Math.random() * 900000000).toString(); // Generar número de factura aleatorio
+    const invoiceNumber = Math.floor(100000000 + Math.random() * 900000000); // Generar número de factura aleatorio
 
     let yPosition = 40; // Posición inicial
     const lineSpacing = 10; // Espaciado entre líneas
 
-    // Función para añadir encabezado
-    const addHeader = (doc: jsPDF, date: string, invoiceNumber: string) => {
+    // Encabezado
+    const addHeader = () => {
       doc.setFont('Helvetica', 'bold');
-      doc.setFontSize(18);
-      doc.text('Reporte de Portafolios', 105, 20, { align: 'center' }); // Centrado
-
+      doc.setFontSize(16);
+      doc.text('Reporte de Portafolios', 20, 20);
       doc.setFontSize(10);
-      doc.text(`Número de Factura: #${invoiceNumber}`, 20, 30); // Número de factura
-      doc.text(`Fecha: ${date}`, 190, 30, { align: 'right' }); // Fecha
-      doc.line(20, 35, 190, 35); // Línea divisoria
+      doc.text(`Número de Factura: #${invoiceNumber}`, 20, 30);
+      doc.text(`Fecha: ${date}`, 190, 30, { align: 'right' });
+      doc.line(20, 35, 190, 35); // Línea divisoria debajo del encabezado
     };
 
-    // Función para añadir encabezado de tabla
+    // Tabla principal
     const addTableHeader = () => {
-      yPosition += 10; // Espacio después del encabezado
       doc.setFontSize(10);
       doc.setFont('Helvetica', 'bold');
       doc.text('Nombre del Portafolio', 20, yPosition);
       doc.text('Descripción', 100, yPosition);
       doc.text('TCEA', 180, yPosition, { align: 'right' });
       yPosition += lineSpacing;
-      doc.line(20, yPosition, 190, yPosition); // Línea divisoria debajo del encabezado
+      doc.line(20, yPosition, 190, yPosition); // Línea divisoria
     };
 
-    // Función para añadir filas de la tabla
     const addTableRow = (portfolio: any) => {
-      doc.setFont('Helvetica', 'normal');
-      yPosition += lineSpacing - 2; // Reducir el espaciado entre filas
-
-      // Validar valores
-      const portfolioName = portfolio.portfolioName || 'N/A';
-      const description = portfolio.description || 'Sin descripción';
-      const totalTcea = isNaN(portfolio.totalTcea) ? '0.00' : portfolio.totalTcea.toFixed(2); // Validar que sea número
-
-      doc.text(portfolioName, 20, yPosition);
-      doc.text(description, 100, yPosition);
-      doc.text(`${totalTcea}%`, 180, yPosition, { align: 'right' });
-
-      doc.line(20, yPosition + 2, 190, yPosition + 2); // Línea divisoria entre filas
+      const tcea = portfolio.totalTcea || 0;
+      doc.text(portfolio.portfolioName, 20, yPosition);
+      doc.text(portfolio.description || 'Sin descripción', 100, yPosition);
+      doc.text(`${tcea.toFixed(2)}%`, 180, yPosition, { align: 'right' });
+      yPosition += lineSpacing;
+      doc.line(20, yPosition, 190, yPosition); // Línea divisoria entre filas
     };
 
-    // Función para añadir pie de página
+
+    // Pie de página
     const addFooter = () => {
       yPosition += lineSpacing * 2; // Espaciado antes del pie de página
       doc.setFont('Helvetica', 'italic');
       doc.setFontSize(10);
-      doc.text('¡Gracias por usar nuestro servicio!', 105, yPosition, { align: 'center' });
+      doc.text('¡Gracias por usar nuestro servicio!', 20, yPosition);
       yPosition += lineSpacing;
-      doc.text('Si tiene alguna consulta, por favor contáctese con soporte.', 105, yPosition, { align: 'center' });
+      doc.text('Si tiene alguna consulta, por favor contáctese con soporte.', 20, yPosition);
     };
 
     // Generar el PDF
-    addHeader(doc, date, invoiceNumber);
+    addHeader();
+    yPosition += 10; // Ajustar después del encabezado
     addTableHeader();
 
     selectedPortfolios.forEach((portfolio) => {
       if (yPosition > 270) {
         doc.addPage();
-        yPosition = 40; // Reiniciar posición para la nueva página
-        addHeader(doc, date, invoiceNumber);
+        yPosition = 40;
+        addHeader();
+        yPosition += 10;
         addTableHeader();
       }
       addTableRow(portfolio);
@@ -183,6 +197,6 @@ export class ReportsComponent implements OnInit {
     addFooter();
 
     // Descargar el PDF
-    doc.save('reporte-portafolios-mejorado.pdf');
+    doc.save('reporte-portafolios.pdf');
   }
 }
