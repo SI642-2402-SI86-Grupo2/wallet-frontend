@@ -263,7 +263,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
   }
 
   toggleStatus(document: Documents): void {
-    document.status = document.status === 'En Progreso' ? 'Completado' : 'En Progreso';
+    document.status = document.status === 'En Progreso' ? 'Facturado' : 'En Progreso';
 
     this.documentsService.updateDocument(document).subscribe({
       next: (updatedDocument) => {
@@ -271,7 +271,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error al actualizar el estado del documento:', error);
-        document.status = document.status === 'En Progreso' ? 'Completado' : 'En Progreso';
+        document.status = document.status === 'En Progreso' ? 'Facturado' : 'En Progreso';
       },
       complete: () => {
         console.log('Actualización del estado del documento completada.');

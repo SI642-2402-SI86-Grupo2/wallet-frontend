@@ -4,6 +4,7 @@ import { Documents } from '../../models/documents';
 import { DocumentsService } from '../../services/documents.service';
 import { Portfolios } from '../../models/portfolios';
 import { PortfoliosService } from '../../services/portfolios.service';
+import { StorageService } from '../../services/storage.service'; // Importar StorageService
 
 @Component({
   selector: 'app-pending',
@@ -17,33 +18,43 @@ export class PendingComponent implements OnInit {
   financialInstitutions: string[] = [];
   selectedFinancialInstitution: string = '';
   showPendingOnly: boolean = true;  // Checkbox "Pending" activado por defecto
+  showFacturados: boolean = false;  // Checkbox "Facturados" desactivado por defecto
   orderByBank: boolean = false;  // Checkbox "Ordenar por entidad bancaria" activado por defecto
+  userId: number | null = null;  // Variable para almacenar el userId
 
   constructor(
     private documentsService: DocumentsService,
     private portfoliosService: PortfoliosService,
-    private router: Router
-
+    private router: Router,
+    private storageService: StorageService, // Inyectar StorageService
   ) { }
 
   ngOnInit(): void {
-    this.loadPortfoliosAndDocuments();
+    this.userId = this.storageService.getUserId();  // Obtener el userId dinámicamente
+    if (this.userId !== null) {
+      this.loadPortfoliosAndDocuments();
+    } else {
+      // Manejar el caso en que no se encuentra el userId
+      console.error('User ID not found');
+    }
   }
-
+  
   loadPortfoliosAndDocuments(): void {
-    this.portfoliosService.getPortfoliosByUserId(1)  // Reemplazar con el userId real
-      .subscribe(portfolios => {
-        this.portfolios = portfolios;
-        portfolios.forEach(portfolio => {
-          this.documentsService.getDocumentsByPortfolioId(portfolio.id)
-            .subscribe(docs => {
-              this.documents = this.documents.concat(docs);
-              this.filteredDocuments = this.documents;
-              this.populateFinancialInstitutions();
-              this.filterDocuments(); // Aplicar filtros al cargar
-            });
+    if (this.userId !== null) {
+      this.portfoliosService.getPortfoliosByUserId(this.userId)  // Usar el userId dinámico
+        .subscribe(portfolios => {
+          this.portfolios = portfolios;
+          portfolios.forEach(portfolio => {
+            this.documentsService.getDocumentsByPortfolioId(portfolio.id)
+              .subscribe(docs => {
+                this.documents = this.documents.concat(docs);
+                this.filteredDocuments = this.documents;
+                this.populateFinancialInstitutions();
+                this.filterDocuments(); // Aplicar filtros al cargar
+              });
+          });
         });
-      });
+    }
   }
 
   populateFinancialInstitutions(): void {
@@ -73,7 +84,13 @@ export class PendingComponent implements OnInit {
     }
   }
 
-
+  filterFacturados(): void {
+    if (this.showFacturados) {
+      this.filteredDocuments = this.documents.filter(doc => doc.status === 'Facturado');
+    } else {
+      this.filterDocuments(); // Aplicar el filtro general si el checkbox de facturados está desactivado
+    }
+  }
 
   onFinancialInstitutionChange(event: any): void {
     this.selectedFinancialInstitution = event.target.value;
@@ -82,14 +99,24 @@ export class PendingComponent implements OnInit {
 
   onPendingChange(event: any): void {
     this.showPendingOnly = event.target.checked;
+    if (this.showPendingOnly) {
+      this.showFacturados = false;  // Desactivar checkbox de Facturados
+    }
     this.filterDocuments();
+  }
+
+  onFacturadosChange(event: any): void {
+    this.showFacturados = event.target.checked;
+    if (this.showFacturados) {
+      this.showPendingOnly = false;  // Desactivar checkbox de Pendientes
+    }
+    this.filterFacturados();
   }
 
   onOrderByBankChange(event: any): void {
     this.orderByBank = event.target.checked;
     this.filterDocuments(); // Aplicar filtros y ordenar documentos
   }
-
 
   selectPortfolio(portfolioId: number): void {
     this.router.navigate([`/portfolios/${portfolioId}/documents`]);

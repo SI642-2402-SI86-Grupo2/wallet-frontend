@@ -7,8 +7,14 @@
 
   <!-- Checkbox de Pending (In Progress) -->
   <label class="flex items-center space-x-2">
-    <input type="checkbox" (change)="onPendingChange($event)" checked="true" />
+    <input type="checkbox" (change)="onPendingChange($event)" [checked]="showPendingOnly"[disabled]="showFacturados" />
     <span>Pendientes (En Progreso)</span>
+  </label>
+
+  <!-- Checkbox de Facturados -->
+  <label class="flex items-center space-x-2">
+    <input type="checkbox" (change)="onFacturadosChange($event)" [checked]="showFacturados" [disabled]="showPendingOnly" />
+    <span>Mostrar documentos facturados</span>
   </label>
 
   <!-- Checkbox de Ordenar por Entidad Bancaria -->
@@ -39,7 +45,7 @@
         <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.financialInstitutionsName }}</td>
         <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.amount | currency }}</td>
         <td class="py-4 px-6 text-center text-[#2F2D3B]">
-          {{ document.status === 'Completado' ? document.tcea+'%' : 'Pendiente' }}
+          {{ document.status === 'Facturado' ? document.tcea+'%' : 'Pendiente' }}
         </td>
         <td class="py-4 px-6 text-center text-[#2F2D3B]">{{ document.dueDate | date: 'dd/MM/yyyy' }}</td>
         <td class="py-4 px-6 text-center">

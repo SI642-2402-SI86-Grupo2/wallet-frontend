@@ -63,7 +63,7 @@
         </td>
         <td class="py-4 px-6 text-center before:content-['Estado'] before:block before:font-bold before:text-lg md:before:content-none">
           <button (click)="toggleStatus(document)" class="focus:outline-none border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">
-            <span [ngClass]="{'text-green-500': document.status === 'Completado', 'text-red-500': document.status === 'Error', 'text-yellow-500': document.status === 'En Progreso'}">
+            <span [ngClass]="{'text-green-500': document.status === 'Facturado', 'text-red-500': document.status === 'Error', 'text-yellow-500': document.status === 'En Progreso'}">
               <svg class="inline-block h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="10" r="8"></circle>
               </svg>
@@ -285,7 +285,7 @@
             <label class="block text-gray-700">Estado</label>
             <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="document.status" name="status">
               <option value="En Progreso">En Progreso</option>
-              <option value="Completado">Completado</option>
+              <option value="Facturado">Facturado</option>
             </select>
           </div>
 
