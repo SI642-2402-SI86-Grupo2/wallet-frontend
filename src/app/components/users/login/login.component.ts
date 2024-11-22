@@ -1,4 +1,4 @@
-
+// src/app/components/users/login/login.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -21,7 +21,7 @@ export class LoginComponent {
       this.storageService.setUserId(response.id);
       this.storageService.setToken(response.token);
       this.router.navigate(['/portfolios']);
-
+      
     }, error => {
       console.error('Login failed', error);
       this.welcomeMessage = 'Login failed. Please try again.';
