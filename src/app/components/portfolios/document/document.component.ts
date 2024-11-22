@@ -108,8 +108,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
   addDocument(): void {
     if (!this.document.documentType || !this.document.financialInstitutionsName || !this.document.number ||
       !this.document.series || !this.document.issuerName || !this.document.issuerRuc || !this.document.currency ||
-      !this.document.amount || !this.document.igv || !this.document.issueDate || !this.document.dueDate ||
-      !this.document.discountDate || !this.document.paymentTerms || !this.document.nominalRate || !this.document.effectiveRate ||
+      !this.document.amount || !this.document.igv || !this.document.issueDate || !this.document.dueDate || !this.document.paymentTerms ||
       !this.document.status) {
       this.errorMessage = 'Por favor, rellene todos los campos obligatorios.';
       return;

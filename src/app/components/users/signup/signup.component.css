@@ -22,7 +22,6 @@
   }
 }
 button {
-  z-index: 100;
   position: relative;
   background-color: #4A90E2;
   color: white;
