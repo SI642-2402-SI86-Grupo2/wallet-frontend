@@ -45,11 +45,17 @@ export class DocumentComponent implements OnInit, OnDestroy {
     console.log('Component destroyed and resources cleaned up');
   }
 
+  // Codigo para que lea en la report de PDF
   loadDocuments(): void {
     if (this.selectedPortfolioId !== null) {
       this.documentsService.getDocumentsByPortfolioId(this.selectedPortfolioId).subscribe({
         next: (data) => {
-          this.documents = data;
+          // Asegúrate de manejar valores faltantes aquí
+          this.documents = data.map(doc => ({
+            ...doc,
+            title: doc.title || 'Sin título',
+            description: doc.description || 'Sin descripción'
+          }));
           this.cdr.markForCheck();
         },
         error: (error) => console.error('Error fetching documents:', error)
@@ -227,6 +233,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
     return this.document.tcea;
   }
 
+
   editDocument(id: number): void {
     const index = this.documents.findIndex(d => d.id === id);
     if (index !== -1) {
@@ -305,4 +312,6 @@ export class DocumentComponent implements OnInit, OnDestroy {
   trackByFn(index: number, item: any): number {
     return item.id;
   }
+
+
 }

@@ -1,55 +1,158 @@
-.report-container {
-  font-family: 'Arial', sans-serif;
-  margin: 20px auto;
-  max-width: 800px;
-  padding: 15px;
+/* Sección principal de portafolios */
+.portfolios-section {
+  margin: 20px;
+  padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
   color: #333;
+  margin-bottom: 20px;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
+/* Contenedor de las tarjetas */
+.portfolio-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.table thead {
-  background-color: #4caf50;
-  color: white;
-}
-
-.table th, .table td {
-  text-align: left;
-  padding: 12px;
+/* Estilo de cada tarjeta */
+.portfolio-card {
+  padding: 15px;
   border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #ffffff;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
-.table-striped tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+.portfolio-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.download-section {
-  text-align: center;
-  margin-top: 20px;
+/* Encabezado de la tarjeta */
+.portfolio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-.btn {
-  font-size: 16px;
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
+.portfolio-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.portfolio-description {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0 0;
+}
+
+.portfolio-select {
+  display: flex;
+  align-items: center;
+}
+
+.portfolio-checkbox {
+  margin-right: 5px;
   cursor: pointer;
 }
 
-.btn:hover {
-  background-color: #45a049;
+/* Documentos relacionados */
+.portfolio-documents h5 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin: 10px 0;
+}
+
+.portfolio-documents ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.portfolio-documents li {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.no-documents {
+  font-size: 14px;
+  color: #999;
+  font-style: italic;
+}
+
+/* Botones de acción */
+.action-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.generate-pdf-button,
+.download-selected-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.generate-pdf-button {
+  background-color: #007bff;
+}
+
+.generate-pdf-button:hover {
+  background-color: #0056b3;
+}
+
+.download-selected-button {
+  background-color: #f0ad4e;
+}
+
+.download-selected-button:hover {
+  background-color: #ec971f;
+}
+
+/* Mensajes de error */
+.error-message {
+  color: #d9534f;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .portfolio-cards {
+    flex-direction: column;
+  }
+
+  .portfolio-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .generate-pdf-button,
+  .download-selected-button {
+    width: 100%;
+    text-align: center;
+  }
 }
