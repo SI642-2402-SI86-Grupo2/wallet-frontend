@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../../services/profile.service';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,16 +15,23 @@ export class ProfileComponent implements OnInit {
     photo: '',
     userId: 0
   };
-  token: string = '';
+  token: string | null = '';
 
-  constructor(private profileService: ProfileService, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(
+    private profileService: ProfileService,
+    private storageService: StorageService
+  ) { }
 
   ngOnInit(): void {
-    const userId = this.route.snapshot.params['userId'];
-    this.token = this.authService.getToken(); // Asume que tienes un método para obtener el token
-    this.profileService.getProfileByUserId(userId).subscribe(data => {
-      this.profile = data;
-    });
+    const userId = this.storageService.getUserId();
+    if (userId) {
+      this.token = this.storageService.getToken(); // Assume you have a method to get the token
+      this.profileService.getProfileByUserId(userId).subscribe(data => {
+        this.profile = data;
+      });
+    } else {
+      console.error('User ID not found in storage');
+    }
   }
 
   saveProfile(): void {

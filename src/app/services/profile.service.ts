@@ -8,7 +8,7 @@ import { StorageService } from './storage.service';
   providedIn: 'root'
 })
 export class ProfileService {
-  private apiUrl = `${environment.apiUrl}/api/v1/profile`;
+  private apiUrl = `${environment.apiUrl}/api/v1/profile/profile`;
 
   constructor(private http: HttpClient, private storageService: StorageService) { }
 
@@ -21,7 +21,7 @@ export class ProfileService {
   }
 
   getProfileByUserId(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${userId}`, { headers: this.getHeaders() });
+    return this.http.get<any>(`${this.apiUrl}/userId/${userId}`, { headers: this.getHeaders() });
   }
 
   updateProfile(profile: any): Observable<any> {
@@ -29,7 +29,6 @@ export class ProfileService {
   }
 
   createProfile(profile: any): Observable<any> {
-    const createProfileUrl = `${this.apiUrl}/profile`;
-    return this.http.post<any>(createProfileUrl, profile, { headers: this.getHeaders() });
+    return this.http.post<any>(this.apiUrl, profile, { headers: this.getHeaders() });
   }
 }

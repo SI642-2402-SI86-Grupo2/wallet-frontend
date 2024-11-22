@@ -19,7 +19,4 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/sign-in`, { email, password });
   }
 
-  getToken(): string {
-    return localStorage.getItem('token') || '';
-  }
 }
