@@ -1,37 +1,60 @@
 <div class="portfolios-section">
   <h3 class="section-title">Portafolios</h3>
   <div class="portfolio-cards">
+    <!-- Iterar sobre los portafolios -->
     <div *ngFor="let portfolio of portfolios; let i = index" class="portfolio-card">
       <div class="portfolio-header">
-        <h4 class="portfolio-name">{{ portfolio.portfolioName }}</h4>
-        <p class="portfolio-description">{{ portfolio.description }}</p>
+        <h4 class="portfolio-name">{{ portfolio.portfolioName || 'Sin nombre' }}</h4>
+        <p class="portfolio-description">{{ portfolio.description || 'Sin descripción' }}</p>
 
         <!-- Checkbox para seleccionar portafolio -->
         <div class="portfolio-select">
-          <input
-            type="checkbox"
-            [id]="'portfolio-' + i"
-            [(ngModel)]="portfolio.selected"
-            class="portfolio-checkbox"
-          />
-          <label [for]="'portfolio-' + i"></label>
+          <label [for]="'portfolio-' + i" class="checkbox-label">
+            <input
+              type="checkbox"
+              [id]="'portfolio-' + i"
+              [(ngModel)]="portfolio.selected"
+              class="portfolio-checkbox"
+            />
+            Seleccionar
+          </label>
         </div>
       </div>
 
+      <!-- Mostrar documentos relacionados si existen -->
       <div *ngIf="portfolio.documents?.length" class="portfolio-documents">
-        <h5>Documentos Relacionados:</h5>
-        <ul>
-          <li *ngFor="let doc of portfolio.documents">
+        <h5 class="documents-title">Documentos Relacionados:</h5>
+        <ul class="documents-list">
+          <li *ngFor="let doc of portfolio.documents" class="document-item">
             <strong>{{ doc.title || 'Sin título' }}</strong>: {{ doc.description || 'Sin descripción' }}
-            (TCEA: {{ doc.tcea ? doc.tcea.toFixed(2) : 'N/A' }}%)
+            <span class="document-tcea">(TCEA: {{ doc.tcea !== 'N/A' ? doc.tcea : 'N/A' }}%)</span>
+            <div class="document-details">
+              <p>Tipo: {{ doc.documentType }}</p>
+              <p>Institución: {{ doc.financialInstitutionsName }}</p>
+              <p>
+                Monto: {{
+                  doc.amount.toLocaleString('es-PE', {
+                    style: 'currency',
+                    currency: doc.currency
+                  })
+                }}
+              </p>
+            </div>
           </li>
         </ul>
+      </div>
+
+      <!-- Mostrar mensaje si no hay documentos -->
+      <div *ngIf="!portfolio.documents?.length" class="no-documents">
+        <p>No hay documentos asociados.</p>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Botones de acción -->
 <div class="action-buttons">
+  <button (click)="generatePortfoliosPDF()" class="generate-pdf-button">Generar PDF Completo</button>
   <button (click)="generateSelectedPDF()" class="generate-pdf-button">Generar PDF Seleccionado</button>
   <button (click)="downloadSelectedPortfolios()" class="download-selected-button">Descargar Seleccionados</button>
 </div>
