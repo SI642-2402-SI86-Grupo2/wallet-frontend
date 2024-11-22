@@ -10,7 +10,7 @@ import { Portfolios } from '../../models/portfolios';
 import { PortfoliosService } from '../../services/portfolios.service';
 import { StorageService } from '../../services/storage.service';
 import { DocumentsService } from '../../services/documents.service';
-import { Subscription } from 'rxjs';
+import {firstValueFrom, Subscription} from 'rxjs';
 import { saveAs } from 'file-saver'; // Para descargar JSON
 import { jsPDF } from 'jspdf'; // Para generar PDFs
 
@@ -48,21 +48,30 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
   /**
    * Carga los portafolios del usuario y calcula el TCEA promedio.
    */
-  loadPortfolios(): void {
-    const userId = this.storageService.getUserId();
+  async loadPortfolios(): Promise<void> {
+    const userId: number | null = this.storageService.getUserId();
     if (userId !== null) {
-      const portfoliosSubscription = this.portfoliosService.getPortfoliosByUserId(userId).subscribe({
-        next: async (data) => {
-          const portfoliosWithTCEA = await Promise.all(data.map(async (portfolio) => {
-            portfolio.totalTcea = await this.calculateAverageTCEA(portfolio);
-            return portfolio;
-          }));
-          this.portfolios = portfoliosWithTCEA;
-          this.cdr.markForCheck();
-        },
-        error: (error) => console.error('Error fetching portfolios:', error)
-      });
-      this.subscriptions.push(portfoliosSubscription);
+      try {
+        const portfolios = await firstValueFrom(this.portfoliosService.getPortfoliosByUserId(userId));
+
+        this.portfolios = await Promise.all(
+          portfolios.map(async (portfolio: any) => {
+            const documents = await firstValueFrom(this.documentsService.getDocumentsByPortfolioId(portfolio.id));
+            return {
+              ...portfolio,
+              documents: documents.map(doc => ({
+                ...doc,
+                title: doc.title || 'Sin título',
+                description: doc.description || 'Sin descripción'
+              }))
+            };
+          })
+        );
+
+        this.cdr.markForCheck();
+      } catch (error) {
+        console.error('Error al cargar portafolios:', error);
+      }
     } else {
       console.error('User ID not found in storage');
     }
