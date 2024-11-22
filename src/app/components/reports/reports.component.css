@@ -1,35 +1,40 @@
-/* General styling for the portfolio section */
+/* Sección principal de portafolios */
 .portfolios-section {
-  margin-top: 20px;
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .section-title {
   font-size: 24px;
   font-weight: bold;
-  color: #4a4a4a;
+  color: #333;
   margin-bottom: 20px;
-  text-align: center;
 }
 
-/* Portfolio cards styling */
-.portfolio-card {
+/* Contenedor de las tarjetas */
+.portfolio-cards {
   display: flex;
   flex-direction: column;
-  background: #f9f9f9;
-  border: 1px solid #dedede;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  gap: 20px;
+}
+
+/* Estilo de cada tarjeta */
+.portfolio-card {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #ffffff;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 .portfolio-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Header of the portfolio card */
+/* Encabezado de la tarjeta */
 .portfolio-header {
   display: flex;
   justify-content: space-between;
@@ -39,154 +44,115 @@
 
 .portfolio-name {
   font-size: 18px;
-  font-weight: 600;
-  color: #333333;
+  font-weight: bold;
+  color: #333;
   margin: 0;
 }
 
 .portfolio-description {
   font-size: 14px;
-  color: #666666;
-  margin: 0;
+  color: #666;
+  margin: 5px 0 0;
 }
 
-/* Checkbox styling */
 .portfolio-select {
-  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .portfolio-checkbox {
-  opacity: 0;
-  position: absolute;
-  width: 0;
-  height: 0;
-}
-
-.portfolio-checkbox + label {
-  display: inline-block;
-  width: 28px;
-  height: 28px;
-  border: 2px solid #cccccc;
-  border-radius: 50%;
-  background-color: #ffffff;
+  margin-right: 5px;
   cursor: pointer;
-  position: relative;
-  transition: all 0.2s ease;
 }
 
-.portfolio-checkbox:checked + label {
-  border-color: #007bff;
-  background-color: #007bff;
-}
-
-.portfolio-checkbox:checked + label::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 12px;
-  height: 12px;
-  background: #ffffff;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* Document list styling */
+/* Documentos relacionados */
 .portfolio-documents h5 {
   font-size: 16px;
   font-weight: bold;
-  color: #4a4a4a;
-  margin-top: 10px;
+  color: #333;
+  margin: 10px 0;
 }
 
 .portfolio-documents ul {
-  margin: 0;
+  list-style: none;
   padding: 0;
-  list-style-type: none;
+  margin: 0;
 }
 
 .portfolio-documents li {
   font-size: 14px;
-  color: #555555;
-  margin-bottom: 5px;
+  color: #555;
+  margin-bottom: 8px;
 }
 
-/* Action buttons styling */
+.no-documents {
+  font-size: 14px;
+  color: #999;
+  font-style: italic;
+}
+
+/* Botones de acción */
 .action-buttons {
-  display: flex;
-  justify-content: center;
   margin-top: 20px;
+  display: flex;
   gap: 15px;
+  justify-content: center;
 }
 
-.action-buttons button {
-  padding: 12px 20px;
+.generate-pdf-button,
+.download-selected-button {
+  padding: 10px 20px;
   font-size: 14px;
   font-weight: bold;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease-in-out;
 }
 
-.action-buttons button:hover {
-  transform: translateY(-2px);
+.generate-pdf-button {
+  background-color: #007bff;
+}
+
+.generate-pdf-button:hover {
+  background-color: #0056b3;
 }
 
 .download-selected-button {
   background-color: #f0ad4e;
-  color: #ffffff;
-}
-
-.generate-pdf-button {
-  background-color: #0275d8;
-  color: #ffffff;
-}
-
-.save-report-button {
-  background-color: #5cb85c;
-  color: #ffffff;
-}
-
-.download-report-button {
-  background-color: #d9534f;
-  color: #ffffff;
 }
 
 .download-selected-button:hover {
-  background-color: #ec9a2c;
+  background-color: #ec971f;
 }
 
-.generate-pdf-button:hover {
-  background-color: #0256b3;
+/* Mensajes de error */
+.error-message {
+  color: #d9534f;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
 }
 
-.save-report-button:hover {
-  background-color: #4cae4c;
-}
-
-.download-report-button:hover {
-  background-color: #c9302c;
-}
-
-/* Responsive styling */
+/* Responsividad */
 @media (max-width: 768px) {
+  .portfolio-cards {
+    flex-direction: column;
+  }
+
   .portfolio-header {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .portfolio-select {
-    margin-top: 10px;
   }
 
   .action-buttons {
     flex-direction: column;
   }
 
-  .action-buttons button {
+  .generate-pdf-button,
+  .download-selected-button {
     width: 100%;
-    margin-bottom: 10px;
+    text-align: center;
   }
 }
