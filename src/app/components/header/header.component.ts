@@ -1,21 +1,37 @@
-import { Component, HostListener, ElementRef } from '@angular/core';
+import { Component, HostListener, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { StorageService } from '../.././services/storage.service';
+import { StorageService } from '../../services/storage.service';
+import { ProfileService } from '../../services/profile.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   menuOpen = false; // Para el menú móvil
   profileMenuOpen = false; // Para el menú de perfil
+  profile: any = { photo: '' };
 
   constructor(
     private eRef: ElementRef,
     private router: Router,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private profileService: ProfileService
   ) {}
+
+  ngOnInit(): void {
+    this.loadProfile();
+  }
+
+  loadProfile(): void {
+    const userId = this.storageService.getUserId();
+    if (userId) {
+      this.profileService.getProfileByUserId(userId).subscribe(data => {
+        this.profile = data;
+      });
+    }
+  }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;

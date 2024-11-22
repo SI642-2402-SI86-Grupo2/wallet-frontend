@@ -32,6 +32,7 @@ export class StorageService {
     return localStorage.getItem(this.tokenKey);
   }
 
+
   clearToken(): void {
     localStorage.removeItem(this.tokenKey);
   }

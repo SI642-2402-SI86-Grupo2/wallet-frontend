@@ -28,7 +28,7 @@
         <!-- Profile Button with Dropdown Menu -->
         <div class="relative">
           <button (click)="toggleProfileMenu()" class="flex items-center text-gray-900">
-            <img src="/default-profile-photo.svg" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
+            <img [src]="profile.photo || '/default-profile-photo.svg'" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
             <span class="sr-only">Perfil</span>
           </button>
           <div *ngIf="profileMenuOpen" class="absolute right-0 mt-2 w-48 rounded-md bg-[#453C51] shadow-lg ring-1 ring-black ring-opacity-5">
@@ -61,7 +61,7 @@
 
       <div class="mt-6 text-center">
         <button (click)="toggleProfileMenu()" class="flex items-center justify-center mx-auto text-gray-900">
-          <img src="/default-profile-photo.svg" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
+          <img [src]="profile.photo || '/default-profile-photo.svg'" alt="User Avatar" class="h-10 w-10 rounded-full border border-gray-300">
           <span class="sr-only">Profile</span>
         </button>
         <div *ngIf="profileMenuOpen" class="mt-4 space-y-2 text-center">

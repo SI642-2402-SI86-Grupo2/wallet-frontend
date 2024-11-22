@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
     userId: 0
   };
   token: string | null = '';
-  selectedFile: File | null = null;
+  photoUrl: string = '';
 
   constructor(
     private profileService: ProfileService,
@@ -24,9 +24,15 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loadProfile();
+  }
+
+  loadProfile(): void {
     const userId = this.storageService.getUserId();
     if (userId) {
-      this.token = this.storageService.getToken(); // Assume you have a method to get the token
+      this.token = this.storageService.getToken();
+      console.log('User ID:', userId); // Log the user ID for debugging
+      console.log('Token:', this.token); // Log the token for debugging
       this.profileService.getProfileByUserId(userId).subscribe(data => {
         this.profile = data;
       });
@@ -35,26 +41,15 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  onFileSelected(event: any): void {
-    this.selectedFile = event.target.files[0];
-    if (this.selectedFile) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.profile.photo = e.target.result;
-      };
-      reader.readAsDataURL(this.selectedFile);
-      this.uploadPhoto();
-    }
-  }
+  updatePhotoUrl(): void {
+    if (this.photoUrl) {
+      const payload = { photo: this.photoUrl };
 
-  uploadPhoto(): void {
-    if (this.selectedFile) {
-      const formData = new FormData();
-      formData.append('photo', this.selectedFile, this.selectedFile.name);
-
-      this.profileService.uploadProfilePhoto(this.profile.userId, formData).subscribe(response => {
-        this.profile.photo = response.photoUrl;
-        console.log('Photo uploaded successfully', response);
+      this.profileService.uploadProfilePhoto(this.profile.userId, payload).subscribe(response => {
+        console.log('Photo updated successfully', response);
+        this.loadProfile(); // Refresh the profile data
+      }, error => {
+        console.error('Error updating photo', error);
       });
     }
   }
@@ -62,6 +57,8 @@ export class ProfileComponent implements OnInit {
   saveProfile(): void {
     this.profileService.updateProfile(this.profile).subscribe(response => {
       console.log('Profile updated successfully', response);
+    }, error => {
+      console.error('Error updating profile', error);
     });
   }
 }

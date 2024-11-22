@@ -15,8 +15,10 @@ export class ProfileService {
   private getHeaders(): HttpHeaders {
     const token = this.storageService.getToken();
     if (!token) {
+      console.error('Token not found');
       throw new Error('Token not found');
     }
+    console.log('Token:', token); // Log the token for debugging
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
@@ -25,14 +27,16 @@ export class ProfileService {
   }
 
   updateProfile(profile: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${profile.userId}`, profile, { headers: this.getHeaders() });
+    const headers = this.getHeaders();
+    return this.http.put<any>(`${this.apiUrl}/${profile.userId}`, profile, { headers });
   }
 
   createProfile(profile: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, profile, { headers: this.getHeaders() });
   }
 
-  uploadProfilePhoto(profileId: number, formData: FormData): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${profileId}/photo-update`, formData, { headers: this.getHeaders() });
+  uploadProfilePhoto(profileId: number, payload: any): Observable<any> {
+    const headers = this.getHeaders().set('Content-Type', 'application/json');
+    return this.http.put<any>(`${this.apiUrl}/${profileId}/photo-update`, payload, { headers });
   }
 }
