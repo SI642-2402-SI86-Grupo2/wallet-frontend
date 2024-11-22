@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
     userId: 0
   };
   token: string | null = '';
+  selectedFile: File | null = null;
 
   constructor(
     private profileService: ProfileService,
@@ -31,6 +32,30 @@ export class ProfileComponent implements OnInit {
       });
     } else {
       console.error('User ID not found in storage');
+    }
+  }
+
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0];
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.profile.photo = e.target.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
+      this.uploadPhoto();
+    }
+  }
+
+  uploadPhoto(): void {
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('photo', this.selectedFile, this.selectedFile.name);
+
+      this.profileService.uploadProfilePhoto(this.profile.userId, formData).subscribe(response => {
+        this.profile.photo = response.photoUrl;
+        console.log('Photo uploaded successfully', response);
+      });
     }
   }
 

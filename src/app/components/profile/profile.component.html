@@ -5,6 +5,8 @@
     <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
       <div class="flex flex-col items-center justify-center flex-shrink-0">
         <img [src]="profile.photo || '/default-profile-photo.svg'" alt="Profile photo" class="h-24 w-24 rounded-full object-cover shadow-md" onerror="this.onerror=null;this.src='/default_image_path.png';">
+        <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden">
+        <button (click)="fileInput.click()" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Subir Foto</button>
       </div>
 
       <div class="flex-grow">
