@@ -166,28 +166,67 @@ export class DocumentComponent implements OnInit, OnDestroy {
   }
 
   calculateTCEA(): number {
-    const tasaNominal = this.document.nominalRate / 100;
-    const monto = this.document.amount || 0;
+    // Paso 1: Calcular el Valor Nominal (VN)
+    const VN = this.document.amount; // Monto total de la factura
 
-    const fechaEmision = new Date(this.document.issueDate);
-    const fechaVencimiento = new Date(this.document.dueDate);
-    const fechaDescuento = new Date(this.document.discountDate);
+    // Paso 2: Calcular el Tiempo de Descuento (t) en días
+    const discountDate = new Date(this.document.discountDate); // Fecha de descuento
+    const dueDate = new Date(this.document.dueDate); // Fecha de vencimiento
+    const t = (dueDate.getTime() - discountDate.getTime()) / (1000 * 60 * 60 * 24); // Convertir a días
 
-    const dias = (fechaVencimiento.getTime() - fechaEmision.getTime()) / (1000 * 3600 * 24);
-    const diasDescuento = (fechaDescuento.getTime() - fechaEmision.getTime()) / (1000 * 3600 * 24);
-
-    if (dias <= 0 || monto <= 0) {
-      console.error("Las fechas o el monto no son válidos");
-      return 0;
+    if (t <= 0) {
+      console.error("El tiempo de descuento (t) debe ser mayor a 0.");
+      return NaN;
     }
 
-    const tcea = Math.pow(
-      (1 + ((tasaNominal / monto)) / (1 - (diasDescuento / 360))),
-      (360 / dias)
-    ) - 1;
+    // Paso 3: Calcular el Descuento (D)
+    const TE = this.document.effectiveRate / 100; // Tasa efectiva anual en formato decimal
+    const D = VN * (TE * t / 360); // Fórmula del descuento
 
-    return tcea * 100;
+    // Paso 4: Calcular el Valor Entregado (VE)
+    const VE = VN - D;
+
+    // Paso 5: Calcular los Costos Iniciales (CI)
+    const initialCosts = JSON.parse(this.document.initialCosts || "[]");
+    const CI = Array.isArray(initialCosts)
+      ? initialCosts.reduce((total, cost: any) => {
+        return total + (cost.type === "porcentaje" ? (VN * cost.valor / 100) : cost.valor);
+      }, 0)
+      : 0;
+
+    // Paso 6: Calcular los Costos Finales (CF)
+    const finalCosts = JSON.parse(this.document.finalCosts || "[]");
+    const CF = Array.isArray(finalCosts)
+      ? finalCosts.reduce((total, cost: any) => {
+        return total + (cost.type === "porcentaje" ? (VN * cost.valor / 100) : cost.valor);
+      }, 0)
+      : 0;
+
+    // Paso 7: Calcular el Valor Neto Recibido (VNR)
+    const VNR = VE - CI;
+
+    // Paso 8: Calcular el Valor Neto Pagado (VNP)
+    const VNP = VN + CF;
+
+    if (VNR <= 0 || VNP <= 0) {
+      console.error("VNR o VNP es menor o igual a cero, no se puede calcular la TCEA.");
+      return NaN;
+    }
+
+    // Paso 9: Calcular la TCEA
+    const exponent = 360 / t; // Exponente de la fórmula
+    const TCEA = Math.pow(VNP / VNR, exponent) - 1;
+
+    if (isNaN(TCEA)) {
+      console.error("No se pudo calcular la TCEA.");
+      return NaN;
+    }
+
+    // Paso 10: Asignar el resultado a la propiedad tcea y devolverlo como porcentaje
+    this.document.tcea = TCEA * 100; // Guardar el valor calculado en la propiedad tcea
+    return this.document.tcea;
   }
+
 
   editDocument(id: number): void {
     const index = this.documents.findIndex(d => d.id === id);
@@ -246,6 +285,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
     this.documentsService.deleteDocument(id).subscribe({
       next: () => {
         this.documents = this.documents.filter(d => d.id !== id);
+        this.loadDocuments(); // Recargar los documentos
       },
       error: (error) => console.error('Error deleting document:', error)
     });
@@ -253,6 +293,8 @@ export class DocumentComponent implements OnInit, OnDestroy {
 
   resetForm(): void {
     this.document = new Documents(0, '', '', '', '', '', '', '', 0, 0, new Date(), new Date(), new Date(), '', 0, 0, 0, '', '', '', 0);
+    this.initialCosts = [];
+    this.finalCosts = [];
     this.isEditMode = false;
     this.errorMessage = '';
   }

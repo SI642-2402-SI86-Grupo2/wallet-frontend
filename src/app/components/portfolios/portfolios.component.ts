@@ -50,19 +50,18 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
    */
   loadPortfolios(): void {
     const userId = this.storageService.getUserId();
-    if (userId) {
-      const portfoliosSubscription = this.portfoliosService
-        .getPortfoliosByUserId(userId)
-        .subscribe({
-          next: (data) => {
-            this.portfolios = data;
-            this.portfolios.forEach((portfolio) => {
-              this.calculateAverageTCEA(portfolio);
-            });
-            this.cdr.markForCheck(); // Forzar detección de cambios
-          },
-          error: (error) => console.error('Error fetching portfolios:', error),
-        });
+    if (userId !== null) {
+      const portfoliosSubscription = this.portfoliosService.getPortfoliosByUserId(userId).subscribe({
+        next: async (data) => {
+          const portfoliosWithTCEA = await Promise.all(data.map(async (portfolio) => {
+            portfolio.totalTcea = await this.calculateAverageTCEA(portfolio);
+            return portfolio;
+          }));
+          this.portfolios = portfoliosWithTCEA;
+          this.cdr.markForCheck();
+        },
+        error: (error) => console.error('Error fetching portfolios:', error)
+      });
       this.subscriptions.push(portfoliosSubscription);
     } else {
       console.error('User ID not found in storage');
@@ -79,11 +78,10 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
       this.documentsService.getDocumentsByPortfolioId(portfolio.id).subscribe({
         next: (documents) => {
           if (documents.length > 0) {
-            const totalTCEA = documents.reduce((sum, doc) => sum + doc.tcea, 0);
-            portfolio.totalTcea = totalTCEA / documents.length;
-            resolve(portfolio.totalTcea);
+            const totalWeightedTCEA = documents.reduce((sum, doc) => sum + (doc.tcea * doc.amount), 0);
+            const totalAmount = documents.reduce((sum, doc) => sum + doc.amount, 0);
+            resolve(totalWeightedTCEA / totalAmount);
           } else {
-            portfolio.totalTcea = 0;
             resolve(0);
           }
         },
@@ -203,9 +201,9 @@ export class PortfoliosComponent implements OnInit, OnDestroy {
   deletePortfolio(id: number): void {
     this.portfoliosService.deletePortfolio(id).subscribe({
       next: () => {
-        this.portfolios = this.portfolios.filter(
-          (portfolio) => portfolio.id !== id
-        );
+        this.portfolios = this.portfolios.filter(portfolio => portfolio.id !== id);
+        this.loadPortfolios(); // Recargar los portfolios
+
       },
       error: (error) => console.error('Error deleting portfolio:', error),
     });
